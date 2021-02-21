@@ -1,0 +1,3 @@
+*.notepadpp.sess
+*.py.lprof
+__pycache__
