@@ -5,6 +5,10 @@ from colorama import Fore, Back, Style, init as cl_init
 from numbers import Number
 import math
 from math import ceil, floor
+import random
+import time
+from time import sleep
+import os
 
 import unittest
 
@@ -32,6 +36,27 @@ BRIGHT = (Style.BRIGHT)
 DIM = (Style.DIM)
 NORMAL = (Style.NORMAL)
 RESET_ALL = (Style.RESET_ALL)
+
+class FILL_CHARACTERS:
+	"""
+	#
+	#
+	"""
+	minimal = {(" ", " "): 0, ("#", "#"): 1}
+
+	"""
+	_.:+I#
+	‾˙:+I#
+	"""
+	simple = {(" ", " "): 0,   ("_", "‾"): 0.05, (".", "˙"): 0.1, (":", ":"): 0.3, \
+						("+", "+"): 0.5, ("I", "I"): 0.7,  ("#", "#"): 1}
+
+	"""
+	_˷,ᵦı:+Ii⌠ʬ
+	‾˜ ˟ᴵᵝ˸+!I⌡ʬ
+	"""
+	extended = {(" ", " "): 0  , ("_", "‾"): 0.02 , ("˷", "͂"): 0.1, (",", "˟"): 0.25, ("ᵦ", "ᴵ"):   0.3, \
+							("ı", "ᵝ"): 0.4, (":", "˸"): 0.55, ("I", "!"): 0.70, ("⌠", "⌡"): 0.85, ("ʬ", "ʬ"): 1}
 
 #+++++++++++++++++++++++++++++++
 #++++++++++MODULE CODE++++++++++
@@ -111,40 +136,67 @@ def get_time_str(secs, forceUnit=None):
 		return "{:.3f}s".format(secs)
 	elif secs >= 60:
 		return "{:n}m {:.3f}s".format(int(secs/60),secs%60)
-		
-def console_graph(data, maxHeight=32, maxLength=128, \
-	fillCharacters={"@": 0, "_": 0.05, ".": 0.1, ":": 0.3, "+": 0.5, "I": 0.7, "#": 1}, \
-	colorFunc=None, bgColor=BLUE):
 
-	#sort fillCharacters by descending value
-	_characters = sorted(fillCharacters.items(), key=lambda x: x[1], reverse=True)
+def console_graph(data, maxHeight=16, maxLength=128, \
+	fillCharacters=FILL_CHARACTERS.extended, colorFunc=None, bgColor=NORMAL):
+
+	#sort fillCharacters by descending value and grab 0 values for quicker access
+	_sorted_characters = sorted(fillCharacters.items(), key=lambda item: item[1], reverse=True)
+	zeroChars = _sorted_characters[-1][0][0:2]
 	
 	#internal cell class
 	class Cell:
-		def __init__(self, _val, _lastCell):
+		def __init__(self, value, lastCell):
 			self.height, self.color, self.data, self.lastCell, self.nextCell = \
-						_val, [bgColor] * (max(1, int(ceil(_val)))), list(), _lastCell, None
+						value, [bgColor] * (int(abs(value)) + 1), list(), lastCell, None
 			
 		#set colors and characters
-		def __call__(self, _max):
-			self.color = [colorFunc(value, (self.nextCell.height - self.lastCell.height) / 3) for value in \
-												range(0, len(self.color) + 1)]
+		def __call__(self, ratio, minVal):
+			#compute ratio for scaling
+			_adjusted_val, minVal = self.height * ratio, minVal * ratio
 			
-			ratio, _val = 1, self.height
-			if _max > maxHeight:
-				ratio = maxHeight / _max
-				_val = _val * ratio
-			self.__set_chars__(_val, ratio)
+			#colorFunc(height, change in local height, relative position from bottom in percent, distance from top in chars)
+			if colorFunc:
+				self.color = [colorFunc(value, \
+															 (self.nextCell.height - self.lastCell.height) / 3, \
+																value / len(self.color), \
+																int((1 - (value / len(self.color)) if value >= 0 else (value / len(self.color))) * _adjusted_val)) \
+													for value in (range(0, len(self.color) + 1) if _adjusted_val >= 0 else range(-len(self.color), 1))]
+				
+			self.__set_chars__(_adjusted_val, ratio, minVal)
 			
-		def __set_chars__(self, _val, ratio):
-			_absVal = 0
-			for char, val in _characters:
-				while val < _val: #while it fits
-					self.data.append((char, self.color[int(round(_absVal, 0))]))
-					_val, _absVal = _val - 1, _absVal + (1 / ratio) #move up one cell
+		def __set_chars__(self, value, ratio, yOffset):
+			
+			#pad below x-axis
+			yOffsetRange = range(int(floor(yOffset)), 0) if value >= 0 else \
+										 range(int(floor(yOffset) - value), 0)
+			
+			for _ in yOffsetRange:
+				self.data.append((zeroChars[1], bgColor))
+			
+			#fill graph to x-axis starting with largest characters
+			temp_data, absValue, unsignedValue = list(), 0, abs(value)
+			for char, charValue in _sorted_characters:
+				if charValue == 0: break #stop loop if we hit zero-value character
+				
+				while charValue < unsignedValue: #while character fits into height
+					#char[0] -> top character, char[1] -> bottom character (inverted)
+					temp_data.append((char[0] if value >= 0 else char[1], self.color[int(ceil(absValue))]))
+					
+					unsignedValue, absValue = unsignedValue - 1, absValue + (1 / ratio) #move up/down one cell
 				#else move on to next char
+			
+			#if no character is small enough to fit into the space left, just add a top or bottom char extra
+			if unsignedValue > 0:
+				temp_data.append((zeroChars[0 if value >= 0 else 1], bgColor))
+			
+			#add temp data reversed if we have a negative value
+			if value < 0: temp_data.reverse()
+			self.data.extend(temp_data)
+			
+			#pad above x-axis
 			while len(self.data) < maxHeight: #fill the rest with smallest char in fillCharacters
-				self.data.append((_characters[-1][0], bgColor))
+				self.data.append((zeroChars[0], bgColor))
 			
 		#return tuple of form (character from data, color of cell)
 		def __getitem__(self, key):
@@ -154,39 +206,64 @@ def console_graph(data, maxHeight=32, maxLength=128, \
 	"""
 	
 	#create list of cells
-	_data, cells, lastCell = data[-maxLength:], list(), None
-	for val in _data: #only consider the last maxLength elements
-		cell = Cell(val, lastCell) #(value, biggest value, last cell)
+	_trimmed_data, cells, lastCell = data[-maxLength:], list(), None
+	for value in _trimmed_data: #only consider the last maxLength elements
+		cell = Cell(value, lastCell) #(value, biggest value, last cell)
 		if lastCell: lastCell.nextCell = cell #set next cell value of last cell
 		lastCell = cell #set current to last cell
 		
 		cells.append(cell) #append to main list
 	
 	#set next and lastcell for first and last in cells list
-	cells[0].lastCell  = Cell(cells[0].height , None)
+	cells[ 0].lastCell = Cell(cells[ 0].height, None)
 	cells[-1].nextCell = Cell(cells[-1].height, None)
 	
+	#compute extreme values and scaling ratio
+	minVal = min(_trimmed_data) if min(_trimmed_data) < 0 else 0 #set min to 0 if greater equal than 0
+	diffInExtremeVals = max(_trimmed_data) - minVal
+	ratio = 1 if diffInExtremeVals <= maxHeight else (maxHeight - 1) / diffInExtremeVals
 	#update the color of cells
-	maxVal = max(_data)
-	if colorFunc:
-		for cell in cells:
-			cell(maxVal)
+	for cell in cells:
+		cell(ratio, minVal)
 	
 	#create the output string
-	outStr = ""
+	outStrList = list()
 	for i in range(maxHeight, 0, -1):
 		for cell in cells:
-			outStr += cl_p(cell[i - 1][0], *cell[i - 1][1])
-		outStr += "\n"
+			outStrList.append(cl_p(cell[i - 1][0], *cell[i - 1][1]))
+		outStrList.append("\n")
 		
-	return outStr
+	return str().join(outStrList)
 	
-def colFunc(value, delta):
-	return (RED) if value < 10 else (GREEN)
+def edgeChange(value, changeInValue, relativePosition, topDistance):
+	if topDistance > 1: return (NORMAL)
+	return (RED) if changeInValue < 0 else (GREEN)
 	
 print()
-# print(console_graph(list(range(1, 16, 1)) + list(range(32, 10, -1))))
-print(console_graph([10 * (1 + math.sin(0.3 * x)) for x in range(0, 128)], colorFunc=colFunc))
+print(console_graph(list(range(-15, 16, 1)) + list(range(32, 10, -1)), colorFunc=edgeChange))
+print(console_graph([10 * (1 + math.sin(0.3 * x)) + 0.2 * x**1.4 - 60 for x in range(0, 128)], colorFunc=edgeChange))
+print(console_graph([random.random()*100 - 50 for x in range(0, 128)], colorFunc=edgeChange))
+
+# print(console_graph([10 * (1 + 2 * math.sin(0.3 * x)) + 0.2 * x**1.4 - 80 for x in range(0, 128)], colorFunc=edgeChange, \
+										# fillCharacters=FILL_CHARACTERS.minimal))
+# print(console_graph([10 * (1 + 2 * math.sin(0.3 * x)) + 0.2 * x**1.4 - 80 for x in range(0, 128)], colorFunc=edgeChange, \
+										# fillCharacters=FILL_CHARACTERS.simple))
+# print(console_graph([10 * (1 + 2 * math.sin(0.3 * x)) + 0.2 * x**1.4 - 80 for x in range(0, 128)], colorFunc=edgeChange, \
+										# fillCharacters=FILL_CHARACTERS.extended))
+
+# os.system("clear")
+# times = list()
+# while 1:
+	# for _ in range(5):
+		# stime = time.time()
+		# for _ in range(500):
+			# x = 5 * 3.28 + 3.1415
+		# times.append((time.time() - stime) * 100000)
+	
+	# output = console_graph(times, colorFunc=edgeChange)
+	# print("\033[0;0H")
+	# print(output, end="")
+	# sleep(0.01)
 	
 #+++++++++++++++++++++++++++
 #++++++++++TESTING++++++++++
