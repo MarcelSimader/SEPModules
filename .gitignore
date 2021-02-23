@@ -1,3 +1,4 @@
 *.notepadpp.sess
 *.py.lprof
 __pycache__
+test
