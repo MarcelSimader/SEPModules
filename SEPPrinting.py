@@ -338,25 +338,25 @@ def edgeChange(value, changeInValue, relativePosition, topDistance):
 # print(console_graph([10 * (1 + 2 * math.sin(0.3 * x)) + 0.2 * x**1.4 - 80 for x in range(0, 128)], colorFunc=edgeChange, \
 										# fillCharacters=FILL_CHARACTERS.extended))
 
-os.system("clear")
-times = list()
+# os.system("clear")
+# times = list()
 # stdcon = curses.initscr()
-while 1:
-	for _ in range(6):
-		sTime = time.time()
-		for _ in range(500):
-			x = 5 * 3.28 + 3.1415
-		times.append((time.time() - sTime) * 10000000)
+# while 1:
+	# for _ in range(6):
+		# sTime = time.time()
+		# for _ in range(500):
+			# x = 5 * 3.28 + 3.1415
+		# times.append((time.time() - sTime) * 10000000)
 	
-	maxVals = 128
+	# maxVals = 128
 	
-	forcedUnit = get_appropriate_time_unit(statistics.geometric_mean([x/10000000 for x in times[-maxVals:]]))
+	# forcedUnit = get_appropriate_time_unit(statistics.geometric_mean([x/10000000 for x in times[-maxVals:]]))
 	
-	output = console_graph(times, colorFunc=edgeChange, maxHeight=20, maxWidth=maxVals, \
-												 unitFormat=lambda x: [get_time_str(x/10000000, forceUnit=forcedUnit)], rounding=3, \
-												 debug=False, scaleInFront=True)
-	print(POS(0,0), end="")
-	print(output, end="")
+	# output = console_graph(times, colorFunc=edgeChange, maxHeight=20, maxWidth=maxVals, \
+												 # unitFormat=lambda x: [get_time_str(x/10000000, forceUnit=forcedUnit)], rounding=3, \
+												 # debug=False, scaleInFront=True)
+	# print(POS(0,0), end="")
+	# print(output, end="")
 	# curses.start_color()
 	# curses.use_default_colors()
 	# for i in range(curses.COLORS - 1):
@@ -364,7 +364,7 @@ while 1:
 		# stdcon.addstr(str(i), curses.color_pair(i + 1))
 	# stdcon.addstr(0, 0, output)
 	# stdcon.refresh()
-	sleep(0.001)
+	# sleep(0.001)
 
 # curses.endwin()
 

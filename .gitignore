@@ -1,4 +1,8 @@
-*.notepadpp.sess
+#python compiler and profiler files
 *.py.lprof
 __pycache__
+SEP_Module/
+
+#misc files
 test
+*.notepadpp.sess
