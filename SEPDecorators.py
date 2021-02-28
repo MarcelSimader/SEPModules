@@ -1,11 +1,12 @@
 #+++++++++++++++++++++++++++++++++++++++++
 #++++++++++Imports & Global Vars++++++++++
 #+++++++++++++++++++++++++++++++++++++++++
+
 import time
 from inspect import signature, Parameter, _empty
 from itertools import zip_longest
-import concurrent.futures
-from concurrent.futures import ProcessPoolExecutor
+# import concurrent.futures
+# from concurrent.futures import ProcessPoolExecutor
 
 import unittest
 
@@ -46,7 +47,7 @@ def timed(func):
 
 def check_type(iterable=None, enable=True):
 	"""
-	Automate the checking of argument types for a function.
+	Automate the checking of argument types for a function using the Python annotation feature.
 	'enable' value toggles type checking on or off. 
 	'iterable' value of form {'arg_name': [typ1, typ2, ...], ...} tells typer checker which values an iterable is permitted to hold.
 	"""

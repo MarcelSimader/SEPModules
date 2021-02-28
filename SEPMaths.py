@@ -710,12 +710,12 @@ class TestGroupMethods(unittest.TestCase):
 			
 			self.assertFalse(isAbelianGroup([0,1,2], _table_lookup))
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 
-	# test_performance_rational()
-	# test_performance_isGroup()
-	# test_performance_isAbelianGroup()
-	# test_performance_findRationalApproximation()
+	test_performance_rational()
+	test_performance_isGroup()
+	test_performance_isAbelianGroup()
+	test_performance_findRationalApproximation()
 
-	# unittest.main()
+	unittest.main()
 	
