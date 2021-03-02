@@ -9,5 +9,4 @@ SEPCMaths.cpython-*
 *.egg-info
 
 #misc files
-test
 *.npp.sess
