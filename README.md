@@ -1,3 +1,3 @@
-# SEP_Module
+# SEPModules
 
-Python module providing basic functionality for various common tasks.
+Python package providing basic modules and functionality for various common tasks.

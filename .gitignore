@@ -1,8 +1,13 @@
 #python compiler and profiler files
 *.py.lprof
 __pycache__
-SEP_Module/
+.venv
+
+#distro files
+build
+SEPCMaths.cpython-*
+*.egg-info
 
 #misc files
 test
-*.notepadpp.sess
+*.npp.sess
