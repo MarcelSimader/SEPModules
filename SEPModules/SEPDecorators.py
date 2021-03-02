@@ -7,6 +7,8 @@ from inspect import signature, Parameter, _empty
 
 from SEPModules.SEPPrinting import cl_p, get_time_str, NAME, NUMBER, RESET_ALL
 
+WRAPPER_NAME = "wrapped_"
+
 #+++++++++++++++++++++++++++++++
 #++++++++++MODULE CODE++++++++++
 #+++++++++++++++++++++++++++++++
@@ -17,23 +19,27 @@ def timedReturn(func):
 	"""
 	Same functionality as SEPTiming.timed decorator but returns the time and return-value as dictionary.
 	"""
-	def __wrap__(*args, **kwargs):
+	def __wrapper__(*args, **kwargs):
 		sTime = time.perf_counter()
 		r = func(*args, **kwargs)
 		tTime = time.perf_counter() - sTime
 		return {"return": r, "time": tTime}
-	return __wrap__
+	
+	__wrapper__.__name__ = "{}timedReturn_{}".format(WRAPPER_NAME, func.__name__)
+	return __wrapper__
 
 def timed(func):
 	"""
 	Times the decorated function and prints the amount of time it took to execute. Returns the return-value of provided function.
 	"""
-	def __wrap__(*args, **kwargs):
+	def __wrapper__(*args, **kwargs):
 		timedFunc = timedReturn(func)
 		r = timedFunc(*args, **kwargs)
 		print("{} took {} to execute.".format(cl_p(func.__name__, NAME), cl_p(get_time_str(r["time"]))))
 		return r["return"]
-	return __wrap__
+	
+	__wrapper__.__name__ = "{}timed_{}".format(WRAPPER_NAME, func.__name__)
+	return __wrapper__
 
 def check_type(iterable=None, enable=True):
 	"""
@@ -106,7 +112,8 @@ def check_type(iterable=None, enable=True):
 				
 			return result
 			
-		#set the correct name for sub_wrapper
-		__wrapper__.__name__ = "check_type_{}".format(func.__name__)
+		#set the correct name for wrapper
+		__wrapper__.__name__ = "{}check_type_{}".format(WRAPPER_NAME, func.__name__)
 		return __wrapper__
+	
 	return __sup_wrapper__
