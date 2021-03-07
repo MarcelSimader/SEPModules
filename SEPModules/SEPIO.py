@@ -64,8 +64,8 @@ class ConsoleArguments:
 		"""
 		_args_in = getopt(sys.argv[1:], self._argnames, self._kwargnames)
 		
-		#check if _args_in order is fishy by seeing if any parameter has a dash
-		if any(["-" in arg for arg in _args_in[1]]):
+		#check if _args_in order is fishy by seeing if any parameter is also named in the args or kwargs
+		if any([arg in ["-" + a.replace(":", "") for a in self._argnames] or arg in ["--" + a.replace("=", "") for a in self._kwargnames] for arg in _args_in[1]]):
 			raise Exception("Argument or keyword argument '{}' not recognized. (Maybe the arguments are in the wrong order?)".format(\
 													_args_in[1][0]))
 		
