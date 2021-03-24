@@ -9,7 +9,7 @@ import types
 
 from SEPModules.SEPPrinting import cl_p, WARNING
 
-from SEPCMaths import iterateRationalApproximation, intSign
+# from SEPCMaths import iterateRationalApproximation
 
 #+++++++++++++++++++++++++++++++
 #++++++++++MODULE CODE++++++++++
@@ -78,7 +78,7 @@ class Rational():
 		if not a: #filter out -0 (if a == 0)
 			self._sign = (1, 1)
 		else:
-			self._sign = (intSign(a, zero=1), intSign(b, zero=1)) #set sign of fraction
+			self._sign = (sign(a, zero=1), sign(b, zero=1)) #set sign of fraction
 				
 		self._a, self._b = Rational.__simplify__(abs(a), abs(b)) #simplify tuple of absolute values
 	
@@ -112,7 +112,7 @@ class Rational():
 			# abs(a / b) - abs(c / d)
 			# abs(ad / bd) - abs(cb / db)
 			# abs(ad) - abs(cb)
-			return intSign(self._a * other._b - other._a * self._b)
+			return sign(self._a * other._b - other._a * self._b)
 				
 	def __eq__(self, other):
 		return not self.__compare__(other) #not bool(-1, 1) -> False
@@ -177,7 +177,7 @@ class Rational():
 		if not type(other) is int:
 			raise TypeError("Illegal binary operation '{}' of type 'Rational' and '{}' (expected 'int').".format("**", other.__class__.__name__))
 		
-		if intSign(other) + 1: #bool(2) -> True
+		if sign(other) + 1: #bool(2) -> True
 			a = self.a ** other
 			b = self._b ** other
 		else: #bool(0) -> False
@@ -233,6 +233,7 @@ class Rational():
 #+++++++++FUNCTIONS++++++++++
 
 def findRationalApproximation(num, precision=4, microIterations=1):
+	raise DeprecationWarning("Deprecated SEPCMaths")
 	"""
 	Returns a Rational x with numerator and denominator a, b with float(x) = a / b =~ num.
 	Takes:
@@ -260,7 +261,8 @@ def findRationalApproximation(num, precision=4, microIterations=1):
 		print(cl_p("Warning: Something went wrong while getting sys.float_info!\n\t{}".format(e), WARNING))
 
 	#																		a,b,(lower),(upper)
-	a, b = iterateRationalApproximation(1, 2, 0, 1, 1, 1, _mantissa, 10**(-precision), microIterations)
+	#TODO: fix
+	# a, b = iterateRationalApproximation(1, 2, 0, 1, 1, 1, _mantissa, 10**(-precision), microIterations)
 	
 	return Rational(int(copysign(a + int(abs(num)) * b, num)), int(b))
 

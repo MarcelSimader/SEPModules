@@ -2,6 +2,7 @@
 *.py.lprof
 __pycache__
 .venv
+.venv-windows
 
 #distro files
 build
