@@ -1,31 +1,33 @@
-#+++++++++++++++++++++++++++++++++++++++++
-#++++++++++Imports & Global Vars++++++++++
-#+++++++++++++++++++++++++++++++++++++++++
+"""
+Author: Marcel Simader
+Data: 01.04.2021
+"""
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ IMPORTS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+import types
+from numbers import Real
+from typing import Tuple, Callable, Any, Union
 
 import sys
 from itertools import product, combinations
 from math import copysign, gcd, floor, ceil, isclose
-import types
 
 from SEPModules.SEPPrinting import cl_p, WARNING
 
-# from SEPCMaths import iterateRationalApproximation
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#+++++++++++++++++++++++++++++++
-#++++++++++MODULE CODE++++++++++
-#+++++++++++++++++++++++++++++++
-
-#+++++++++CLASSES++++++++++
-
-class Rational():
+class Rational:
 	"""
 	Rational number of the form a/b (a, b in Z). Used for symbolic computations in SEPMaths module. Values are automatically simplified.
 	"""
 	
-	_sign, _a, _b = (1, 1), 1, 1 #_sign stores as two binary values to exploit xor logic (-1 = -, 1 = +)
-	
 	#Decorator
-	def __prepare_int_binary_op__(func):
+	def __prepare_int_binary_op__(func : Callable[..., Any]) -> Callable[..., Any]:
 		"""
 		Do type checking of arithmetic binary operations on Rationals and auto-convert int to Rational type.
 		"""
@@ -40,26 +42,27 @@ class Rational():
 			return func(self, other)
 		return __wrapper__
 
-	def __simplify__(a, b):
+	@staticmethod
+	def __simplify__(a : int, b : int) -> Tuple[int, int]:
 		"""
 		Takes in a tuple (a, b) for integers a and b and returns a simplified tuple (c, d) where a/b == c/d.
 		"""
 		_gcd = gcd(a, b) #divide a and b by gcd(a, b). When gcd is 1, already fully simplified 
-		return (a // _gcd, b // _gcd)
+		return a // _gcd, b // _gcd
 	
 	@property
-	def sign(self):
+	def sign(self) -> int:
 		return (self._sign[0] ^ self._sign[1]) + 1 #xor hack, amounts to sign[0] * sign[1]
 	
 	@property
-	def a(self):
+	def a(self) -> int:
 		return self.sign * self._a
 	
 	@property
-	def b(self):
+	def b(self) -> int:
 		return self._b
 
-	def __init__(self, a=1, b=1):
+	def __init__(self, a :int=1, b :int=1):
 		if not ((type(a) is int and type(b) is int) or (type(a) is float and b == 1) or (type(a) is Rational and b == 1)):
 			raise TypeError("Values 'a' and 'b' must be of type 'int' (received {}, {}). \
 						Alternatively 'a' can be of type 'float' or 'Rational' when \
@@ -68,7 +71,7 @@ class Rational():
 		#TODO: write tests for input type Rational
 		if type(a) in (Rational, float) and b == 1: #handle Rational or float input
 			if type(a) is float:
-				a = findRationalApproximation(a)
+				a = find_rational_approximation(a)
 			self._a, self._b, self._sign = a._a, a._b, a._sign
 			return #return since all the calculations must have already been done for these inputs
 		
@@ -82,14 +85,16 @@ class Rational():
 				
 		self._a, self._b = Rational.__simplify__(abs(a), abs(b)) #simplify tuple of absolute values
 	
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return "<Rational(a={}, b={})>".format(self.a, self._b)
 		
-	def __str__(self):
-		if self._a == 0 or self._b == 1: return str(self.a) #handle (+-0 / x)and (+-y / 1)
-		else: return "{}/{}".format(self.a, self._b)
+	def __str__(self) -> str:
+		if self._a == 0 or self._b == 1:
+			return str(self.a) #handle (+-0 / x)and (+-y / 1)
+		else:
+			return "{}/{}".format(self.a, self._b)
 		
-	def __getitem__(self, key):
+	def __getitem__(self, key : Union[str, int]) -> int:
 		if not type(key) in (str, int):
 			raise TypeError("Key must be of type 'str' or 'int' (received '{}').".format(key.__class__.__name__))
 		# not (key is string -> key is a or b) and (key is int -> key is 0 or 1)
@@ -102,7 +107,7 @@ class Rational():
 		return hash(tuple([self.sign, self._a, self._b]))
 	
 	@__prepare_int_binary_op__
-	def __compare__(self, other):
+	def __compare__(self, other) -> int:
 		"""
 		Function that returns -1 if a < b, 0 if a == b, or 1 if a > b for Rationals a and b.
 		"""
@@ -114,22 +119,22 @@ class Rational():
 			# abs(ad) - abs(cb)
 			return sign(self._a * other._b - other._a * self._b)
 				
-	def __eq__(self, other):
-		return not self.__compare__(other) #not bool(-1, 1) -> False
+	def __eq__(self, other) -> bool:
+		return not bool(self.__compare__(other)) #not bool(-1, 1) -> False
 		
-	def __neq__(self, other):
-		return self.__compare__(other) #not bool(0) -> True
+	def __neq__(self, other) -> bool:
+		return bool(self.__compare__(other)) #not bool(0) -> True
 		
-	def __lt__(self, other):
+	def __lt__(self, other) -> bool:
 		return self.__compare__(other) == -1
 		
-	def __le__(self, other):
+	def __le__(self, other) -> bool:
 		return self.__compare__(other) <= 0
 		
-	def __gt__(self, other):
+	def __gt__(self, other) -> bool:
 		return self.__compare__(other) == 1
 		
-	def __ge__(self, other):
+	def __ge__(self, other) -> bool:
 		return self.__compare__(other) >= 0
 	
 	@__prepare_int_binary_op__
@@ -212,15 +217,15 @@ class Rational():
 	def __abs__(self):
 		return Rational(self._a, self._b)
 		
-	def __int__(self):
+	def __int__(self) -> int:
 		return int(self.a // self._b)
 		
-	def __float__(self):
+	def __float__(self) -> float:
 		return float(self.a / self._b)
 		
-	def __round__(self, nDigits=None):
-		if nDigits: 
-			return round(float(self), nDigits)
+	def __round__(self, n_digits : int=None) -> float:
+		if n_digits:
+			return round(float(self), n_digits)
 		else: 
 			return float(self)
 		
@@ -230,17 +235,16 @@ class Rational():
 	def __ceil__(self):
 		return Rational(ceil(self.a / self._b), 1)
 
-#+++++++++FUNCTIONS++++++++++
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def findRationalApproximation(num, precision=4, microIterations=1):
-	raise DeprecationWarning("Deprecated SEPCMaths")
+def find_rational_approximation(num : Real, precision :int=4):
 	"""
 	Returns a Rational x with numerator and denominator a, b with float(x) = a / b =~ num.
 	Takes:
 		- num, the number to approximate as float or int
-		- [precision=8], the number of decimal digits of precision
-		- [microIterations=1 sets the number of micro iterations to be performed for every macro iteration (ie. 
-			every time change and precision are checked).
+		- precision, the number of decimal digits of precision
 	"""
 	if type(num) not in (float, int):
 		raise TypeError("Type of 'num' must be 'int' or 'float' (received '{}').".format(num.__class__.__name__))
@@ -260,15 +264,23 @@ def findRationalApproximation(num, precision=4, microIterations=1):
 	except Exception as e:
 		print(cl_p("Warning: Something went wrong while getting sys.float_info!\n\t{}".format(e), WARNING))
 
-	#																		a,b,(lower),(upper)
-	#TODO: fix
-	# a, b = iterateRationalApproximation(1, 2, 0, 1, 1, 1, _mantissa, 10**(-precision), microIterations)
+	# starting, left_bound, right_bound
+	iteration_vars = (1, 2, 0, 1, 1, 1)
+	while abs((iteration_vars[0] / iteration_vars[1]) - _mantissa) >= 10 ** -(1 + precision):
+		geq = int((iteration_vars[0] / iteration_vars[1]) >= _mantissa) # 0 or 1
+		iteration_vars = (iteration_vars[0] + geq * (iteration_vars[2]) + ((1 - geq) * (iteration_vars[4])),
+						  iteration_vars[1] + geq * (iteration_vars[3]) + ((1 - geq) * (iteration_vars[5])),
+						  geq * (iteration_vars[2]) + ((1 - geq) * (iteration_vars[0])),
+						  geq * (iteration_vars[3]) + ((1 - geq) * (iteration_vars[1])),
+						  geq * (iteration_vars[0]) + ((1 - geq) * (iteration_vars[4])),
+						  geq * (iteration_vars[1]) + ((1 - geq) * (iteration_vars[5])))
 	
-	return Rational(int(copysign(a + int(abs(num)) * b, num)), int(b))
+	return Rational(int(copysign(iteration_vars[0] + int(abs(num)) * iteration_vars[1], num)), iteration_vars[1])
 
-def getPossibleRationals(_set):
+def get_possible_rationals(_set : Union[list, set]) -> set:
 	"""
-	Returns all possible Rationals (a / b) for a, b in _set. All elements of _set must be integers.
+	Returns all possible Rationals (a / b) for a, b in _set.
+	:param _set: all elements of _set must be integers.
 	"""
 	if not type(_set) in (list, set):
 		raise TypeError("Argument must be of type 'list' or 'set' (received '{}').".format(_set.__class__.__name__))
@@ -276,11 +288,14 @@ def getPossibleRationals(_set):
 		raise ValueError("All elements of input set must be integers.")
 	
 	# all rationals (a, b) over Cartesian product length 2 of _set
-	return {Rational(*a) for a in product(_set, repeat=2) if a[1]}
+	return {Rational(*a) for a in product(_set, repeat=2) if a[1] != 0}
 
-def isGroup(_set, operator, tolerance=0, abelian=False):
+def is_group(_set : Union[list, set], operator : Callable[[Any, Any], Any], tolerance :int=0, abelian :bool=False) -> bool:
 	"""
-	Test if a set and an operator form a group. The operator is described by a function of form (a, b) -> (c), and the tolerance is a value from 0 to 10, where 0 is the least and 10 is the most tolerance in floating point precision.
+	Test if a set and an operator form a group.
+
+	:param operator: described by a function of form (a, b) -> (c)
+	:param tolerance: a value from 0 to 10, where 0 is the least and 10 is the most tolerance in floating point precision
 	"""
 	#input sanitation
 	if type(_set) not in (list, set):
@@ -288,7 +303,7 @@ def isGroup(_set, operator, tolerance=0, abelian=False):
 	
 	try:
 		_arg_count = operator.__code__.co_argcount - operator.__code__.co_kwonlyargcount #count positional arguments of operator function
-	except:
+	except Exception:
 		_arg_count = 0
 	if (not type(operator) is types.FunctionType) or _arg_count != 2: 
 		raise TypeError("'operator' must be of type 'function' and receive two positional arguments (has {}).".format(_arg_count))
@@ -300,7 +315,7 @@ def isGroup(_set, operator, tolerance=0, abelian=False):
 	
 	#TODO: figure out what to do with these properties
 	# hasNeutral, isAssociative, hasInverses, isCommutative = False, True, True, True
-	neutralEl = None
+	neutral_element = None
 	
 	#define custom equal to test if values are approximately equal according to 'tolerance' value
 	if tolerance == 0:
@@ -344,17 +359,17 @@ def isGroup(_set, operator, tolerance=0, abelian=False):
 				_neutralFlag = False
 				break
 		if _neutralFlag:
-			neutralEl = a
+			neutral_element = a
 			# hasNeutral = True
 			break
 	
-	if neutralEl is None: return False #cannot be a group
+	if neutral_element is None: return False #cannot be a group
 	
 	#++++test for inverses++++
 	for a in _set:
 		_hasInverseFlag = False
 		for b in _set:
-			if equal(add_or_get_computed(a, b), neutralEl):
+			if equal(add_or_get_computed(a, b), neutral_element):
 				_hasInverseFlag = True
 				break
 		if not _hasInverseFlag: 
@@ -363,34 +378,36 @@ def isGroup(_set, operator, tolerance=0, abelian=False):
 	
 	return True
 
-def isAbelianGroup(_set, operator, tolerance=0):
+def is_abelian_group(_set : Union[list, set], operator : Callable[[Any, Any], Any], tolerance :int=0) -> bool:
 	"""
-	Works the same way as SEPMaths.isGroup but tests for Abelian groups.
+	Works the same way as SEPMaths.is_group but tests for Abelian groups.
 	"""
-	return isGroup(_set, operator, tolerance=tolerance, abelian=True)
+	return is_group(_set, operator, tolerance=tolerance, abelian=True)
 
-def fibonacci(n, fibList=None):
+def fibonacci(n : int, fib_list=None) -> int:
 	n = abs(n) if n < 0 else n
-	if fibList is None:
-		fibList = {-2:0, -1:0, 0:0, 1:1}
-	def __fastFib__(n, fibList):
+	if fib_list is None:
+		fib_list = {-2:0, -1:0, 0:0, 1:1}
+	def __fast_fib__(n, fibList):
 		if not n in fibList:
-			fibList[n] = __fastFib__(n - 1, fibList) + __fastFib__(n - 2, fibList)
+			fibList[n] = __fast_fib__(n - 1, fibList) + __fast_fib__(n - 2, fibList)
 		return fibList[n]
-	return __fastFib__(n, fibList)
+	return __fast_fib__(n, fib_list)
 
-def slowFibonacci(n):
+def slow_fibonacci(n : int) -> int:
 	n = abs(n) if n < 0 else n
-	def __slowFib__(n):
+	def __slow_fib__(n):
 		if n < 1:
 			return 0
 		elif n == 1:
 			return 1
-		return __slowFib__(n - 1) + __slowFib__(n - 2)
-	return __slowFib__(n)
+		return __slow_fib__(n - 1) + __slow_fib__(n - 2)
+	return __slow_fib__(n)
 	
-def sign(x, zero=0):
+def sign(x : int, zero : int=0) -> int:
 	"""
-	Returns the sign of x (but sign(0) == zero, defaults to 0).
+	Returns the sign of x (but sign(0) == zero).
+
+	:param zero: defaults to 0
 	"""
 	return -1 if x < 0 else (1 if x > 0 else zero)

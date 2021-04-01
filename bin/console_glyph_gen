@@ -347,8 +347,8 @@ if list_optimize:
 		
 		if draw_graph and print_progress:
 			print(SEPModules.SEPPrinting.console_graph([fcs[3] for fcs in final_charsets], \
-																			maxWidth=128, maxHeight=24, relativeCursorPos=True, \
-																			debug=False, center=(4, 4, 1, 1)), end="")
+													   max_width=128, max_height=24, relative_cursor_position=True, \
+													   debug=False, center=(4, 4, 1, 1)), end="")
 			print(SEPModules.SEPPrinting.REL_POS(-128, -_height), flush=True)
 	
 	#sort by error

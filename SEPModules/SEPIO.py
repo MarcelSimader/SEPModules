@@ -1,17 +1,20 @@
-#+++++++++++++++++++++++++++++++++++++++++
-#++++++++++Imports & Global Vars++++++++++
-#+++++++++++++++++++++++++++++++++++++++++
+"""
+Author: Marcel Simader
+Data: 01.04.2021
+"""
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ IMPORTS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+from typing import List, Callable, Any, Dict, Union, Tuple
 
 import sys
 from getopt import getopt
 
-from SEPModules.SEPPrinting import cl_p, CYAN
-
-#+++++++++++++++++++++++++++++++
-#++++++++++MODULE CODE++++++++++
-#+++++++++++++++++++++++++++++++
-
-#++++++++++CLASSES++++++++++
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class ConsoleArguments:
 	
@@ -22,16 +25,18 @@ class ConsoleArguments:
 	SET_PARS         = "parameters"
 	REQUIRED         = "required"
 	REQUIRED_AND_SET = "required and set"
-	
-	#vars
-	_argnames, _kwargnames = None, None
-	requires_arg = {}
-	_args, _kwargs, _pars = {}, {}, []
-	
-	def __init__(self, argnames, kwargnames, noLoad=False):		
+
+	def __init__(self, argnames : List[str], kwargnames : List[str], no_load : bool=False):
+		"""
+		A console arguments manager that holds information and offers API functionality regarding the console options and flags passed into the program. It immediately tries to read from sys.argv if the no_load option is not set upon creation.
+
+		:param argnames: a list of single-letter strings defining the options, adding ':' to the end of a letter indicates that a value must be passed to this flag
+		:param kwargnames: a list of multi-letter string defining long options, adding '=' to the end of a string indicates that a value must be passed to this flag
+		:param no_load: prohibit the console manager from automatically reading sys.argv upon creation of the console arguments manager object
+		"""
 		#check if arg-names and kwarg-names are of type list
 		if not (type(argnames) is list and type(kwargnames) is list):
-			raise TypeError("Parameters 'arg-names' and 'kwarg-names' must be of type list (received {} and {}).".format(\
+			raise TypeError("Parameters 'arg-names' and 'kwarg-names' must be of type list (received {} and {}).".format(
 														argnames.__class__.__name__, kwargnames.__class__.__name__))
 		
 		#check that arg-names and kwarg-names don't overlap
@@ -55,18 +60,17 @@ class ConsoleArguments:
 			self.requires_arg[kwargname.replace("=", "")]	= kwargname[-1:] == "="
 		
 		#load arguments into class
-		if not noLoad: self.__load_arguments__(argnames, kwargnames)
+		if not no_load: self.__load_arguments__()
 	
-	def __load_arguments__(self, argnames, kwargnames):
+	def __load_arguments__(self):
 		"""	
-		private function to load all arguments based on the names into dictionaries
-		takes arg-names and kwarg-names in the form of lists and *NOT* in the form of getopt.getopt
+		Private function to load all arguments based on the names into dictionaries.
 		"""
 		_args_in = getopt(sys.argv[1:], self._argnames, self._kwargnames)
 		
 		#check if _args_in order is fishy by seeing if any parameter is also named in the args or kwargs
 		if any([arg in ["-" + a.replace(":", "") for a in self._argnames] or arg in ["--" + a.replace("=", "") for a in self._kwargnames] for arg in _args_in[1]]):
-			raise Exception("Argument or keyword argument '{}' not recognized. (Maybe the arguments are in the wrong order?)".format(\
+			raise Exception("Argument or keyword argument '{}' not recognized. (Maybe the arguments are in the wrong order?)".format(
 													_args_in[1][0]))
 		
 		#save parameters into self, preserving order
@@ -81,83 +85,97 @@ class ConsoleArguments:
 			else:
 				raise Exception("'getopt.getopt' returned an invalid argument-pair while parsing: {}. (This should not occur.)".format((arg, val)))
 	
-	def requires(self, options):
+	def requires(self, options : Union[int, str, List[str], Dict[str, str]]) -> Callable[..., Any]:
 		"""
-		Function decorator that only executions the function if the desired 'options' are detected using 'ConsoleArguments.__contains__(self, options)'.
+		Function decorator that only executes the function if the desired 'options' are detected using 'ConsoleArguments.__contains__(self, options)'.
 		"""
 		def __wrapper__(func):
-			def __subwrapper__(*args, **kwargs):
+			def __sub_wrapper__(*args, **kwargs):
 				if options in self:
 					return func(*args, **kwargs)
 				else:
 					return
-			return __subwrapper__
+			return __sub_wrapper__
 		return __wrapper__
 	
 	@property
-	def args(self):
+	def args(self) -> Tuple[str, str]:
+		"""
+		Returns all flags passed in sys.argv as iterator.
+		"""
 		for key in self._args.keys():
-			yield (key, self[key])
+			yield key, self[key]
 			
 	@property
-	def kwargs(self):
+	def kwargs(self) -> Tuple[str, str]:
+		"""
+		Returns all long flags passed in sys.argv as iterator.
+		"""
 		for key in self._kwargs.keys():
-			yield (key, self[key])
+			yield key, self[key]
 	
 	@property
-	def pars(self):
+	def pars(self) -> str:
+		"""
+		Returns all parameters passed in sys.argv as iterator.
+		"""
 		for par in self._pars:
 			yield par
 	
 	@property
-	def size(self):
+	def size(self) -> Dict[str, int]:
 		"""
 		Return either the amount of set args + keyword args, the amount of set args, the amount of set keyword args, the amount of required args,
 		or the amount of required and set args.
+		:return: a dictionary containing the keys held as constant static variables in the ConsoleArguments class
 		"""
-		result = {self.SET_TOTAL: len(self._args) + len(self._kwargs), \
-							self.SET_ARGS: len(self._args), \
-							self.SET_KWARGS: len(self._kwargs), \
-							self.SET_PARS: len(self._pars), \
-							self.REQUIRED: len([a for a in self.requires_arg.values() if a]), \
-							self.REQUIRED_AND_SET: len([a for a in self.requires_arg.items() if a[1] and a[0] in self])}
-		
-		#add aliases
-		result.update({ "assigned": result[self.SET_TOTAL], \
-										"arg": result[self.SET_ARGS], \
-										"kwarg": result[self.SET_KWARGS], \
-										"pars": result[self.SET_PARS], \
-										"req": result[self.REQUIRED], \
-										"required and assigned": result[self.REQUIRED_AND_SET], "req assigned": result[self.REQUIRED_AND_SET], "req set": result[self.REQUIRED_AND_SET]})
+		result = {self.SET_TOTAL       : len(self._args) + len(self._kwargs),
+				  self.SET_ARGS        : len(self._args),
+				  self.SET_KWARGS      : len(self._kwargs),
+				  self.SET_PARS        : len(self._pars),
+				  self.REQUIRED        : len([a for a in self.requires_arg.values() if a]),
+				  self.REQUIRED_AND_SET: len([a for a in self.requires_arg.items() if a[1] and a[0] in self])}
+
+		# add aliases
+		result.update({"assigned"             : result[self.SET_TOTAL],
+					   "arg"                  : result[self.SET_ARGS],
+					   "kwarg"                : result[self.SET_KWARGS],
+					   "pars"                 : result[self.SET_PARS],
+					   "req"                  : result[self.REQUIRED],
+					   "required and assigned": result[self.REQUIRED_AND_SET],
+					   "req assigned"         : result[self.REQUIRED_AND_SET],
+					   "req set"              : result[self.REQUIRED_AND_SET]})
 		return result
 	
-	def __contains__(self, options, all=True):
+	def __contains__(self, options : Union[int, str, List[str], Dict[str, str]], _all : bool=True) -> bool:
 		"""
 		Returns True if the options is found in args or kwargs.
 		'all' can be set to True for checking against all values of "type(options) == list/set" or to False for only checking if any match.
 		"""
-		isInt, isStr, isList, isDict = type(options) is int, type(options) is str, type(options) is list, type(options) is dict
-		if not (isInt or isStr or isList or isDict):
+		is_int, is_str, is_list, is_dict = type(options) is int, type(options) is str, type(options) is list, type(options) is dict
+		if not (is_int or is_str or is_list or is_dict):
 			raise TypeError("Illegal type '{}' for argument 'options' ('int', 'str', 'list' or 'dict' expected).".format(options.__class__.__name__))
+
+		intersection_min = 0
+		if not is_int:
+			intersection_min = int(_all) * (len(options) - 1) #type checking guarantees options has a length built-in method implemented
 		
-		if not isInt: intersection_min = int(all) * (len(options) - 1) #type checking guarantees options has a length dunder-method implemented
-		
-		if isInt:
-			return options >= 0 and options < len(self._pars)
-		elif isStr:
+		if is_int:
+			return 0 <= options < len(self._pars)
+		elif is_str:
 			return options in self._args.keys() or options in self._kwargs.keys() #check if key exists
-		elif isList:
+		elif is_list:
 			return len(set(options) & set(self._args.keys())) + len(set(options) & set(self._kwargs.keys())) + len(set(options) & set(range(len(self._pars)))) > intersection_min #check if all keys exist
-		elif isDict:
+		elif is_dict:
 			return len([None for b in options.items() if b in self._args.items() or b in self._kwargs.items() or b in [(i, par) for i, par in enumerate(self._pars)]]) > intersection_min #check if all keys exist and all values match
 	
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return "ConsoleArguments<(%s, %s)>" % ([a if b != ":" else a + ":" for a, b in zip(self._argnames, self._argnames[1:] + " ") if a != ":"], self._kwargnames)
 	
-	def __str__(self):
+	def __str__(self) -> str:
 		return "ConsoleArguments: (args: %s, kwargs: %s, pars: %s)" % (self._args, self._kwargs, self._pars)
 
-	def __getitem__(self, key):
+	def __getitem__(self, key : Union[int, str]) -> Union[bool, str, None]:
 		"""
 		Returns an argument/keyword argument if the supplied key is a 'str' object. If the supplied key is of type 'int', the
 		corresponding parameter is returned. If the key is not found, 'None' is returned.
@@ -174,17 +192,19 @@ class ConsoleArguments:
 			else:
 				return None
 		else: #must be int
-			if (key >= 0 and key < len(self._pars)) or (key < 0 and key >= - len(self._pars)):
+			if (0 <= key < len(self._pars)) or (0 > key >= - len(self._pars)):
 				return self._pars[key]
 			else:
 				return None
 		
-	def __iter__(self):
+	def __iter__(self) -> Tuple[Union[str, int], str]:
 		"""
 		Enumerate args, then kwargs, then pars (in the form '(#order, par value, )').
 		"""
 		#combine args and kwargs
 		for key in list(self._args.keys()) + list(self._kwargs.keys()) + list(range(len(self._pars))):
-			yield (key, self[key])
-	
+			yield key, self[key]
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

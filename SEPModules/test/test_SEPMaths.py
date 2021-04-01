@@ -2,22 +2,23 @@ import unittest
 
 from itertools import combinations
 import random
+from math import fmod
 
-from SEPModules.SEPMaths import isGroup, isAbelianGroup, Rational, findRationalApproximation, getPossibleRationals
+from SEPModules.SEPMaths import is_group, is_abelian_group, Rational, find_rational_approximation, get_possible_rationals
 from SEPModules.SEPDecorators import timed
 
-def test_performance_isGroup(n=4):
+def test_performance_is_group(n=4):
 	print("".rjust(20, "~"))
-	z0 = getPossibleRationals(set(range(-n, n+1)))
+	z0 = get_possible_rationals(set(range(-n, n + 1)))
 	print("(n={}) ".format(len(z0)), end="")
-	_isGroup = timed(isGroup)
+	_isGroup = timed(is_group)
 	print("Result: {}".format(_isGroup(z0, lambda a, b: a + b)))
 
-def test_performance_isAbelianGroup(n=4):
+def test_performance_is_abelian_group(n=4):
 	print("".rjust(20, "~"))
-	z0 = getPossibleRationals(set(range(-n, n+1)))
+	z0 = get_possible_rationals(set(range(-n, n + 1)))
 	print("(n={}) ".format(len(z0)), end="")
-	_isAbelianGroup = timed(isAbelianGroup)
+	_isAbelianGroup = timed(is_abelian_group)
 	print("Result: {}".format(_isAbelianGroup(z0, lambda a, b: a + b)))
 
 def test_performance_rational():
@@ -65,32 +66,32 @@ def test_performance_rational():
 	__test_performance_rational__(op=lambda a, b: a % b, 	op_int=lambda a, b: fmod(a, b))
 	print()
 	
-def test_performance_findRationalApproximation(n=100_000, precision=6):
-	print("{}\n(n={:_}, precision={}) ".format(str().rjust(20, "~"), n, precision), end="")
+def test_performance_find_rational_approximation(n=100_000, precision=6):
+	print("{}\n(n={:f_}, precision={}) ".format(str().rjust(20, "~"), n, precision), end="")
 
 	rands = [random.random() for _ in range(n)]
 
 	@timed
-	def __test_performance_findRationalApproximation__():
+	def __test_performance_find_rational_approximation__():
 		for k in rands:
-			findRationalApproximation(k, precision=precision, microIterations=32)
-	__test_performance_findRationalApproximation__()
+			find_rational_approximation(k, precision=precision, microIterations=32)
+	__test_performance_find_rational_approximation__()
 
 class TestRationalMethods(unittest.TestCase):
 	
 	def setUp(self):
 		self.zero 		= Rational(0, 1)
-		self.negzero 	= Rational(0, -1)
-		self.onethird = Rational(1, 3)
-		self.twofifth = Rational(2, 5)
+		self.neg_zero 	= Rational(0, -1)
+		self.one_third 	= Rational(1, 3)
+		self.two_fifth 	= Rational(2, 5)
 		
 		self.invalidCases = [(0, 0), (1, 0), (-1, 0), (0, -0), (-0, 0), (-0, -0)]
-		self.cases = {(0, 1): (0, 1), (1, 1): (1, 1), (2, 1): (2, 1), (-3, 1): (-3, 1), (0, 2): (0, 1), (-0, 3): (-0, 1), (1, 2): (1, 2), (2, -2): (-1, 1), \
-		(3, 2): (3, 2), (-0, -3): (0, 1), (1, 3): (1, 3), (2, 3): (2, 3), (-6, 3): (-2, 1), (2, 4): (1, 2), (6, -4): (-3, 2), (35, 45): (7, 9), \
+		self.cases = {(0, 1): (0, 1), (1, 1): (1, 1), (2, 1): (2, 1), (-3, 1): (-3, 1), (0, 2): (0, 1), (-0, 3): (-0, 1), (1, 2): (1, 2), (2, -2): (-1, 1),
+		(3, 2): (3, 2), (-0, -3): (0, 1), (1, 3): (1, 3), (2, 3): (2, 3), (-6, 3): (-2, 1), (2, 4): (1, 2), (6, -4): (-3, 2), (35, 45): (7, 9),
 		(-64, -16): (4, 1), (27, 33): (9, 11), (18, 108): (1, 6)}
 	
 	def tearDown(self):
-		del self.zero, self.negzero, self.onethird, self.twofifth, self.invalidCases, self.cases
+		del self.zero, self.neg_zero, self.one_third, self.two_fifth, self.invalidCases, self.cases
 	
 	def test_init_ValueError(self):
 		for el in self.invalidCases:
@@ -124,114 +125,88 @@ class TestRationalMethods(unittest.TestCase):
 				self.assertEqual(rat[0],   val[0])
 				self.assertEqual(rat[1],   val[1])
 	
-	def test_setitem_TypeError_IndexError(self):
-		with self.assertRaises(IndexError):
-			self.zero["2"]
-		with self.assertRaises(TypeError):
-			self.zero[[0, 1]]
-		with self.assertRaises(TypeError):
-			self.zero[0] = 3.3
-			
-	"""
-	Removed item setting from Rational.
-	"""
-	# def test_setitem_result(self):
-		# for key, val in self.cases.items():
-			# with self.subTest(key=key, index=int):
-				# rat = Rational()
-				# rat[0] = key[0]
-				# rat[1] = key[1]
-				# self.assertEqual(rat[0], val[0])
-				# self.assertEqual(rat[1], val[1])
-		# with self.subTest(key=key, index=str):
-				# rat = Rational()
-				# rat["a"] = key[0]
-				# rat["b"] = key[1]
-				# self.assertEqual(rat[0], val[0])
-				# self.assertEqual(rat[1], val[1])
-	
 	def test_hash_reflexive(self):
-		self.assertTrue(hash(self.onethird) == hash(self.onethird))
+		self.assertTrue(hash(self.one_third) == hash(self.one_third))
 		
 	def test_hash_representation(self):
 		for el in [(2, 6), (3, 9), (-3, -9)]:
 			with self.subTest(val=el):
-				self.assertTrue(hash(self.onethird) == hash(Rational(*el)))
+				self.assertTrue(hash(self.one_third) == hash(Rational(*el)))
 	
 	def test_eq_reflexive(self):
-		self.assertTrue(self.onethird == self.onethird)
+		self.assertTrue(self.one_third == self.one_third)
 	
 	def test_eq_representation(self):
 		for el in [(2, 6), (3, 9), (-3, -9)]:
 			with self.subTest(val=el):
-				self.assertTrue(self.onethird == Rational(*el))
+				self.assertTrue(self.one_third == Rational(*el))
 	
 	def test_neq_representation(self):
 		for el in [(3, 1), (2, -6), (-3, 9), (-3, 9), (1, 5), (0, 3), (0.5, 1)]:
 			with self.subTest(val=el):
-				self.assertTrue(self.onethird != Rational(*el))
+				self.assertTrue(self.one_third != Rational(*el))
 	
 	def test_lt_representation(self):
 		for el in [(3, 1), (2, 3), (-10, -29), (1, 2), (0.672, 1)]:
 			with self.subTest(val=el):
-				self.assertTrue(self.onethird < Rational(*el))
+				self.assertTrue(self.one_third < Rational(*el))
 	
 	def test_le_representation(self):
 		for el in [(3, 1), (2, 3), (-10, -29), (1, 2), (0.672, 1), (1, 3), (-2, -6)]:
 			with self.subTest(val=el):
-				self.assertTrue(self.onethird <= Rational(*el))
+				self.assertTrue(self.one_third <= Rational(*el))
 				
 	def test_add(self):
 		#((a, b), (c, d))  -->  (1, 3) + (a, b) = (c, d)
 		for el in [((2, 3), (1, 1)), ((-2, 3), (-1, 3)), ((7, 9), (10, 9))]:
 			with self.subTest(val=el):
-				self.assertEqual(self.onethird + Rational(*el[0]), Rational(*el[1]))
+				self.assertEqual(self.one_third + Rational(*el[0]), Rational(*el[1]))
 				
 	def test_sub(self):
 		#((a, b), (c, d))  -->  (1, 3) - (a, b) = (c, d)
 		for el in [((2, 3), (-1, 3)), ((-2, 3), (1, 1)), ((7, 9), (-4, 9))]:
 			with self.subTest(val=el):
-				self.assertEqual(self.onethird - Rational(*el[0]), Rational(*el[1]))
+				self.assertEqual(self.one_third - Rational(*el[0]), Rational(*el[1]))
 				
 	def test_mul(self):
 		#((a, b), (c, d))  -->  (1, 3) * (a, b) = (c, d)
 		for el in [((2, 3), (2, 9)), ((-2, 3), (-2, 9)), ((5, 7), (5, 21))]:
 			with self.subTest(val=el):
-				self.assertEqual(self.onethird * Rational(*el[0]), Rational(*el[1]))
+				self.assertEqual(self.one_third * Rational(*el[0]), Rational(*el[1]))
 				
 	def test_truediv(self):
 		#((a, b), (c, d))  -->  (1, 3) * (a, b) = (c, d)
 		for el in [((2, 3), (3, 6)), ((-2, 3), (-3, 6)), ((5, 7), (7, 15))]:
 			with self.subTest(val=el):
-				self.assertEqual(self.onethird / Rational(*el[0]), Rational(*el[1]))
+				self.assertEqual(self.one_third / Rational(*el[0]), Rational(*el[1]))
 				
 	def test_pow(self):
 		#(a, (b, c))  -->  (1, 3) ** a = (b, c)
 		for el in [(2, (1, 9)), (-1, (3, 1)), (0, (1, 1))]:
 			with self.subTest(val=el):
-				self.assertEqual(self.onethird ** el[0], Rational(*el[1]))
+				self.assertEqual(self.one_third ** el[0], Rational(*el[1]))
 				
 	def test_mod(self):
 		#((a, b), (c, d))  -->  (1, 3) mod (a, b) = (c, d)
 		for el in [((2, 3), (1, 3)), ((-2, 3), (-1, 3)), ((1, 6), (0, 1))]:
 			with self.subTest(val=el):
-				self.assertEqual(self.onethird % Rational(*el[0]), Rational(*el[1]))
+				self.assertEqual(self.one_third % Rational(*el[0]), Rational(*el[1]))
 				
 	def test_and(self):
 		#((a, b), (c, d))  -->  (1, 3) & (a, b) = (c, d)
 		for el in [((2, 3), (3, 6)), ((7, 15), (8, 18))]:
 			with self.subTest(val=el):
-				self.assertEqual(self.onethird & Rational(*el[0]), Rational(*el[1]))
+				self.assertEqual(self.one_third & Rational(*el[0]), Rational(*el[1]))
 				
 	def test_and_ValueError(self):
-		#(a, b)  -->  (1, 3) & (a, b)
+		# (a, b)  -->  (1, 3) & (a, b)
 		for el in [(17, -23), (18, -20)]:
 			with self.subTest(val=el):
 				with self.assertRaises(ValueError):
-					self.onethird & Rational(*el)
+					self.one_third & Rational(*el)
 					
 	def test_neg(self):
-		#(a, b)  -->  -(a, b)
+		# (a, b)  -->  -(a, b)
 		for el in [((2, 3), (-2, 3)), ((3, 6), (-3, 6)), ((-7, 15), (7, 15)), ((-8, -18), (-8, 18))]:
 			with self.subTest(val=el):
 				self.assertEqual(-Rational(*el[0]), Rational(*el[1]))
@@ -241,40 +216,40 @@ class TestRationalMethods(unittest.TestCase):
 		for precision in range(14 + 1):
 			for rand in _set:
 				with self.subTest(value=rand, precision=precision):
-					self.assertAlmostEqual(rand, float(findRationalApproximation(rand, precision=precision, microIterations=32)), precision - 1)
+					self.assertAlmostEqual(rand, float(find_rational_approximation(rand, precision=precision)), precision - 1)
 
 class TestGroupMethods(unittest.TestCase):
 	
 	def test_isGroup_isAbelianGroup_TypeError_ValueError(self):
 		with self.assertRaises(TypeError):
-			isGroup(False, lambda a, b: 0)
+			is_group(False, lambda a, b: 0)
 
 		with self.subTest(type="wrong type"):
 			with self.assertRaises(TypeError):
-				isGroup([0,1,2], 5)
+				is_group([0, 1, 2], 5)
 		with self.subTest(type="wrong argument count"):
 			with self.assertRaises(TypeError):
-				isGroup({0,1,2,3}, lambda a, b, c: a + b + c)
+				is_group({0, 1, 2, 3}, lambda a, b, c: a + b + c)
 
 		with self.assertRaises(TypeError):
-			isGroup([0], lambda a, b: a + b, tolerance=None)	
+			is_group([0], lambda a, b: a + b, tolerance=None)
 
 		with self.subTest(type="too high"):
 			with self.assertRaises(ValueError):
-				isGroup([0], lambda a, b: a + b, tolerance=11)
+				is_group([0], lambda a, b: a + b, tolerance=11)
 		with self.subTest(type="too low"):
 			with self.assertRaises(ValueError):
-				isGroup([0], lambda a, b: a + b, tolerance=-1)
+				is_group([0], lambda a, b: a + b, tolerance=-1)
 		
 	def test_isGroup_result(self):
 		with self.subTest(type="integer addition"):
-			self.assertTrue(isGroup([-4,-3,-2,-1,0,1,2,3,4], lambda a, b: a + b))
+			self.assertTrue(is_group([-4, -3, -2, -1, 0, 1, 2, 3, 4], lambda a, b: a + b))
 		
 		with self.subTest(type="integer addition w/o negatives"):
-			self.assertFalse(isGroup([0,1,2,3,4], lambda a, b: a + b))
+			self.assertFalse(is_group([0, 1, 2, 3, 4], lambda a, b: a + b))
 		
 		with self.subTest(type="rational multiplication "):
-			self.assertTrue(isGroup([Rational(-2),Rational(-1),Rational(-1, 2),Rational(1, 2),Rational(1),Rational(2)], lambda a, b: a * b))
+			self.assertTrue(is_group([Rational(-2), Rational(-1), Rational(-1, 2), Rational(1, 2), Rational(1), Rational(2)], lambda a, b: a * b))
 			
 		with self.subTest(type="string capitalization"):
 			def _string_cap(a, b):
@@ -288,7 +263,7 @@ class TestGroupMethods(unittest.TestCase):
 				if not [None for char in res if char.islower()]: return ""
 				return str().join(res)
 				
-			self.assertTrue(isGroup(["a", "b", "c", "ab", "ac", "bc", ""], _string_cap))
+			self.assertTrue(is_group(["a", "b", "c", "ab", "ac", "bc", ""], _string_cap))
 			
 		with self.subTest(type="lookup table"):
 			"""
@@ -298,14 +273,14 @@ class TestGroupMethods(unittest.TestCase):
 				dict = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 0, (1, 1): 0, (1, 2): 2, (2, 0): 0, (2, 1): 2, (2, 2): 1}
 				return dict[(a, b)]
 			
-			self.assertTrue(isGroup([0,1,2], _table_lookup))
+			self.assertTrue(is_group([0, 1, 2], _table_lookup))
 			
 	def test_isAbelianGroup_result(self):
 		with self.subTest(type="integer addition"):
-			self.assertTrue(isAbelianGroup([-4,-3,-2,-1,0,1,2,3,4], lambda a, b: a + b))
+			self.assertTrue(is_abelian_group([-4, -3, -2, -1, 0, 1, 2, 3, 4], lambda a, b: a + b))
 		
 		with self.subTest(type="integer addition w/o negatives"):
-			self.assertFalse(isAbelianGroup([0,1,2,3,4], lambda a, b: a + b))
+			self.assertFalse(is_abelian_group([0, 1, 2, 3, 4], lambda a, b: a + b))
 			
 		with self.subTest(type="lookup table"):
 			"""
@@ -315,13 +290,13 @@ class TestGroupMethods(unittest.TestCase):
 				dict = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 0, (1, 1): 0, (1, 2): 2, (2, 0): 0, (2, 1): 2, (2, 2): 1}
 				return dict[(a, b)]
 			
-			self.assertFalse(isAbelianGroup([0,1,2], _table_lookup))
+			self.assertFalse(is_abelian_group([0, 1, 2], _table_lookup))
 
 if __name__ == "__main__":
 	test_performance_rational()
-	test_performance_isGroup()
-	test_performance_isAbelianGroup()
-	test_performance_findRationalApproximation()
+	test_performance_is_group()
+	test_performance_is_abelian_group()
+	test_performance_find_rational_approximation()
 
 	unittest.main()
 	
