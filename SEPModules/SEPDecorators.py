@@ -1,6 +1,7 @@
 """
 Author: Marcel Simader
-Data: 01.04.2021
+
+Date: 01.04.2021
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -8,11 +9,11 @@ Data: 01.04.2021
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 import time
-from typing import Callable, Dict, Union, Any
+from typing import Callable, Dict, Union, Any, Final
 
 from SEPModules.SEPPrinting import cl_p, get_time_str, NAME
 
-WRAPPER_NAME = "wrapped_"
+__WRAPPER_NAME__ : Final = "wrapped_"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
@@ -24,7 +25,8 @@ WRAPPER_NAME = "wrapped_"
 
 def timed_return(func : Callable) -> Callable:
 	"""
-	Same functionality as SEPTiming.timed decorator but does not print automatically
+	Same functionality as :decorator:`SEPTiming.timed` decorator but does not print automatically.
+
 	:returns: the time and return-value as dictionary.
 	"""
 	def __wrapper__(*args, **kwargs) -> Dict[str, Union[Any, int]]:
@@ -34,12 +36,13 @@ def timed_return(func : Callable) -> Callable:
 
 		return {"return": r, "time": t_time}
 	
-	__wrapper__.__name__ = "{}timedReturn_{}".format(WRAPPER_NAME, func.__name__)
+	__wrapper__.__name__ = "{}timedReturn_{}".format(__WRAPPER_NAME__, func.__name__)
 	return __wrapper__
 
 def timed(func : Callable) -> Callable:
 	"""
 	Times the decorated function and prints the amount of time it took to execute.
+
 	:returns: the return-value of provided function.
 	"""
 	def __wrapper__(*args, **kwargs):
@@ -48,7 +51,7 @@ def timed(func : Callable) -> Callable:
 		print("{} took {} to execute.".format(cl_p(func.__name__, NAME), cl_p(get_time_str(r["time"]))))
 		return r["return"]
 	
-	__wrapper__.__name__ = "{}timed_{}".format(WRAPPER_NAME, func.__name__)
+	__wrapper__.__name__ = "{}timed_{}".format(__WRAPPER_NAME__, func.__name__)
 	return __wrapper__
 
 def check_type():

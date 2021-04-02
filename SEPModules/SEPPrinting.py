@@ -1,6 +1,7 @@
 """
 Author: Marcel Simader
-Data: 01.04.2021
+
+Date: 01.04.2021
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -8,7 +9,7 @@ Data: 01.04.2021
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 from numbers import Real
-from typing import Any, Collection, Tuple, Callable, Union
+from typing import Any, Collection, Tuple, Callable, Union, Final, Literal
 
 from colorama import Fore, Style, Cursor, init as cl_init
 import math
@@ -20,26 +21,37 @@ __PRINT_COLORS__ = True
 # initialize colorama and set up constants
 cl_init()
 
-SUPPRESS = Style.DIM
-ERROR = Fore.RED
-LIGHT_ERROR = (Fore.RED, Style.BRIGHT)
-WARNING = Fore.YELLOW
-NUMBER = Style.BRIGHT
-NAME = (Fore.CYAN,)
+SUPPRESS : Final = Style.DIM
+ERROR : Final = Fore.RED
+LIGHT_ERROR : Final = (Fore.RED, Style.BRIGHT)
+WARNING : Final = Fore.YELLOW
+NUMBER : Final = Style.BRIGHT
+NAME : Final = (Fore.CYAN,)
 
-RED, GREEN, BLUE, YELLOW = (Fore.RED,), (Fore.GREEN,), (Fore.BLUE,), (Fore.YELLOW,)
-CYAN, MAGENTA = (Fore.CYAN,), (Fore.MAGENTA,)
-WHITE, BLACK = (Fore.WHITE,), (Fore.BLACK,)
+RED : Final = (Fore.RED,)
+GREEN : Final = (Fore.GREEN,)
+BLUE : Final = (Fore.BLUE,)
+YELLOW : Final = (Fore.YELLOW,)
+CYAN : Final = (Fore.CYAN,)
+MAGENTA : Final = (Fore.MAGENTA,)
+WHITE : Final = (Fore.WHITE,)
+BLACK : Final = (Fore.BLACK,)
 
-BRIGHT, DIM, NORMAL = (Style.BRIGHT,), (Style.DIM,), (Style.NORMAL,)
+BRIGHT : Final = (Style.BRIGHT,)
+DIM : Final = (Style.DIM,)
+NORMAL :Final = (Style.NORMAL,)
 
-POS = lambda x=0, y=0: Cursor.POS(x, y)
-REL_POS = lambda x=0, y=0: (Cursor.FORWARD(x) if x >= 0 else Cursor.BACK(-x)) + (
-	Cursor.DOWN(y) if y >= 0 else Cursor.UP(-y))
-SAVE_POS, LOAD_POS = "\033[s", "\033[u"
-UP, DOWN, FORWARD, BACK = Cursor.UP, Cursor.DOWN, Cursor.FORWARD, Cursor.BACK
+POS : Final = lambda x=0, y=0: Cursor.POS(x, y)
+REL_POS : Final = lambda x=0, y=0: (Cursor.FORWARD(x) if x >= 0 else Cursor.BACK(-x)) + (Cursor.DOWN(y) if y >= 0 else Cursor.UP(-y))
+SAVE_POS : Final = "\033[s"
+LOAD_POS : Final =  "\033[u"
 
-RESET_ALL = (Style.RESET_ALL,)
+UP : Final = Cursor.UP
+DOWN : Final = Cursor.DOWN
+FORWARD : Final =  Cursor.FORWARD
+BACK : Final = Cursor.BACK
+
+RESET_ALL : Final = (Style.RESET_ALL,)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
@@ -55,26 +67,26 @@ class FILL_CHARACTERS:
 	#
 	BD: |||-|| `+# ||||
 	"""
-	MINIMAL = ({(" ", " "): 0, ("#", "#"): 1},
-			   ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
+	MINIMAL : Final = ({(" ", " "): 0, ("#", "#"): 1},
+			   		   ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
 
 	"""
 	_.:+I#
 	‾˙:+I#
 	BD: |||-|| `+# ||||
 	"""
-	SIMPLE = ({(" ", " "): 0, ("_", "‾"): 0.05, (".", "˙"): 0.1, (":", ":"): 0.3,
+	SIMPLE : Final = ({(" ", " "): 0, ("_", "‾"): 0.05, (".", "˙"): 0.1, (":", ":"): 0.3,
 			   ("+", "+"): 0.5, ("I", "I"): 0.7, ("#", "#"): 1},
-			  ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
+			  		  ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
 
 	"""
 	_˷,ᵦı:+Ii⌠ʬ
 	‾˜ ˟ᴵᵝ˸+!I⌡ʬ
 	BD: │├┝╌┤┥ ░▒▓ ┐┘┌└
 	"""
-	CONSOLAS_MANUAL = ({(" ", " "): 0, ("_", "‾"): 0.02, ("˷", "͂"): 0.1, (",", "˟"): 0.25, ("ᵦ", "ᴵ"): 0.3,
+	CONSOLAS_MANUAL : Final = ({(" ", " "): 0, ("_", "‾"): 0.02, ("˷", "͂"): 0.1, (",", "˟"): 0.25, ("ᵦ", "ᴵ"): 0.3,
 						("ı", "ᵝ"): 0.4, (":", "˸"): 0.55, ("I", "!"): 0.70, ("⌠", "⌡"): 0.85, ("ʬ", "ʬ"): 1},
-					   ('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
+					   		   ('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
 
 	"""
 	Auto generated console_graph fill character set by console_glyph_gen.py from 'font/ConsolasMono-Regular.ttf'.
@@ -83,8 +95,7 @@ class FILL_CHARACTERS:
 	BD: │├┝╌┤┥ ░▒▓ ┐┘┌└
 	Error: 184.775
 	"""
-	CONSOLAS = (
-	{('̱', '̅'): 0.07, ('̫', '͆'): 0.13, ('ꞈ', '҇'): 0.14, ('¸', 'ᵔ'): 0.17, ('.', '҅'): 0.18, ('̡', '˺'): 0.21,
+	CONSOLAS : Final = ({('̱', '̅'): 0.07, ('̫', '͆'): 0.13, ('ꞈ', '҇'): 0.14, ('¸', 'ᵔ'): 0.17, ('.', '҅'): 0.18, ('̡', '˺'): 0.21,
 	 ('₌', '⁼'): 0.27, ('ᴗ', '™'): 0.29, ('ᵥ', 'ᵓ'): 0.34, ('ᵣ', 'ᵓ'): 0.35, (',', 'ˤ'): 0.36, ('₊', 'ᶝ'): 0.39,
 	 ('₄', 'ꜟ'): 0.43, ('₅', 'ᶾ'): 0.44, ('₀', 'ᶾ'): 0.45, ('˪', 'ᶮ'): 0.48, ('ᵢ', 'ᶮ'): 0.49, ('□', 'º'): 0.52,
 	 ('ː', 'º'): 0.53, ('v', 'ᴃ'): 0.55, ('m', 'о'): 0.57, ('ϖ', '⃝'): 0.6, ('⃝', '⑥'): 0.61, ('<', '⑥'): 0.62,
@@ -94,7 +105,7 @@ class FILL_CHARACTERS:
 	 ('Ⱥ', 'Ṳ'): 0.88, ('ѽ', 'Ṳ'): 0.89, ('ǡ', 'Ӆ'): 0.9, ('ƒ', 'Ƒ'): 0.91, ('ẗ', 'Ԛ'): 0.92, ('Ğ', 'Ṃ'): 0.93,
 	 ('ĥ', 'Ṃ'): 0.94, ('$', 'Ϛ'): 0.96, ('Ů', 'ᾷ'): 0.97, ('ẳ', 'Ẕ'): 0.98, ('ḟ', 'Ẕ'): 0.99, (' ', ' '): 0.0,
 	 ('ʬ', 'ʬ'): 1.0},
-	('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
+						('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
 
 	"""
 	Auto generated console_graph fill character set by console_glyph_gen.py from 'font/CascadiaMono-Regular.ttf'.
@@ -103,15 +114,14 @@ class FILL_CHARACTERS:
 	BD: │├┝╌┤┥ ░▒▓ ┐┘┌└
 	Error: 114.783
 	"""
-	CASCADIA_MONO = (
-	{('.', '⠒'): 0.15, ('⠄', '⠒'): 0.16, ('◞', '◠'): 0.27, ('◛', '▬'): 0.31, ('₄', '▬'): 0.32, ('₁', '═'): 0.33,
+	CASCADIA_MONO : Final = ({('.', '⠒'): 0.15, ('⠄', '⠒'): 0.16, ('◞', '◠'): 0.27, ('◛', '▬'): 0.31, ('₄', '▬'): 0.32, ('₁', '═'): 0.33,
 	 ('⠆', '⠢'): 0.38, ('◻', '⬧'): 0.47, ('▸', '◂'): 0.49, ('≡', '≡'): 0.5, ('<', '×'): 0.52, ('▲', '▲'): 0.53,
 	 ('+', '◓'): 0.54, ('■', '◓'): 0.55, ('я', 'π'): 0.56, ('≣', 'π'): 0.57, ('¤', '⬠'): 0.59, ('†', '⡰'): 0.61,
 	 ('℮', '⬛'): 0.62, ('♠', '♣'): 0.63, ('♦', '❧'): 0.66, ('ґ', 'ҷ'): 0.69, ('ơ', 'ơ'): 0.71, ('©', 't'): 0.73,
 	 ('ī', '¡'): 0.75, ('ā', '¡'): 0.76, ('ϗ', 'ų'): 0.77, ('h', 'ų'): 0.78, ('ï', 'χ'): 0.79, ('ß', 'g'): 0.81,
 	 ('ả', '¢'): 0.89, ('┆', '¢'): 0.9, ('ǿ', 'ợ'): 0.92, ('/', '┮'): 0.94, ('À', '▆'): 0.96, ('Ö', 'ț'): 0.97,
 	 ('Å', '╔'): 0.99, (' ', ' '): 0.0, ('◈', '◈'): 1.0},
-	('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
+							('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
@@ -132,6 +142,8 @@ def cl_p(s : Any, *styles : Tuple[str, ...], boolean : bool=False) -> str:
 	:param boolean: flag that automatically formats a boolean input as green or red string
 
 	:returns: styled string with auto-cast input s, which can be of any type
+
+	:raises TypeError:
 	"""
 	if not __PRINT_COLORS__: return s
 
@@ -148,7 +160,7 @@ def cl_p(s : Any, *styles : Tuple[str, ...], boolean : bool=False) -> str:
 
 	return "{}{}{}".format(str().join(styles), s, RESET_ALL)
 
-def get_time_str(secs : Real, force_unit : str=None):
+def get_time_str(secs : Real, force_unit : Literal["ns","µs","ms","s","m","h"]=None):
 	"""
 	Helper function to format durations.
 
@@ -156,6 +168,10 @@ def get_time_str(secs : Real, force_unit : str=None):
 	:param force_unit: can be str of value "ns/µs/ms/s/m/h" to force a specific unit to display
 
 	:returns: Formatted string with adequate units.
+
+	:raises TypeError:
+	:raises ValueError: if secs is negative
+	:raises ValueError: if type of force_unit is not one of the specified literals
 	"""
 	# input sanitation
 	if not type(secs) in (float, int):
@@ -198,8 +214,10 @@ def get_time_str(secs : Real, force_unit : str=None):
 
 def get_appropriate_time_unit(secs : Real) -> str:
 	"""
+	Turns a second value into a string of the appropriate unit (compatible with ``SEPPrinting.get_time_str``).
+
 	:param secs: seconds as integer or float
-	:return: the unit-string compatible with get_time_str determining the most appropriate unit for this seconds count
+	:return: the unit-string determining the most appropriate unit for this seconds count
 	"""
 	if secs <= 0.0000001:
 		return "ns"
@@ -238,7 +256,30 @@ def console_graph(data : Collection,
 				  use_middle_for_unit_position : bool=False,
 				  relative_cursor_position : bool=False,
 				  debug : bool=True) -> str:
+	"""
+	TODO: write docstring for this monstrosity
 
+	:param data:
+	:param max_height:
+	:param max_width:
+	:param offset:
+	:param center:
+	:param show_scale:
+	:param scale_spacing:
+	:param rounding:
+	:param scale_in_front:
+	:param fill_characters:
+	:param color_function:
+	:param bg_color:
+	:param use_full_width:
+	:param append_zero_value:
+	:param zero_value:
+	:param unit_format_function:
+	:param use_middle_for_unit_position:
+	:param relative_cursor_position:
+	:param debug:
+	:return:
+	"""
 	# ++++sort fillCharacters by descending value and grab 0 values for quicker access++++
 	_sorted_characters = sorted(fill_characters[0].items(), key=lambda item: item[1], reverse=True)
 	zero_chars = _sorted_characters[-1][0]  # get last entry key tuple after sorting, so should be key tuple where val is 0
@@ -532,3 +573,8 @@ def console_graph(data : Collection,
 		   str().join([(str().join([col[row] for col in cells]) + new_line)
 					   for row in range(graph_struct_height - 1, -1, -1)]) \
 		   + empty_line * center[3]
+
+def console_progress_bar(length : Real,
+						 position : Real,
+						 ) -> str:
+	pass
