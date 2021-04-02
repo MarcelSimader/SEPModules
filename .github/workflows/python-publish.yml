@@ -4,13 +4,11 @@
 name: Upload Python Package to PYPI
 
 on:
-  push:
-    branches:
-    - main
+  release:
+    type: [prereleased, released]
     
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
 
     steps:
