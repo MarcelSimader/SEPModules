@@ -1,13 +1,14 @@
 """
 Author: Marcel Simader
-Data: 01.04.2021
+
+Date: 01.04.2021
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ IMPORTS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-from typing import List, Callable, Any, Dict, Union, Tuple
+from typing import List, Callable, Any, Dict, Union, Tuple, Final
 
 import sys
 from getopt import getopt
@@ -17,22 +18,33 @@ from getopt import getopt
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class ConsoleArguments:
-	
+	"""
+	A console arguments manager that holds information and offers API functionality regarding the console options and flags
+	passed into the program. It immediately tries to read from sys.argv if the no_load option is not set upon creation.
+	"""
+
 	#constants
-	SET_TOTAL        = "set"
-	SET_ARGS         = "args"
-	SET_KWARGS       = "kwargs"
-	SET_PARS         = "parameters"
-	REQUIRED         = "required"
-	REQUIRED_AND_SET = "required and set"
+	SET_TOTAL : Final		 = "set"
+	SET_ARGS : Final         = "args"
+	SET_KWARGS : Final       = "kwargs"
+	SET_PARS : Final         = "parameters"
+	REQUIRED : Final         = "required"
+	REQUIRED_AND_SET : Final = "required and set"
 
 	def __init__(self, argnames : List[str], kwargnames : List[str], no_load : bool=False):
 		"""
-		A console arguments manager that holds information and offers API functionality regarding the console options and flags passed into the program. It immediately tries to read from sys.argv if the no_load option is not set upon creation.
+		A console arguments manager that holds information and offers API functionality regarding the console options and
+		flags passed into the program. It immediately tries to read from sys.argv if the no_load option is not set upon creation.
 
-		:param argnames: a list of single-letter strings defining the options, adding ':' to the end of a letter indicates that a value must be passed to this flag
-		:param kwargnames: a list of multi-letter string defining long options, adding '=' to the end of a string indicates that a value must be passed to this flag
-		:param no_load: prohibit the console manager from automatically reading sys.argv upon creation of the console arguments manager object
+		:param argnames: a list of single-letter strings defining the options, adding ':'
+						 to the end of a letter indicates that a value must be passed to this flag
+		:param kwargnames: a list of multi-letter string defining long options, adding '='
+						   to the end of a string indicates that a value must be passed to this flag
+		:param no_load: prohibit the console manager from automatically reading sys.argv upon creation
+					    of the console arguments manager object
+
+		:raises TypeError:
+		:raises ValueError: if any option or long option share the same name
 		"""
 		#check if arg-names and kwarg-names are of type list
 		if not (type(argnames) is list and type(kwargnames) is list):
@@ -87,7 +99,8 @@ class ConsoleArguments:
 	
 	def requires(self, options : Union[int, str, List[str], Dict[str, str]]) -> Callable[..., Any]:
 		"""
-		Function decorator that only executes the function if the desired 'options' are detected using 'ConsoleArguments.__contains__(self, options)'.
+		Function decorator that only executes the function if the desired options are detected using the same mechanism
+		by which :function:`ConsoleArguments.__contains__(self, options)` operates.
 		"""
 		def __wrapper__(func):
 			def __sub_wrapper__(*args, **kwargs):
@@ -100,41 +113,41 @@ class ConsoleArguments:
 	
 	@property
 	def args(self) -> Tuple[str, str]:
-		"""
-		Returns all flags passed in sys.argv as iterator.
-		"""
+		"""Returns all flags passed in sys.argv as iterator."""
 		for key in self._args.keys():
 			yield key, self[key]
 			
 	@property
 	def kwargs(self) -> Tuple[str, str]:
-		"""
-		Returns all long flags passed in sys.argv as iterator.
-		"""
+		"""Returns all long flags passed in sys.argv as iterator."""
 		for key in self._kwargs.keys():
 			yield key, self[key]
 	
 	@property
 	def pars(self) -> str:
-		"""
-		Returns all parameters passed in sys.argv as iterator.
-		"""
+		"""Returns all parameters passed in sys.argv as iterator."""
 		for par in self._pars:
 			yield par
 	
 	@property
 	def size(self) -> Dict[str, int]:
 		"""
-		Return either the amount of set args + keyword args, the amount of set args, the amount of set keyword args, the amount of required args,
-		or the amount of required and set args.
+		Return either:
+			* the amount of set args + keyword args (``self.SET_TOTAL``),
+			* the amount of set args (``self.SET_ARGS``),
+			* the amount of set keyword args (``self.SET_KWARGS``),
+			* the amount of set parameters (``self.SET_PARS``),
+			* the amount of required args (``self.REQUIRED``),
+			* the amount of required and set args (``self.REQUIRED_AND_SET``).
+
 		:return: a dictionary containing the keys held as constant static variables in the ConsoleArguments class
 		"""
-		result = {self.SET_TOTAL       : len(self._args) + len(self._kwargs),
-				  self.SET_ARGS        : len(self._args),
-				  self.SET_KWARGS      : len(self._kwargs),
-				  self.SET_PARS        : len(self._pars),
-				  self.REQUIRED        : len([a for a in self.requires_arg.values() if a]),
-				  self.REQUIRED_AND_SET: len([a for a in self.requires_arg.items() if a[1] and a[0] in self])}
+		result : Dict[str, int] = {self.SET_TOTAL       : len(self._args) + len(self._kwargs),
+				  				   self.SET_ARGS        : len(self._args),
+				  				   self.SET_KWARGS      : len(self._kwargs),
+				  				   self.SET_PARS        : len(self._pars),
+				  				   self.REQUIRED        : len([a for a in self.requires_arg.values() if a]),
+				  				   self.REQUIRED_AND_SET: len([a for a in self.requires_arg.items() if a[1] and a[0] in self])}
 
 		# add aliases
 		result.update({"assigned"             : result[self.SET_TOTAL],
@@ -150,7 +163,8 @@ class ConsoleArguments:
 	def __contains__(self, options : Union[int, str, List[str], Dict[str, str]], _all : bool=True) -> bool:
 		"""
 		Returns True if the options is found in args or kwargs.
-		'all' can be set to True for checking against all values of "type(options) == list/set" or to False for only checking if any match.
+
+		:param _all: can be set to True for checking against all values of `type(options) == list/set` or to False for only checking if any match.
 		"""
 		is_int, is_str, is_list, is_dict = type(options) is int, type(options) is str, type(options) is list, type(options) is dict
 		if not (is_int or is_str or is_list or is_dict):
@@ -179,6 +193,8 @@ class ConsoleArguments:
 		"""
 		Returns an argument/keyword argument if the supplied key is a 'str' object. If the supplied key is of type 'int', the
 		corresponding parameter is returned. If the key is not found, 'None' is returned.
+
+		:raises TypeError:
 		"""
 		#check type
 		if not (type(key) is str or type(key) is int):

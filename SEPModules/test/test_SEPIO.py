@@ -88,4 +88,4 @@ class TestConsoleArgumentsMethods(unittest.TestCase):
 				self.assertEqual(item, (item[0], self.CAM[item[0]]))
 	
 if __name__ == "__main__":
-	unittest.main()
+	pass
