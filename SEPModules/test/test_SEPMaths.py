@@ -297,6 +297,4 @@ if __name__ == "__main__":
 	test_performance_is_group()
 	test_performance_is_abelian_group()
 	test_performance_find_rational_approximation()
-
-	unittest.main()
 	

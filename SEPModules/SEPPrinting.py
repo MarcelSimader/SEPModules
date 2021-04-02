@@ -9,7 +9,7 @@ Date: 01.04.2021
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 from numbers import Real
-from typing import Any, Collection, Tuple, Callable, Union, Final, Literal
+from typing import Any, Collection, Tuple, Callable, Union, Final, Literal, Dict
 
 from colorama import Fore, Style, Cursor, init as cl_init
 import math
@@ -574,7 +574,55 @@ def console_graph(data : Collection,
 					   for row in range(graph_struct_height - 1, -1, -1)]) \
 		   + empty_line * center[3]
 
-def console_progress_bar(length : Real,
-						 position : Real,
-						 ) -> str:
-	pass
+def console_progress_bar(position : Real,
+						 max_position : Real,
+						 length : Real,
+						 center : Tuple[int, int, int, int]=(3, 0, 0, 0),
+						 progress_characters : Dict[float, str]={1: "█", 0.875: "▉", 0.75: "▊", 0.625: "▋", 0.5: "▌", 0.375: "▍", 0.25: "▎", 0.125: "▏"},
+						 end_characters : Tuple[str, str]=("|", "|"),
+						 auto_round : bool=True) -> str:
+	"""
+	TODO: expand this rudimentary implementation and finish docstring.
+
+	:param position:
+	:param max_position:
+	:param length:
+	:param center:
+	:param progress_characters:
+	:param end_characters:
+	:param auto_round:
+	:return:
+	"""
+
+	total_bar_length = length - 2 # -2 for start and end bar
+	normalized_pos = position / max_position
+
+	# fill progress bar up to position with chars in progress_characters
+	char_pos = normalized_pos * total_bar_length
+	if auto_round:
+		digits_min_char = abs(round(math.log10(min(progress_characters.keys()))))
+		char_pos = round(char_pos, digits_min_char)
+
+	char_list = list()
+
+	# append full chars
+	char_list.extend((progress_characters[1],) * int(char_pos))
+
+	# append partial char
+	for val, char in progress_characters.items():
+		if val <= char_pos % 1:
+			char_list.append(char)
+			break
+
+	# fill in the rest
+	while len(char_list) < total_bar_length:
+		char_list.append(" ")
+
+	return "{top}{left}{e_left}{bar}{e_right}{right}{bottom}".format(
+			left	=" " * center[0],
+			right	=" " * center[1],
+			top		="\n" * center[2],
+			bottom	="\n" * center[3],
+			e_left	=end_characters[0],
+			e_right	=end_characters[1],
+			bar		=str().join(char_list))
