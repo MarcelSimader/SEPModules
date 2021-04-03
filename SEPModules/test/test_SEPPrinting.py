@@ -70,21 +70,41 @@ def test_console_graph_demo(debug=True):
 		elif i % _temp_rows == _temp_rows - 1:
 			print(REL_POS(demo2_width + demo2_center[0], -(demo2_height + demo2_center[3]) * _temp_rows), end="", flush=True)
 
-def test_console_progress_bar_demo():
+def test_console_progress_bar_demo(debug=True,
+								   step_time_per_s=100,
+								   step_size=lambda x: (x + 0.1 * max(0.1, (1 / (x + 1)))) if x < 5 else x * 1.005):
 
-	def __progress_bar_update__():
-		position = 0
-		while position <= 10:
-			print(console_progress_bar(position, 10, length=32), end="\r")
+	def __progress_bar_update__(position=0, last_position=0, max_pos=10, bar_pos=(0, 0), bar_width=32, offset_height=1):
+		print(REL_POS(*bar_pos), end="")
 
-			position = position + 0.1
-			time.sleep(0.1)
+		print(console_progress_bar(position,
+								   max_pos,
+								   length=bar_width,
+								   rate_of_change="{:.2f}/s".format((position - last_position) / (1 / step_time_per_s)),
+								   center=(3, 3, offset_height, offset_height),
+								   show_text=True,
+								   relative_cursor_position=True,
+								   debug=debug), end="")
 
-	t = Thread(target=__progress_bar_update__)
-	t.daemon = True
-	t.start()
+		print(REL_POS(-bar_pos[0], -(1 + 2 * offset_height + bar_pos[1])), end="")
 
-	t.join()
+	_pos = 0
+	_last_pos = 0
+	offset_height = 1
+	options = list()
+	while round(_pos, 2) <= round(10, 2):
+		options = [(_pos, _last_pos, 10, (0, 0), 48, offset_height),
+				   (_pos, _last_pos, 10, (50, 0), 48, offset_height),
+				   (_pos, _last_pos, 10, (0, 4), 98, offset_height)]
+		for option in options:
+			__progress_bar_update__(*option)
+
+		_last_pos = _pos
+		_pos = step_size(_pos)
+
+		time.sleep(1 / step_time_per_s)
+
+	print(REL_POS(0, ((1 + 2 * offset_height) * len(options)) - 1), end="")
 
 
 class TestPrinting(unittest.TestCase):

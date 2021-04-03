@@ -25,13 +25,24 @@ from SEPModules.SEPPrinting import cl_p, WARNING
 
 class Rational:
 	"""
-	Rational number of the form :math:`a/b\\quad(a, b \\in \\mathbb{Z})`. Used for symbolic computations in SEPMaths module. Values are automatically simplified.
+	Rational number of the form :math:`a/b\\quad(a, b \\in \\mathbb{Z})`. Used for symbolic computations in :mod:`SEPMaths`
+	module. Values are automatically simplified. The following forms are accepted, where option 1 and 3 are exact and
+	option 2 will approximate the float input as integer ratio:
+
+		1. `Rational(int, int)`
+		2. `Rational(float, 1)` or `Rational(float)`
+		3. `Rational(rational_instance, 1)` or `Rational(rational_instance)`
+
+	:param a: may be an int, float or Rational
+	:param b: may be an int if a is an int, otherwise should be 1 or left out
+
+	:raises ValueError: if the denominator `b` is set to 0
 	"""
 	
 	#Decorator
-	def __prepare_int_binary_op__(func : Callable[..., Any]) -> Callable[..., Any]:
+	def _prepare_int_binary_op(func : Callable[..., Any]) -> Callable[..., Any]:
 		"""
-		Do type checking of arithmetic binary operations on Rationals and auto-convert int to Rational type.
+		Do type checking of arithmetic binary operations on Rationals and auto-convert int or float to Rational type.
 		"""
 		def __wrapper__(self, other):
 			if not (type(other) in (int, float) or type(other) is Rational):
@@ -40,8 +51,11 @@ class Rational:
 		
 			if type(other) in (int, float): 
 				other = Rational(other) #convert c to (c / 1) (or (a / b) = c if float)
-			
 			return func(self, other)
+
+		# replace docstring and name
+		__wrapper__.doc__ = func.__doc__
+		__wrapper__.__name__ = func.__name__
 		return __wrapper__
 
 	@staticmethod
@@ -65,18 +79,6 @@ class Rational:
 		return self._b
 
 	def __init__(self, a : Union[int, float, Rational]=1, b : int=1):
-		"""
-		Create a new immutable Rational type. The following forms are accepted, where option 1 and 3 are exact and option 2 will approximate the float input as integer ratio:
-			1. ``Rational(int, int)``
-			2. ``Rational(float, 1)`` or ``Rational(float)``
-			3. ``Rational(rational_instance, 1)`` or ``Rational(rational_instance)``
-
-		:param a: may be an int, float or Rational
-		:param b: may be an int if a is an int, otherwise should be 1 or left out
-
-		:raises TypeError:
-		:raises ValueError:
-		"""
 		if not ((type(a) is int and type(b) is int) or (type(a) is float and b == 1) or (type(a) is Rational and b == 1)):
 			raise TypeError("Values 'a' and 'b' must be of type 'int' (received {}, {}). \
 						Alternatively 'a' can be of type 'float' or 'Rational' when \
@@ -120,7 +122,7 @@ class Rational:
 	def __hash__(self):
 		return hash(tuple([self.sign, self._a, self._b]))
 	
-	@__prepare_int_binary_op__
+	@_prepare_int_binary_op
 	def __compare__(self, other) -> int:
 		"""
 		Function that returns -1 if :math:`a < b`, 0 if :math:`a = b`, or 1 if :math:`a > b` for Rationals a and b.
@@ -151,37 +153,37 @@ class Rational:
 	def __ge__(self, other) -> bool:
 		return self.__compare__(other) >= 0
 	
-	@__prepare_int_binary_op__
+	@_prepare_int_binary_op
 	def __add__(self, other) -> Rational:
 		"""
-		(a1 / b1) + (a2 / b2) = (a1 * b2 + a2 * b1) / ( b1 * b2)
+		:math:`(a1 / b1) + (a2 / b2) = (a1 * b2 + a2 * b1) / ( b1 * b2)`
 		"""
 		a = (self.a * other._b + other.a * self._b)
 		b = self._b * other._b
 		return Rational(a, b)
 	
-	@__prepare_int_binary_op__
+	@_prepare_int_binary_op
 	def __sub__(self, other) -> Rational:
 		"""
-		(a1 / b1) - (a2 / b2) = (a1 * b2 - a2 * b1) / ( b1 * b2)
+		:math:`(a1 / b1) - (a2 / b2) = (a1 * b2 - a2 * b1) / ( b1 * b2)`
 		"""
 		a = (self.a * other._b - other.a * self._b)
 		b = self._b * other._b
 		return Rational(a, b)
 	
-	@__prepare_int_binary_op__
+	@_prepare_int_binary_op
 	def __mul__(self, other) -> Rational:
 		"""
-		(a1 * a2) / (b1 * b2)
+		:math:`(a1 * a2) / (b1 * b2)`
 		"""
 		a = self.a * other.a
 		b = self._b * other._b
 		return Rational(a, b)
 	
-	@__prepare_int_binary_op__
+	@_prepare_int_binary_op
 	def __truediv__(self, other) -> Rational:
 		"""
-		(a1 * b2) / (b1 * a2)
+		:math:`(a1 * b2) / (b1 * a2)`
 		"""
 		if not other._a: #not bool(0) -> True
 			raise ValueError("Cannot divide by zero.")
@@ -190,9 +192,6 @@ class Rational:
 		return Rational(a, b)
 	
 	def __pow__(self, other) -> Rational:
-		"""
-		(a1 ** c) / (b1 ** c)
-		"""
 		if not type(other) is int:
 			raise TypeError("Illegal binary operation '{}' of type 'Rational' and '{}' (expected 'int').".format("**", other.__class__.__name__))
 		
@@ -204,20 +203,20 @@ class Rational:
 			b = self.a ** -other
 		return Rational(a, b)
 	
-	@__prepare_int_binary_op__
+	@_prepare_int_binary_op
 	def __mod__(self, other) -> Rational:
 		"""
-		((a * d) - (c * b * floor((a * d) / (b * c))) / (b * d)
+		:math:`((a * d) - (c * b * floor((a * d) / (b * c))) / (b * d)`
 		"""
 		# (sign0 ^ sign1) + 1 xor bit-hack amounts to sign0 * sign1 but ~~F A S T E R
 		a = ((other.sign ^ self.sign) + 1) * ((self._a * other._b) - (self._b * other._a * floor((self._a * other._b) / (self._b * other._a))))
 		b = self._b * other._b
 		return Rational(a, b)
 	
-	@__prepare_int_binary_op__
+	@_prepare_int_binary_op
 	def __and__(self, other) -> Rational:
 		"""
-		(a1 + a2) / (b1 + b2)
+		:math:`(a1 + a2) / (b1 + b2)`
 		"""
 		if self.sign - 1 or other.sign - 1:
 			raise ValueError("Values of two Rationals for binary operation '&' must be greater than 0.")
@@ -259,9 +258,8 @@ def find_rational_approximation(num : Real, precision :int=4) -> Rational:
 
 	:param num: the number to approximate as float or int
 	:param precision: the number of decimal digits of precision, if this exceeds the limits of the floating point
-	architecture of the system, this value is truncated to this maximum
+		architecture of the system, this value is truncated to this maximum
 
-	:raises TypeError:
 	:raises ValueError: if precision is negative
 	"""
 	if type(num) not in (float, int):
@@ -297,11 +295,11 @@ def find_rational_approximation(num : Real, precision :int=4) -> Rational:
 
 def get_possible_rationals(_set : Union[list, set]) -> Set[Rational]:
 	"""
-	Returns unique Rationals in a set with :math:`a/b \\quad \\forall a, b \\in \\text{\\_set}`.
+	Returns unique Rationals in a set with :math:`a/b \\quad \\forall a, b \\in \\text{_set}`.
 
-	:param _set: all elements of _set must be integers.
-	:raises TypeError:
-	:raises ValueError: if elements of _set are not all integers
+	:param _set: all elements of `_set` must be integers.
+
+	:raises ValueError: if elements of `_set` are not all integers
 	"""
 	if not type(_set) in (list, set):
 		raise TypeError("Argument must be of type 'list' or 'set' (received '{}').".format(_set.__class__.__name__))
@@ -315,11 +313,10 @@ def is_group(_set : Union[list, set], operator : Callable[[Any, Any], Any], tole
 	"""
 	Test if a set and an operator form a group.
 
-	:param operator: described by a function of form (a, b) -> (c)
+	:param operator: described by a function of form `(a, b) -> (c)`
 	:param tolerance: a value from 0 to 10, where 0 is the least and 10 is the most tolerance in floating point precision
 	:param abelian: test for a regular or an abelian group
 
-	:raises TypeError:
 	:raises ValueError: if tolerance is not between 0 and 10
 	"""
 	#input sanitation
@@ -405,7 +402,7 @@ def is_group(_set : Union[list, set], operator : Callable[[Any, Any], Any], tole
 
 def is_abelian_group(_set : Union[list, set], operator : Callable[[Any, Any], Any], tolerance :int=0) -> bool:
 	"""
-	Works the same way as :func:`SEPMaths.is_group` but tests for Abelian groups.
+	Works the same way as :py:func:`is_group` but tests for Abelian groups.
 	"""
 	return is_group(_set, operator, tolerance=tolerance, abelian=True)
 
@@ -431,7 +428,7 @@ def slow_fibonacci(n : int) -> int:
 	
 def sign(x : int, zero : int=0) -> int:
 	"""
-	Returns the sign of x (but sign(0) = zero).
+	Returns the sign of x, where sign(0) = `zero`.
 
 	:param zero: defaults to 0, but 1 may be useful in certain applications
 	"""
