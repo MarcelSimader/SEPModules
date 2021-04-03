@@ -26,6 +26,12 @@ if errorlevel 9009 (
 )
 
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+
+REM move _build/html to ../docs/
+echo.
+echo Copying built files from %BUILDDIR%\html to \docs\...
+XCOPY /E /V /I /Q /Y %BUILDDIR%\html ..\docs
+
 goto end
 
 :help
