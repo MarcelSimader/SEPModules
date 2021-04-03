@@ -1,6 +1,7 @@
 # SEPModules
 
-[![Publish to PyPI](https://github.com/SEOriginal/SEPModules/actions/workflows/python-publish.yml/badge.svg)](https://github.com/SEOriginal/SEPModules/actions/workflows/python-publish.yml)
+[![Publish to PyPI](https://github.com/SEOriginal/SEPModules/actions/workflows/python-publish.yml/badge.svg)](https://github.com/SEOriginal/SEPModules/actions/workflows/python-publish.yml) 
+|  [Documentation](https://seoriginal.github.io/SEPModules/)
 
 Python package providing basic modules and functionality for various common tasks.
 
