@@ -25,9 +25,9 @@ __WRAPPER_NAME__ : Final = "wrapped_"
 
 def timed_return(func : Callable) -> Callable:
 	"""
-	Same functionality as :decorator:`SEPTiming.timed` decorator but does not print automatically.
+	Same functionality as :py:func:`timed` decorator but does not print automatically.
 
-	:returns: the time and return-value as dictionary.
+	:returns: the time and return value as dictionary
 	"""
 	def __wrapper__(*args, **kwargs) -> Dict[str, Union[Any, int]]:
 		s_time = time.perf_counter()
@@ -43,7 +43,7 @@ def timed(func : Callable) -> Callable:
 	"""
 	Times the decorated function and prints the amount of time it took to execute.
 
-	:returns: the return-value of provided function.
+	:returns: the return value of provided function.
 	"""
 	def __wrapper__(*args, **kwargs):
 		timed_func = timed_return(func)
@@ -56,6 +56,7 @@ def timed(func : Callable) -> Callable:
 
 def check_type():
 	"""
-	TODO: rewrite this using function annotations instead of my shitty system or just leave it out cause it definitely exists already
+	..	todo::
+		rewrite this using function annotations instead of my shitty system or just leave it out cause it definitely exists already
 	"""
 	raise DeprecationWarning("check_type")

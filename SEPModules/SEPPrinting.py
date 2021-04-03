@@ -9,7 +9,7 @@ Date: 01.04.2021
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 from numbers import Real
-from typing import Any, Collection, Tuple, Callable, Union, Final, Literal, Dict
+from typing import Any, Collection, Tuple, Callable, Union, Final, Literal, Dict, Optional
 
 from colorama import Fore, Style, Cursor, init as cl_init
 import math
@@ -59,42 +59,44 @@ RESET_ALL : Final = (Style.RESET_ALL,)
 
 class FILL_CHARACTERS:
 	"""
-	Auto-generated (by font/console_glyph_gen.py) and hand-made fill character sets for the SEPPrinting.console_graph function.
+	Auto-generated (by font/console_glyph_gen.py) and hand-made fill character sets for the :py:func:`console_graph` function.
 	"""
 
-	"""
-	#
-	#
-	BD: |||-|| `+# ||||
-	"""
 	MINIMAL : Final = ({(" ", " "): 0, ("#", "#"): 1},
 			   		   ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
+	"""
+	::
+	
+		#
+		#
+		BD: |||-|| `+# ||||
+	
+	"""
 
-	"""
-	_.:+I#
-	‾˙:+I#
-	BD: |||-|| `+# ||||
-	"""
 	SIMPLE : Final = ({(" ", " "): 0, ("_", "‾"): 0.05, (".", "˙"): 0.1, (":", ":"): 0.3,
 			   ("+", "+"): 0.5, ("I", "I"): 0.7, ("#", "#"): 1},
 			  		  ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
+	"""
+	::
+	
+		_.:+I#
+		‾˙:+I#
+		BD: |||-|| `+# ||||
+	
+	"""
 
-	"""
-	_˷,ᵦı:+Ii⌠ʬ
-	‾˜ ˟ᴵᵝ˸+!I⌡ʬ
-	BD: │├┝╌┤┥ ░▒▓ ┐┘┌└
-	"""
 	CONSOLAS_MANUAL : Final = ({(" ", " "): 0, ("_", "‾"): 0.02, ("˷", "͂"): 0.1, (",", "˟"): 0.25, ("ᵦ", "ᴵ"): 0.3,
 						("ı", "ᵝ"): 0.4, (":", "˸"): 0.55, ("I", "!"): 0.70, ("⌠", "⌡"): 0.85, ("ʬ", "ʬ"): 1},
 					   		   ('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
+	"""
+	::
+	
+		_˷,ᵦı:+Ii⌠ʬ
+		‾˜ ˟ᴵᵝ˸+!I⌡ʬ
+		BD: │├┝╌┤┥ ░▒▓ ┐┘┌└
+	
+	"""
 
-	"""
-	Auto generated console_graph fill character set by console_glyph_gen.py from 'font/ConsolasMono-Regular.ttf'.
-	̱̫ꞈ¸.̡₌ᴗᵥᵣ,₊₄₅₀˪ᵢ□ːvmϖ⃝<ɕ҉ȼƈʭ#ϘԌῑйhøΰĽ₾ẘŉỉȺѽǡƒẗĞĥ$Ůẳḟᾴ Ὂ
-	̅͆҇ᵔ҅˺⁼™ᵓᵓˤᶝꜟᶾᶾᶮᶮººᴃо⃝⑥⑥҉¤ⱥⱬⱬԈԈѣӽụʞᶏʗƦⱦṋợҚṲṲӅƑԚṂṂϚᾷẔẔṯ Ὂ
-	BD: │├┝╌┤┥ ░▒▓ ┐┘┌└
-	Error: 184.775
-	"""
 	CONSOLAS : Final = ({('̱', '̅'): 0.07, ('̫', '͆'): 0.13, ('ꞈ', '҇'): 0.14, ('¸', 'ᵔ'): 0.17, ('.', '҅'): 0.18, ('̡', '˺'): 0.21,
 	 ('₌', '⁼'): 0.27, ('ᴗ', '™'): 0.29, ('ᵥ', 'ᵓ'): 0.34, ('ᵣ', 'ᵓ'): 0.35, (',', 'ˤ'): 0.36, ('₊', 'ᶝ'): 0.39,
 	 ('₄', 'ꜟ'): 0.43, ('₅', 'ᶾ'): 0.44, ('₀', 'ᶾ'): 0.45, ('˪', 'ᶮ'): 0.48, ('ᵢ', 'ᶮ'): 0.49, ('□', 'º'): 0.52,
@@ -106,14 +108,16 @@ class FILL_CHARACTERS:
 	 ('ĥ', 'Ṃ'): 0.94, ('$', 'Ϛ'): 0.96, ('Ů', 'ᾷ'): 0.97, ('ẳ', 'Ẕ'): 0.98, ('ḟ', 'Ẕ'): 0.99, (' ', ' '): 0.0,
 	 ('ʬ', 'ʬ'): 1.0},
 						('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
+	"""
+	Auto generated console_graph fill character set by console_glyph_gen.py from 'font/ConsolasMono-Regular.ttf'::
+	
+		̱̫ꞈ¸.̡₌ᴗᵥᵣ,₊₄₅₀˪ᵢ□ːvmϖ⃝<ɕ҉ȼƈʭ#ϘԌῑйhøΰĽ₾ẘŉỉȺѽǡƒẗĞĥ$Ůẳḟᾴ Ὂ
+		̅͆҇ᵔ҅˺⁼™ᵓᵓˤᶝꜟᶾᶾᶮᶮººᴃо⃝⑥⑥҉¤ⱥⱬⱬԈԈѣӽụʞᶏʗƦⱦṋợҚṲṲӅƑԚṂṂϚᾷẔẔṯ Ὂ
+		BD: │├┝╌┤┥ ░▒▓ ┐┘┌└
+		Error: 184.775
+	
+	"""
 
-	"""
-	Auto generated console_graph fill character set by console_glyph_gen.py from 'font/CascadiaMono-Regular.ttf'.
-	.⠄◞◛₄₁⠆◻▸≡<▲+■я≣¤†℮♠♦ґơ©īāϗhïßả┆ǿ/ÀÖÅĥ ◈
-	⠒⠒◠▬▬═⠢⬧◂≡×▲◓◓ππ⬠⡰⬛♣❧ҷơt¡¡ųųχg¢¢ợ┮▆ț╔╔ ◈
-	BD: │├┝╌┤┥ ░▒▓ ┐┘┌└
-	Error: 114.783
-	"""
 	CASCADIA_MONO : Final = ({('.', '⠒'): 0.15, ('⠄', '⠒'): 0.16, ('◞', '◠'): 0.27, ('◛', '▬'): 0.31, ('₄', '▬'): 0.32, ('₁', '═'): 0.33,
 	 ('⠆', '⠢'): 0.38, ('◻', '⬧'): 0.47, ('▸', '◂'): 0.49, ('≡', '≡'): 0.5, ('<', '×'): 0.52, ('▲', '▲'): 0.53,
 	 ('+', '◓'): 0.54, ('■', '◓'): 0.55, ('я', 'π'): 0.56, ('≣', 'π'): 0.57, ('¤', '⬠'): 0.59, ('†', '⡰'): 0.61,
@@ -122,6 +126,15 @@ class FILL_CHARACTERS:
 	 ('ả', '¢'): 0.89, ('┆', '¢'): 0.9, ('ǿ', 'ợ'): 0.92, ('/', '┮'): 0.94, ('À', '▆'): 0.96, ('Ö', 'ț'): 0.97,
 	 ('Å', '╔'): 0.99, (' ', ' '): 0.0, ('◈', '◈'): 1.0},
 							('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
+	"""
+	Auto generated console_graph fill character set by console_glyph_gen.py from 'font/CascadiaMono-Regular.ttf'::
+	
+		.⠄◞◛₄₁⠆◻▸≡<▲+■я≣¤†℮♠♦ґơ©īāϗhïßả┆ǿ/ÀÖÅĥ ◈
+		⠒⠒◠▬▬═⠢⬧◂≡×▲◓◓ππ⬠⡰⬛♣❧ҷơt¡¡ųųχg¢¢ợ┮▆ț╔╔ ◈
+		BD: │├┝╌┤┥ ░▒▓ ┐┘┌└
+		Error: 114.783
+	
+	"""
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
@@ -129,21 +142,19 @@ class FILL_CHARACTERS:
 
 def color_print(s : Any, *styles : str) -> str:
 	"""
-	Use color to print to console. Longer name version of printing.cl_p.
+	Use color to print to console. Longer name version of :py:func:`cl_p`.
 	"""
 	return cl_p(s, *styles)
 
 def cl_p(s : Any, *styles : Tuple[str, ...], boolean : bool=False) -> str:
 	"""
-	Use color to print to console. Shorter name version of printing.color_print.
+	Use color to print to console. Shorter name version of :py:func:`color_print`.
 
-	:param s: 		object to print (any type, but must be bool if boolean flag is set)
-	:param styles: 	arbitrarily many style variables
-	:param boolean: flag that automatically formats a boolean input as green or red string
+	:param s: object to print (any type, but must be `bool` if `boolean` is set to `True`)
+	:param styles: arbitrarily many style variables
+	:param boolean: when set to `True`, automatically formats a boolean input as green or red string
 
 	:returns: styled string with auto-cast input s, which can be of any type
-
-	:raises TypeError:
 	"""
 	if not __PRINT_COLORS__: return s
 
@@ -158,7 +169,7 @@ def cl_p(s : Any, *styles : Tuple[str, ...], boolean : bool=False) -> str:
 	if boolean:
 		styles = (*styles, Fore.GREEN) if s else (*styles, Fore.RED)
 
-	return "{}{}{}".format(str().join(styles), s, RESET_ALL)
+	return "{}{}{}".format(str().join(styles), s, *RESET_ALL)
 
 def get_time_str(secs : Real, force_unit : Literal["ns","µs","ms","s","m","h"]=None):
 	"""
@@ -169,7 +180,6 @@ def get_time_str(secs : Real, force_unit : Literal["ns","µs","ms","s","m","h"]=
 
 	:returns: Formatted string with adequate units.
 
-	:raises TypeError:
 	:raises ValueError: if secs is negative
 	:raises ValueError: if type of force_unit is not one of the specified literals
 	"""
@@ -214,7 +224,7 @@ def get_time_str(secs : Real, force_unit : Literal["ns","µs","ms","s","m","h"]=
 
 def get_appropriate_time_unit(secs : Real) -> str:
 	"""
-	Turns a second value into a string of the appropriate unit (compatible with ``SEPPrinting.get_time_str``).
+	Turns a second value into a string of the appropriate unit (compatible with :py:func:`get_time_str`).
 
 	:param secs: seconds as integer or float
 	:return: the unit-string determining the most appropriate unit for this seconds count
@@ -257,28 +267,66 @@ def console_graph(data : Collection,
 				  relative_cursor_position : bool=False,
 				  debug : bool=True) -> str:
 	"""
-	TODO: write docstring for this monstrosity
+	Creates a graph that can be printed to the console or a log file.
 
-	:param data:
-	:param max_height:
-	:param max_width:
-	:param offset:
-	:param center:
-	:param show_scale:
-	:param scale_spacing:
-	:param rounding:
-	:param scale_in_front:
-	:param fill_characters:
-	:param color_function:
-	:param bg_color:
-	:param use_full_width:
-	:param append_zero_value:
-	:param zero_value:
-	:param unit_format_function:
-	:param use_middle_for_unit_position:
-	:param relative_cursor_position:
-	:param debug:
-	:return:
+	:param data: a collection of real numbers representing the graph's height at each index, which is used as
+		horizontal position
+	:param max_height: the height of the graph in characters. Includes all labels and scales
+	:param max_width: the width of the graph in characters. Includes all labels and scales
+	:param offset: a tuple shifting the data collection left (index 0) or up/down (index 1)
+
+		..	warning::
+			Index 0 may have unexpected results and index 1 is currently **not supported**.
+
+	:param center: a padding tuple of the form `(left, right, top, bottom)`. Similar to padding in CSS
+	:param show_scale: whether or not to show the side and top scales
+	:param scale_spacing: the distance between labels on the side scale in characters
+	:param rounding: the rounding of floating point values in the side scale
+	:param scale_in_front: whether to put the scale to the left (front) or right of the graph
+	:param fill_characters: a tuple containing a dictionary containing float keys and character tuple values, and a tuple
+		containing certain special characters (e.g. the scale characters). Fill character sets can be found in the class
+		:class:`SEPPrinting.FILL_CHARACTERS`. The dictionary holds one float key approximating the height of a character
+		in the graph and a tuple of two characters: one for the bottom version of the character and one for the top
+		version. These versions are put for positive and negative values in the graph respectively.
+	:param color_function: a callable receiving properties of a single character in the graph and returning a color value
+		for it. The properties are as follows:
+
+			1. height of the character's column
+			2. rate of change between the previous column and the next column
+			3. relative position from the x-axis in percent
+			4. distance from curve in characters.
+
+		The returned color may be a tuple of styles and colors.
+	:param bg_color: the color tuple to apply to all background characters (spaces will just appear invisible)
+	:param use_full_width: whether or not to fill the rest of the data collection with `zero_value` if the graph does not
+		fill the entire space provided by `max_height`. Ensures that the graph does not get printed too narrow
+	:param append_zero_value: whether or not to append `zero_value` at the end of the data collection or prepend it to
+		the start
+	:param zero_value: the value to place in empty columns if `use_full_width` is set (may simply be left at 0 in most
+		cases)
+	:param unit_format_function: a callable receiving the real number value of a graph label of the side scale and returning
+		a tuple defining how the label should be formatted. The tuple may be of length 1, 2 or 3:
+
+		* length 1:
+			 1.
+				* if the given value is a string, simply display this string in the label
+				* if the given value is an int or float, round the value according to `rounding` and then display this string
+		* length 2:
+			1. still applies from length 1
+			2. is a string that will be a text appended to the label
+		* length 3:
+			1. still applies from length 1
+			2. still applies from length 2
+			3. is a string that will be prepended to the label
+
+	:param use_middle_for_unit_position: whether or not to use the middle of the character as value for a label. Defaults
+		to using the baseline of the character
+	:param relative_cursor_position: whether to insert traditional newline character or an ANSI escape sequence
+		moving the curse back `max_width` columns if `use_full_width` is set or the used width of the graph; and moving
+		the cursor down `max_height` characters
+	:param debug: whether or not to show debug characters to make adjusting parameters easier
+
+	:return: a string containing the graph to the specified parameters
 	"""
 	# ++++sort fillCharacters by descending value and grab 0 values for quicker access++++
 	_sorted_characters = sorted(fill_characters[0].items(), key=lambda item: item[1], reverse=True)
@@ -287,7 +335,7 @@ def console_graph(data : Collection,
 	# ++++set debug values++++
 	spacer_char = " "  # default value for spacer char
 	if debug:
-		spacer_char = "`"
+		spacer_char = "'"
 		bg_color = BLUE  # set zero char/background color to blue
 		zero_chars = (
 		fill_characters[1][7], fill_characters[1][8])  # set zero chars to something that can always be seen
@@ -579,29 +627,65 @@ def console_progress_bar(position : Real,
 						 length : Real,
 						 center : Tuple[int, int, int, int]=(3, 0, 0, 0),
 						 progress_characters : Dict[float, str]={1: "█", 0.875: "▉", 0.75: "▊", 0.625: "▋", 0.5: "▌", 0.375: "▍", 0.25: "▎", 0.125: "▏"},
-						 end_characters : Tuple[str, str]=("|", "|"),
-						 auto_round : bool=True) -> str:
+						 end_characters : Tuple[str, str]=("<", ">"),
+						 show_text : bool=True,
+						 text_rounding : int=2,
+						 auto_round : bool=True,
+						 rate_of_change : Optional[str]=None,
+						 relative_cursor_position : bool=False,
+						 debug : bool=True) -> str:
 	"""
-	TODO: expand this rudimentary implementation and finish docstring.
+	Creates a progress-bar string that is printable to the console or a log file.
 
-	:param position:
-	:param max_position:
-	:param length:
-	:param center:
-	:param progress_characters:
-	:param end_characters:
-	:param auto_round:
-	:return:
+	:param position: the position the progress bar should display out of `max_position` (must be smaller than `max_position`
+		but may be negative)
+	:param max_position: the maximum value that `position` will ever reach
+	:param length: the width of the entire progress bar string, including all texts and offsets
+	:param center: a padding tuple of the form `(top, bottom , left, right)`, similar to padding in CSS
+	:param progress_characters: a dictionary containing float keys and character values, where the float describes the
+		apparent width of the character value. Can be in order but is sorted automatically. The key "1" must be present
+		for full characters
+	:param end_characters: a tuple of the form `(left char, right char)` defining the characters that will be displayed on
+		either end of the progress bar
+	:param show_text: whether or not to display the `position / max_position` and potentially `rate_of_change` texts next
+		to the progress bar. Enabling this does not change the length
+	:param text_rounding: the rounding of the `position / max_position` text values
+	:param auto_round: whether or not to automatically round the passed `position` and `max_position` parameters based
+	 	on the smallest float in progress_characters. Enabling this will prevent characters from being left out due
+	 	to floating point precision errors
+	:param rate_of_change: a string to display after the `position / max_position` text. Will only be shown if
+		show_text is enabled
+	:param relative_cursor_position: whether to insert traditional newline character or an ANSI escape sequence
+		moving the curse back `length` columns and down one row
+	:param debug: whether or not to show debug characters to make adjusting parameters easier
+
+	:return: a string containing the entire progress bar to the specified parameters
+
+	:raises ValueError: if position is bigger than max_position
 	"""
 
-	total_bar_length = length - 2 # -2 for start and end bar
+	text_width = 0
+	if show_text:
+		# ' ( / )' + 2x 'digits . rounding'
+		text_width = 6 + (len(str(int(max_position))) + 1 + text_rounding) * 2
+		if rate_of_change is not None:
+			# ', ' + rate_of_change
+			text_width = text_width + 2 + len(rate_of_change)
+
+	# ...<###>   (text)...
+	# -2 for start and end bar
+	bar_length = length - (2 + center[0] + center[1] + text_width)
+
 	normalized_pos = position / max_position
+	char_pos = normalized_pos * bar_length
 
-	# fill progress bar up to position with chars in progress_characters
-	char_pos = normalized_pos * total_bar_length
 	if auto_round:
 		digits_min_char = abs(round(math.log10(min(progress_characters.keys()))))
 		char_pos = round(char_pos, digits_min_char)
+
+	# we check against bar length because that value is potentially rounded and less finicky with floats
+	if char_pos > bar_length:
+		raise ValueError("position cannot be bigger than max_position (got {}, but expected no more than {})".format(position, max_position))
 
 	char_list = list()
 
@@ -609,20 +693,35 @@ def console_progress_bar(position : Real,
 	char_list.extend((progress_characters[1],) * int(char_pos))
 
 	# append partial char
-	for val, char in progress_characters.items():
+	for val, char in sorted(progress_characters.items(), key=lambda x: x[0], reverse=True):
 		if val <= char_pos % 1:
 			char_list.append(char)
 			break
 
 	# fill in the rest
-	while len(char_list) < total_bar_length:
-		char_list.append(" ")
+	char_list.extend(" " * (bar_length - len(char_list)))
 
-	return "{top}{left}{e_left}{bar}{e_right}{right}{bottom}".format(
-			left	=" " * center[0],
-			right	=" " * center[1],
-			top		="\n" * center[2],
-			bottom	="\n" * center[3],
+	newline = "\n"
+	space = " "
+	if relative_cursor_position:
+		newline = REL_POS(-(length + (2 if debug else 0)), 1)
+	if debug:
+		newline = cl_p("\\n", *CYAN) + newline
+		space = "'"
+
+	text_format_str_part = "{:." + str(text_rounding) + "f}"
+	if rate_of_change is None:
+		text_format_str = " ({part} / {part})".format(part=text_format_str_part)
+	else:
+		text_format_str = " ({part} / {part}, {roc})".format(part=text_format_str_part, roc=rate_of_change)
+
+	return "{top}{left}{e_left}{bar}{e_right}{text}{right}{newline}{bottom}".format(
+			left	=space * center[0],
+			right	=space * center[1],
+			top		=((space * length) + newline) * center[2],
+			bottom	=((space * length) + newline) * center[3],
+			newline =newline,
 			e_left	=end_characters[0],
 			e_right	=end_characters[1],
-			bar		=str().join(char_list))
+			bar		=str().join(char_list),
+			text	=text_format_str.format(position, max_position).rjust(text_width) if show_text else str())
