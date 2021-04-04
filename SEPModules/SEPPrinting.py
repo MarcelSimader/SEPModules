@@ -15,17 +15,30 @@ from colorama import Fore, Style, Cursor, init as cl_init
 import math
 from math import ceil
 
-# states
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ GLOBALS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 __PRINT_COLORS__ = True
+def _get_print_color() -> bool:
+	return __PRINT_COLORS__
+def _set_print_color(val : bool):
+	global __PRINT_COLORS__
+	if type(val) is not bool:
+		raise TypeError("Expected type of 'print_colors' to be 'bool' but received '{}'".format(val.__class__.__name__))
+	__PRINT_COLORS__ = val
+
+print_colors = property(_get_print_color, _set_print_color,
+						doc="""Property to globally enable or disable color printing for module :py:mod:`SEPPrinting`. Defaults to `True`.""")
 
 # initialize colorama and set up constants
 cl_init()
 
-SUPPRESS : Final = Style.DIM
-ERROR : Final = Fore.RED
+SUPPRESS : Final = (Style.DIM,)
+ERROR : Final = (Fore.RED,)
 LIGHT_ERROR : Final = (Fore.RED, Style.BRIGHT)
-WARNING : Final = Fore.YELLOW
-NUMBER : Final = Style.BRIGHT
+WARNING : Final = (Fore.YELLOW,)
+NUMBER : Final = (Style.BRIGHT,)
 NAME : Final = (Fore.CYAN,)
 
 RED : Final = (Fore.RED,)
@@ -143,6 +156,8 @@ class FILL_CHARACTERS:
 def color_print(s : Any, *styles : str) -> str:
 	"""
 	Use color to print to console. Longer name version of :py:func:`cl_p`.
+
+	.. seealso:: function :py:func:`cl_p` for documentation
 	"""
 	return cl_p(s, *styles)
 
@@ -155,8 +170,13 @@ def cl_p(s : Any, *styles : Tuple[str, ...], boolean : bool=False) -> str:
 	:param boolean: when set to `True`, automatically formats a boolean input as green or red string
 
 	:returns: styled string with auto-cast input s, which can be of any type
+
+	.. 	note::
+
+		Color printing is globally enabled or disabled by :py:data:`print_colors`. If this value is set to `True` this
+		function will simply return the input so it can still be printed.
 	"""
-	if not __PRINT_COLORS__: return s
+	if not print_colors: return s
 
 	# sanitize input
 	if boolean and not type(s) is bool:
@@ -265,7 +285,7 @@ def console_graph(data : Collection,
 												  ]]=lambda x: (x,),
 				  use_middle_for_unit_position : bool=False,
 				  relative_cursor_position : bool=False,
-				  debug : bool=True) -> str:
+				  debug : bool=False) -> str:
 	"""
 	Creates a graph that can be printed to the console or a log file.
 
@@ -633,7 +653,7 @@ def console_progress_bar(position : Real,
 						 auto_round : bool=True,
 						 rate_of_change : Optional[str]=None,
 						 relative_cursor_position : bool=False,
-						 debug : bool=True) -> str:
+						 debug : bool=False) -> str:
 	"""
 	Creates a progress-bar string that is printable to the console or a log file.
 

@@ -25,7 +25,7 @@ from SEPModules.SEPPrinting import cl_p, WARNING
 
 class Rational:
 	"""
-	Rational number of the form :math:`a/b\\quad(a, b \\in \\mathbb{Z})`. Used for symbolic computations in :mod:`SEPMaths`
+	Rational number of the form :math:`a/b \\text{ with } a, b \\in \\mathbb{Z}`. Used for symbolic computations in :mod:`SEPMaths`
 	module. Values are automatically simplified. The following forms are accepted, where option 1 and 3 are exact and
 	option 2 will approximate the float input as integer ratio:
 
