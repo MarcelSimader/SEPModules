@@ -53,10 +53,3 @@ def timed(func : Callable) -> Callable:
 	
 	__wrapper__.__name__ = "{}timed_{}".format(__WRAPPER_NAME__, func.__name__)
 	return __wrapper__
-
-def check_type():
-	"""
-	..	todo::
-		rewrite this using function annotations instead of my shitty system or just leave it out cause it definitely exists already
-	"""
-	raise DeprecationWarning("check_type")
