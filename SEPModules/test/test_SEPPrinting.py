@@ -1,12 +1,10 @@
 import math
 import unittest
 from random import random
-from threading import Thread
 import time
 
 from colorama import Back
 
-import SEPPrinting
 from SEPModules.SEPPrinting import get_time_str, console_graph, console_progress_bar, FILL_CHARACTERS, REL_POS, NORMAL, BRIGHT, RED, GREEN
 
 def test_console_graph_demo(debug=True):

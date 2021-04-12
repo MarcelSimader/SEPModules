@@ -74,7 +74,7 @@ def test_performance_find_rational_approximation(n=100_000, precision=6):
 	@timed
 	def __test_performance_find_rational_approximation__():
 		for k in rands:
-			find_rational_approximation(k, precision=precision, microIterations=32)
+			find_rational_approximation(k, precision=precision)
 	__test_performance_find_rational_approximation__()
 
 class TestRationalMethods(unittest.TestCase):
@@ -218,83 +218,7 @@ class TestRationalMethods(unittest.TestCase):
 				with self.subTest(value=rand, precision=precision):
 					self.assertAlmostEqual(rand, float(find_rational_approximation(rand, precision=precision)), precision - 1)
 
-class TestGroupMethods(unittest.TestCase):
-	
-	def test_isGroup_isAbelianGroup_TypeError_ValueError(self):
-		with self.assertRaises(TypeError):
-			is_group(False, lambda a, b: 0)
-
-		with self.subTest(type="wrong type"):
-			with self.assertRaises(TypeError):
-				is_group([0, 1, 2], 5)
-		with self.subTest(type="wrong argument count"):
-			with self.assertRaises(TypeError):
-				is_group({0, 1, 2, 3}, lambda a, b, c: a + b + c)
-
-		with self.assertRaises(TypeError):
-			is_group([0], lambda a, b: a + b, tolerance=None)
-
-		with self.subTest(type="too high"):
-			with self.assertRaises(ValueError):
-				is_group([0], lambda a, b: a + b, tolerance=11)
-		with self.subTest(type="too low"):
-			with self.assertRaises(ValueError):
-				is_group([0], lambda a, b: a + b, tolerance=-1)
-		
-	def test_isGroup_result(self):
-		with self.subTest(type="integer addition"):
-			self.assertTrue(is_group([-4, -3, -2, -1, 0, 1, 2, 3, 4], lambda a, b: a + b))
-		
-		with self.subTest(type="integer addition w/o negatives"):
-			self.assertFalse(is_group([0, 1, 2, 3, 4], lambda a, b: a + b))
-		
-		with self.subTest(type="rational multiplication "):
-			self.assertTrue(is_group([Rational(-2), Rational(-1), Rational(-1, 2), Rational(1, 2), Rational(1), Rational(2)], lambda a, b: a * b))
-			
-		with self.subTest(type="string capitalization"):
-			def _string_cap(a, b):
-				res = list(str(a))
-				for i, char in enumerate(list(a)):
-					if char in b: 
-						b = b.replace(char, "")
-						res[i] = res[i].upper()
-				res = res + list(b)
-				res.sort()
-				if not [None for char in res if char.islower()]: return ""
-				return str().join(res)
-				
-			self.assertTrue(is_group(["a", "b", "c", "ab", "ac", "bc", ""], _string_cap))
-			
-		with self.subTest(type="lookup table"):
-			"""
-			Forms a group but not an Abelian group.
-			"""
-			def _table_lookup(a, b):
-				dict = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 0, (1, 1): 0, (1, 2): 2, (2, 0): 0, (2, 1): 2, (2, 2): 1}
-				return dict[(a, b)]
-			
-			self.assertTrue(is_group([0, 1, 2], _table_lookup))
-			
-	def test_isAbelianGroup_result(self):
-		with self.subTest(type="integer addition"):
-			self.assertTrue(is_abelian_group([-4, -3, -2, -1, 0, 1, 2, 3, 4], lambda a, b: a + b))
-		
-		with self.subTest(type="integer addition w/o negatives"):
-			self.assertFalse(is_abelian_group([0, 1, 2, 3, 4], lambda a, b: a + b))
-			
-		with self.subTest(type="lookup table"):
-			"""
-			Forms a group but not an Abelian group.
-			"""
-			def _table_lookup(a, b):
-				dict = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 0, (1, 1): 0, (1, 2): 2, (2, 0): 0, (2, 1): 2, (2, 2): 1}
-				return dict[(a, b)]
-			
-			self.assertFalse(is_abelian_group([0, 1, 2], _table_lookup))
-
 if __name__ == "__main__":
 	test_performance_rational()
-	test_performance_is_group()
-	test_performance_is_abelian_group()
 	test_performance_find_rational_approximation()
 	
