@@ -118,7 +118,7 @@ class Rational:
 		return self.a if key == "a" or key == 0 else self.b
 		
 	def __hash__(self):
-		return hash(tuple([self.sign, self._a, self._b]))
+		return hash((self.a, self.b))
 	
 	@_prepare_int_binary_op
 	def __compare__(self, other) -> int:

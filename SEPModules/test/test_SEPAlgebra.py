@@ -1,6 +1,8 @@
 import unittest
 
-from SEPModules.SEPAlgebra import AlgebraicStructure, NoNeutralElement
+from SEPModules.SEPAlgebra import AlgebraicStructure, NoElement
+
+from SEPModules.SEPMaths import get_possible_rationals
 
 # TODO: adapt unit tests for group methods
 # class TestGroupMethods(unittest.TestCase):
@@ -93,16 +95,21 @@ class TestAlgebraicStructure(unittest.TestCase):
 
 		self.nums = list(range(10))
 		self.neg_nums = list(range(-9, 10))
+		self.rationals_wo_zero = get_possible_rationals([x for x in self.neg_nums if x != 0])
 
-		self.empty_struct = AlgebraicStructure((), ())
+		self.add_and_mul_nums = AlgebraicStructure(self.nums, self.add, self.mul)
+		self.add_and_mul_neg_nums = AlgebraicStructure(self.neg_nums, self.add, self.mul)
+		self.sub_nums = AlgebraicStructure(self.nums, self.sub)
+		self.mul_rational_wo_zero = AlgebraicStructure(self.rationals_wo_zero, self.mul)
+		self.empty_struct = AlgebraicStructure(())
 
 	def tearDown(self):
-		del self.add, self.mul, self.add_z3
-		del self.nums, self.neg_nums
-		del self.empty_struct
+		del self.add, self.sub, self.mul, self.add_z3
+		del self.nums, self.neg_nums, self.rationals_wo_zero
+		del self.add_and_mul_nums, self.add_and_mul_neg_nums, self.sub_nums, self.mul_rational_wo_zero, self.empty_struct
 
 	def test_properties(self):
-		test_struct = AlgebraicStructure(self.nums, (self.add,))
+		test_struct = AlgebraicStructure(self.nums, self.add)
 
 		with self.subTest(property="elements"):
 			self.assertSetEqual(test_struct.elements, set(self.nums))
@@ -114,36 +121,65 @@ class TestAlgebraicStructure(unittest.TestCase):
 
 	def test_is_associative(self):
 		with self.subTest(type="add and mul"):
-			test_struct = AlgebraicStructure(self.nums, (self.add, self.mul))
-			self.assertListEqual(test_struct.is_associative(), [True, True])
-			self.assertTrue(all(test_struct.is_associative()))
+			self.assertListEqual(self.add_and_mul_nums.is_associative(), [True, True])
+			self.assertTrue(all(self.add_and_mul_nums.is_associative()))
 
 		with self.subTest(type="sub"):
-			test_struct = AlgebraicStructure(self.nums, (self.sub,))
-			self.assertListEqual(test_struct.is_associative(), [False])
-			self.assertFalse(all(test_struct.is_associative()))
+			self.assertListEqual(self.sub_nums.is_associative(), [False])
+			self.assertFalse(all(self.sub_nums.is_associative()))
 
 		with self.subTest(type="empty structure"):
 			self.assertListEqual(self.empty_struct.is_associative(), [])
 			self.assertTrue(all(self.empty_struct.is_associative()))
 
-		del test_struct
-
 	def test_neutral_elements(self):
 		with self.subTest(type="add and mul"):
-			test_struct = AlgebraicStructure(self.nums, (self.add, self.mul))
-			self.assertListEqual(test_struct.neutral_elements(), [0, 1])
+			self.assertListEqual(self.add_and_mul_nums.neutral_elements(), [0, 1])
 
 		with self.subTest(type="sub"):
-			test_struct = AlgebraicStructure(self.nums, (self.sub,))
-			self.assertListEqual(test_struct.neutral_elements(), [NoNeutralElement])
+			self.assertListEqual(self.sub_nums.neutral_elements(), [NoElement])
 
 		with self.subTest(type="empty structure"):
 			self.assertListEqual(self.empty_struct.neutral_elements(), [])
 
-		del test_struct
+	def test_find_inverses(self):
+		for i in self.neg_nums:
+			with self.subTest(type="add and mul op 0", num=i):
+				self.assertEqual(self.add_and_mul_neg_nums.find_inverses(0, i), -i)
 
+			with self.subTest(type="add and mul op 1", num=i):
+				self.assertEqual(self.add_and_mul_neg_nums.find_inverses(1, i), i if abs(i) == 1 else NoElement)
 
+	def test_has_inverses(self):
+		with self.subTest(type="add and mul neg"):
+			self.assertListEqual(self.add_and_mul_neg_nums.has_inverses(), [True, False])
+
+		with self.subTest(type="add and mul pos"):
+			self.assertListEqual(self.add_and_mul_nums.has_inverses(), [False, False])
+
+		with self.subTest(type="sub pos"):
+			self.assertListEqual(self.sub_nums.has_inverses(), [False])
+
+		with self.subTest(type="mul rational"):
+			self.assertTrue(self.mul_rational_wo_zero.has_inverses()[0])
+
+		with self.subTest(type="empty structure"):
+			self.assertListEqual(self.empty_struct.has_inverses(), [])
+			self.assertTrue(all(self.empty_struct.has_inverses()))
+
+	def test_is_commutative(self):
+		with self.subTest(type="add and mul neg"):
+			self.assertListEqual(self.add_and_mul_neg_nums.is_commutative(), [True, True])
+
+		with self.subTest(type="add and mul pos"):
+			self.assertListEqual(self.add_and_mul_nums.is_commutative(), [True, True])
+
+		with self.subTest(type="sub pos"):
+			self.assertListEqual(self.sub_nums.is_commutative(), [False])
+
+		with self.subTest(type="empty structure"):
+			self.assertListEqual(self.empty_struct.is_commutative(), [])
+			self.assertTrue(all(self.empty_struct.is_commutative()))
 
 if __name__ == '__main__':
 	unittest.main()
