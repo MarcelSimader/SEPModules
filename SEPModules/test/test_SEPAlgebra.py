@@ -3,6 +3,7 @@ import unittest
 from SEPModules.SEPAlgebra import AlgebraicStructure, NoElement
 from SEPModules.SEPMaths import get_possible_rationals
 
+# noinspection PyTypeChecker
 class TestAlgebraicStructure(unittest.TestCase):
 
 	def setUp(self):
@@ -146,6 +147,8 @@ class TestAlgebraicStructure(unittest.TestCase):
 
 		with self.subTest(type="empty structure"):
 			self.assertTrue(self.empty_struct < self.add_and_mul_nums)
+
+	# TODO: Extend and fix unit tests
 
 	def test_practical_use_case(self):
 		def string_cap(a, b):

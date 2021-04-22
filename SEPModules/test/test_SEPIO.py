@@ -3,6 +3,7 @@ import unittest
 from SEPModules.SEPIO import ConsoleArguments
 
 #TODO: test __load_arguments__ and requires
+# noinspection PyTypeChecker
 class TestConsoleArgumentsMethods(unittest.TestCase):
 	
 	#Set up a console arg manager with inputs:
@@ -37,12 +38,12 @@ class TestConsoleArgumentsMethods(unittest.TestCase):
 		self.assertDictEqual(testCAM.requires_arg, {"a": False, "b": False, "c": True, "ananas": False, "one": False, "two": True})
 		
 	def test_size_return(self):
-		self.assertEqual(self.CAM.size[ConsoleArguments.SET_TOTAL],		   5)
-		self.assertEqual(self.CAM.size[ConsoleArguments.SET_ARGS],		   3)
-		self.assertEqual(self.CAM.size[ConsoleArguments.SET_KWARGS],	   2)
-		self.assertEqual(self.CAM.size[ConsoleArguments.SET_PARS],  	   2)
-		self.assertEqual(self.CAM.size[ConsoleArguments.REQUIRED],  	   3)
-		self.assertEqual(self.CAM.size[ConsoleArguments.REQUIRED_AND_SET], 2)
+		self.assertEqual(self.CAM.set_total,		5)
+		self.assertEqual(self.CAM.set_args,		    3)
+		self.assertEqual(self.CAM.set_kwargs,	    2)
+		self.assertEqual(self.CAM.set_pars,  	    2)
+		self.assertEqual(self.CAM.required,  	    3)
+		self.assertEqual(self.CAM.required_and_set, 2)
 		
 	def test_contains_TypeError(self):
 		with self.assertRaises(TypeError):

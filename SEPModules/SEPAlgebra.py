@@ -508,6 +508,21 @@ class Monoid(AlgebraicStructure):
 	def is_closed(self) -> bool:
 		return super().is_closed()[0]
 
+	def __repr__(self) -> str:
+		return f"<Monoid({self.elements}, {self.binary_operators[0]}>"
+
+	def __str__(self) -> str:
+		return f"(G={self.elements}, {self.binary_operators[0].__qualname__})"
+
+class Semigroup(Monoid):
+	raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
+
+class Group(Semigroup):
+	raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
+
+class AbelianGroup(Group):
+	raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

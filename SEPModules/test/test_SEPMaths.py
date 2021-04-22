@@ -7,6 +7,7 @@ from math import fmod
 from SEPModules.SEPMaths import is_group, is_abelian_group, Rational, find_rational_approximation, get_possible_rationals
 from SEPModules.SEPDecorators import timed
 
+# noinspection PyTypeChecker
 def test_performance_is_group(n=4):
 	print("".rjust(20, "~"))
 	z0 = get_possible_rationals(set(range(-n, n + 1)))
@@ -14,6 +15,7 @@ def test_performance_is_group(n=4):
 	_isGroup = timed(is_group)
 	print("Result: {}".format(_isGroup(z0, lambda a, b: a + b)))
 
+# noinspection PyTypeChecker
 def test_performance_is_abelian_group(n=4):
 	print("".rjust(20, "~"))
 	z0 = get_possible_rationals(set(range(-n, n + 1)))
@@ -21,6 +23,7 @@ def test_performance_is_abelian_group(n=4):
 	_isAbelianGroup = timed(is_abelian_group)
 	print("Result: {}".format(_isAbelianGroup(z0, lambda a, b: a + b)))
 
+# noinspection PyTypeChecker
 def test_performance_rational():
 	#45 choose 4	=	148995
 	#30 choose 4	=	27405
@@ -65,7 +68,8 @@ def test_performance_rational():
 	_prnt("%", n)
 	__test_performance_rational__(op=lambda a, b: a % b, 	op_int=lambda a, b: fmod(a, b))
 	print()
-	
+
+# noinspection PyTypeChecker
 def test_performance_find_rational_approximation(n=100_000, precision=6):
 	print("{}\n(n={:f_}, precision={}) ".format(str().rjust(20, "~"), n, precision), end="")
 
@@ -77,6 +81,7 @@ def test_performance_find_rational_approximation(n=100_000, precision=6):
 			find_rational_approximation(k, precision=precision)
 	__test_performance_find_rational_approximation__()
 
+# noinspection PyTypeChecker
 class TestRationalMethods(unittest.TestCase):
 	
 	def setUp(self):
