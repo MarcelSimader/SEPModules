@@ -29,9 +29,15 @@ class Rational:
 	module. Values are automatically simplified. The following forms are accepted, where option 1 and 3 are exact and
 	option 2 will approximate the float input as integer ratio:
 
-		1. `Rational(int, int)`
-		2. `Rational(float, 1)` or `Rational(float)`
-		3. `Rational(rational_instance, 1)` or `Rational(rational_instance)`
+		+----------------------+----------------------+-----------+
+		| parameter `a`        | parameter `b`        | exact?    |
+		+======================+======================+===========+
+		| int                  | int                  | yes       |
+		+----------------------+----------------------+-----------+
+		| float                | 1 or -               | no        |
+		+----------------------+----------------------+-----------+
+		| Rational             | 1 or -               | yes       |
+		+----------------------+----------------------+-----------+
 
 	:param a: may be an int, float or Rational
 	:param b: may be an int if a is an int, otherwise should be 1 or left out

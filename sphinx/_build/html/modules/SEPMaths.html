@@ -175,11 +175,33 @@
 module. Values are automatically simplified. The following forms are accepted, where option 1 and 3 are exact and
 option 2 will approximate the float input as integer ratio:</p>
 <blockquote>
-<div><ol class="arabic simple">
-<li><p><cite>Rational(int, int)</cite></p></li>
-<li><p><cite>Rational(float, 1)</cite> or <cite>Rational(float)</cite></p></li>
-<li><p><cite>Rational(rational_instance, 1)</cite> or <cite>Rational(rational_instance)</cite></p></li>
-</ol>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 40%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>parameter <cite>a</cite></p></th>
+<th class="head"><p>parameter <cite>b</cite></p></th>
+<th class="head"><p>exact?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>float</p></td>
+<td><p>1 or -</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>Rational</p></td>
+<td><p>1 or -</p></td>
+<td><p>yes</p></td>
+</tr>
+</tbody>
+</table>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

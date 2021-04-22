@@ -1,89 +1,7 @@
 import unittest
 
 from SEPModules.SEPAlgebra import AlgebraicStructure, NoElement
-
 from SEPModules.SEPMaths import get_possible_rationals
-
-# TODO: adapt unit tests for group methods
-# class TestGroupMethods(unittest.TestCase):
-#
-# 	def test_isGroup_isAbelianGroup_TypeError_ValueError(self):
-# 		with self.assertRaises(TypeError):
-# 			is_group(False, lambda a, b: 0)
-#
-# 		with self.subTest(type="wrong type"):
-# 			with self.assertRaises(TypeError):
-# 				is_group([0, 1, 2], 5)
-# 		with self.subTest(type="wrong argument count"):
-# 			with self.assertRaises(TypeError):
-# 				is_group({0, 1, 2, 3}, lambda a, b, c: a + b + c)
-#
-# 		with self.assertRaises(TypeError):
-# 			is_group([0], lambda a, b: a + b, tolerance=None)
-#
-# 		with self.subTest(type="too high"):
-# 			with self.assertRaises(ValueError):
-# 				is_group([0], lambda a, b: a + b, tolerance=11)
-# 		with self.subTest(type="too low"):
-# 			with self.assertRaises(ValueError):
-# 				is_group([0], lambda a, b: a + b, tolerance=-1)
-#
-# 	def test_isGroup_result(self):
-# 		with self.subTest(type="integer addition"):
-# 			self.assertTrue(is_group([-4, -3, -2, -1, 0, 1, 2, 3, 4], lambda a, b: a + b))
-#
-# 		with self.subTest(type="integer addition w/o negatives"):
-# 			self.assertFalse(is_group([0, 1, 2, 3, 4], lambda a, b: a + b))
-#
-# 		with self.subTest(type="rational multiplication "):
-# 			self.assertTrue(
-# 				is_group([Rational(-2), Rational(-1), Rational(-1, 2), Rational(1, 2), Rational(1), Rational(2)],
-# 						 lambda a, b: a * b))
-#
-# 		with self.subTest(type="string capitalization"):
-# 			def _string_cap(a, b):
-# 				res = list(str(a))
-# 				for i, char in enumerate(list(a)):
-# 					if char in b:
-# 						b = b.replace(char, "")
-# 						res[i] = res[i].upper()
-# 				res = res + list(b)
-# 				res.sort()
-# 				if not [None for char in res if char.islower()]: return ""
-# 				return str().join(res)
-#
-# 			self.assertTrue(is_group(["a", "b", "c", "ab", "ac", "bc", ""], _string_cap))
-#
-# 		with self.subTest(type="lookup table"):
-# 			"""
-# 			Forms a group but not an Abelian group.
-# 			"""
-#
-# 			def _table_lookup(a, b):
-# 				dict = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 0, (1, 1): 0, (1, 2): 2, (2, 0): 0, (2, 1): 2,
-# 						(2, 2): 1}
-# 				return dict[(a, b)]
-#
-# 			self.assertTrue(is_group([0, 1, 2], _table_lookup))
-#
-# 	def test_isAbelianGroup_result(self):
-# 		with self.subTest(type="integer addition"):
-# 			self.assertTrue(is_abelian_group([-4, -3, -2, -1, 0, 1, 2, 3, 4], lambda a, b: a + b))
-#
-# 		with self.subTest(type="integer addition w/o negatives"):
-# 			self.assertFalse(is_abelian_group([0, 1, 2, 3, 4], lambda a, b: a + b))
-#
-# 		with self.subTest(type="lookup table"):
-# 			"""
-# 			Forms a group but not an Abelian group.
-# 			"""
-#
-# 			def _table_lookup(a, b):
-# 				dict = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 0, (1, 1): 0, (1, 2): 2, (2, 0): 0, (2, 1): 2,
-# 						(2, 2): 1}
-# 				return dict[(a, b)]
-#
-# 			self.assertFalse(is_abelian_group([0, 1, 2], _table_lookup))
 
 class TestAlgebraicStructure(unittest.TestCase):
 
@@ -100,13 +18,16 @@ class TestAlgebraicStructure(unittest.TestCase):
 		self.add_and_mul_nums = AlgebraicStructure(self.nums, self.add, self.mul)
 		self.add_and_mul_neg_nums = AlgebraicStructure(self.neg_nums, self.add, self.mul)
 		self.sub_nums = AlgebraicStructure(self.nums, self.sub)
+		self.add_nums = AlgebraicStructure(self.nums, self.add)
+		self.add_z3_z3 = AlgebraicStructure([0, 1, 2], self.add_z3)
 		self.mul_rational_wo_zero = AlgebraicStructure(self.rationals_wo_zero, self.mul)
 		self.empty_struct = AlgebraicStructure(())
 
 	def tearDown(self):
 		del self.add, self.sub, self.mul, self.add_z3
 		del self.nums, self.neg_nums, self.rationals_wo_zero
-		del self.add_and_mul_nums, self.add_and_mul_neg_nums, self.sub_nums, self.mul_rational_wo_zero, self.empty_struct
+		del self.add_and_mul_nums, self.add_and_mul_neg_nums, self.sub_nums, self.mul_rational_wo_zero, \
+			self.empty_struct, self.add_z3_z3, self.add_nums
 
 	def test_properties(self):
 		test_struct = AlgebraicStructure(self.nums, self.add)
@@ -180,6 +101,84 @@ class TestAlgebraicStructure(unittest.TestCase):
 		with self.subTest(type="empty structure"):
 			self.assertListEqual(self.empty_struct.is_commutative(), [])
 			self.assertTrue(all(self.empty_struct.is_commutative()))
+
+	def test_is_closed(self):
+		with self.subTest(type="add pos"):
+			self.assertListEqual(self.add_and_mul_nums.is_closed(), [False, False])
+
+		with self.subTest(type="add z3"):
+			self.assertListEqual(self.add_z3_z3.is_closed(), [True])
+
+		with self.subTest(type="empty structure"):
+			self.assertListEqual(self.empty_struct.is_closed(), [])
+
+	def test_eq(self):
+		with self.subTest(type="ident"):
+			self.assertTrue(self.add_and_mul_nums == self.add_and_mul_nums)
+
+		with self.subTest(type="equal"):
+			self.assertTrue(self.add_and_mul_neg_nums == AlgebraicStructure(self.neg_nums, self.add, self.mul))
+
+		with self.subTest(type="lambda equal"):
+			self.assertTrue(self.add_and_mul_nums == AlgebraicStructure(self.nums, lambda a, b: a + b, lambda a, b: a * b))
+			self.assertTrue(self.add_and_mul_nums == AlgebraicStructure(list(range(10)), lambda a, b: a + b, lambda a, b: a * b))
+
+		with self.subTest(type="not equal"):
+			self.assertFalse(self.mul_rational_wo_zero == self.add_and_mul_nums)
+
+		with self.subTest(type="empty structure"):
+			self.assertTrue(self.empty_struct == AlgebraicStructure(()))
+
+	def test_lt(self):
+		with self.subTest(type="add pos < add and mul pos"):
+			self.assertFalse(self.add_nums < self.add_and_mul_nums)
+
+		with self.subTest(type="dict"):
+			self.assertTrue(AlgebraicStructure([0, 1], lambda a, b: {(0,0):0,(0,1):1,(1,0):1,(1,1):0}[(a,b)]) <
+							AlgebraicStructure([0, 1, 2], lambda a, b: {(0,0):0,(0,1):1,(1,0):1,(1,1):0,(0,2):1,(1,2):2,(2,2):1,(2,0):0,(2,1):0}[(a,b)]))
+
+		with self.subTest(type="add z3 < add z7"):
+			self.assertTrue(self.add_z3_z3 < AlgebraicStructure(list(range(7)), lambda a, b: (a + b) % 7))
+
+		with self.subTest(type="many ops z3"):
+			self.assertTrue(AlgebraicStructure([0, 1, 2], lambda a, b: (a + b) % 3, lambda a, b: (a + b) % 2) <
+							AlgebraicStructure([0, 1, 2, 3], lambda a, b: (a + b) % 3, lambda a, b: (a + b) % 4))
+
+		with self.subTest(type="empty structure"):
+			self.assertTrue(self.empty_struct < self.add_and_mul_nums)
+
+	def test_practical_use_case(self):
+		def string_cap(a, b):
+			res = list(str(a))
+			for i, char in enumerate(list(a)):
+				if char in b:
+					b = b.replace(char, "")
+					res[i] = res[i].upper()
+			res = res + list(b)
+			res.sort()
+			if not [None for char in res if char.islower()]: return ""
+			return str().join(res)
+
+		test_struct = AlgebraicStructure(["", "a", "b", "c", "ab", "ac", "bc"], string_cap)
+
+		with self.subTest(type="associativity"):
+			self.assertTrue(test_struct.is_associative()[0])
+
+		with self.subTest(type="neutral el"):
+			self.assertEqual(test_struct.neutral_elements()[0], "")
+
+		with self.subTest(type="has inverses"):
+			self.assertTrue(test_struct.has_inverses()[0])
+
+		with self.subTest(type="find inverses"):
+			for test_str in test_struct.elements:
+				with self.subTest(index=test_str):
+					self.assertEqual(test_struct.find_inverses(0, test_str), test_str)
+
+		with self.subTest(type="closed"):
+			self.assertFalse(test_struct.is_closed()[0])
+
+		print(repr(test_struct))
 
 if __name__ == '__main__':
 	unittest.main()
