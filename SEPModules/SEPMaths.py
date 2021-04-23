@@ -319,10 +319,10 @@ def fibonacci(n : int, fib_list=None) -> int:
 	n = abs(n) if n < 0 else n
 	if fib_list is None:
 		fib_list = {-2:0, -1:0, 0:0, 1:1}
-	def __fast_fib__(n, fibList):
-		if not n in fibList:
-			fibList[n] = __fast_fib__(n - 1, fibList) + __fast_fib__(n - 2, fibList)
-		return fibList[n]
+	def __fast_fib__(n, fib_list):
+		if not n in fib_list:
+			fib_list[n] = __fast_fib__(n - 1, fib_list) + __fast_fib__(n - 2, fib_list)
+		return fib_list[n]
 	return __fast_fib__(n, fib_list)
 
 def slow_fibonacci(n : int) -> int:

@@ -64,13 +64,13 @@ class TestAlgebraicStructure(unittest.TestCase):
 		with self.subTest(type="empty structure"):
 			self.assertListEqual(self.empty_struct.neutral_elements(), [])
 
-	def test_find_inverses(self):
+	def test_find_inverses_per_operator(self):
 		for i in self.neg_nums:
 			with self.subTest(type="add and mul op 0", num=i):
-				self.assertEqual(self.add_and_mul_neg_nums.find_inverses(0, i), -i)
+				self.assertEqual(self.add_and_mul_neg_nums.find_inverses_per_operator(0, i), -i)
 
 			with self.subTest(type="add and mul op 1", num=i):
-				self.assertEqual(self.add_and_mul_neg_nums.find_inverses(1, i), i if abs(i) == 1 else NoElement)
+				self.assertEqual(self.add_and_mul_neg_nums.find_inverses_per_operator(1, i), i if abs(i) == 1 else NoElement)
 
 	def test_has_inverses(self):
 		with self.subTest(type="add and mul neg"):
@@ -148,8 +148,6 @@ class TestAlgebraicStructure(unittest.TestCase):
 		with self.subTest(type="empty structure"):
 			self.assertTrue(self.empty_struct < self.add_and_mul_nums)
 
-	# TODO: Extend and fix unit tests
-
 	def test_practical_use_case(self):
 		def string_cap(a, b):
 			res = list(str(a))
@@ -176,12 +174,14 @@ class TestAlgebraicStructure(unittest.TestCase):
 		with self.subTest(type="find inverses"):
 			for test_str in test_struct.elements:
 				with self.subTest(index=test_str):
-					self.assertEqual(test_struct.find_inverses(0, test_str), test_str)
+					self.assertEqual(test_struct.find_inverses_per_operator(0, test_str), test_str)
 
 		with self.subTest(type="closed"):
 			self.assertFalse(test_struct.is_closed()[0])
 
 		print(repr(test_struct))
+
+# TODO: write unit tests for AlgebraicStructure subclasses
 
 if __name__ == '__main__':
 	unittest.main()

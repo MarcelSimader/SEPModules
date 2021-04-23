@@ -127,7 +127,7 @@ class AlgebraicStructure:
 
 		:return: a boolean value determining the validity of this algebraic structure
 		"""
-		return all(self.is_closed())
+		return all(AlgebraicStructure.is_closed(self))
 
 	def is_associative(self) -> List[bool]:
 		r"""
@@ -207,7 +207,7 @@ class AlgebraicStructure:
 							 f"expected no more than '{len(self.binary_operators)}'")
 
 		operator = self.binary_operators[operator_num]
-		neutral_elements = self.neutral_elements()[operator_num]
+		neutral_elements = AlgebraicStructure.neutral_elements(self)[operator_num]
 		result_list = list()
 
 		# check if neutral elements exists
@@ -246,7 +246,7 @@ class AlgebraicStructure:
 		for i, operator in enumerate(self.binary_operators):
 
 			# create a list out of neutral_elements
-			neutral_els = self.neutral_elements()[i]
+			neutral_els = AlgebraicStructure.neutral_elements(self)[i]
 
 			# check if neutral element even exists for this operator
 			if neutral_els is NoElement:
@@ -515,13 +515,19 @@ class Monoid(AlgebraicStructure):
 		return f"(G={self.elements}, {self.binary_operators[0].__qualname__})"
 
 class Semigroup(Monoid):
-	raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
+
+	def __init__(self):
+		raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
 
 class Group(Semigroup):
-	raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
+
+	def __init__(self):
+		raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
 
 class AbelianGroup(Group):
-	raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
+
+	def __init__(self):
+		raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
