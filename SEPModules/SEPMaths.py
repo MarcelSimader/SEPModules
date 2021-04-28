@@ -9,13 +9,12 @@ Date: 01.04.2021
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 from __future__ import annotations
 
-import types
 from numbers import Real
 from typing import Tuple, Callable, Any, Union, Set
 
 import sys
-from itertools import product, combinations
-from math import copysign, gcd, floor, ceil, isclose
+from itertools import product
+from math import copysign, gcd, floor, ceil
 
 from SEPModules.SEPPrinting import cl_p, WARNING
 
@@ -23,15 +22,22 @@ from SEPModules.SEPPrinting import cl_p, WARNING
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# noinspection PyArgumentList,PyProtectedMember
 class Rational:
-	"""
-	Rational number of the form :math:`a/b \\text{ with } a, b \\in \\mathbb{Z}`. Used for symbolic computations in :mod:`SEPMaths`
+	r"""
+	Rational number of the form :math:`a/b` with :math:`a, b \in \mathbb{Z}`. Used for symbolic computations in :mod:`SEPMaths`
 	module. Values are automatically simplified. The following forms are accepted, where option 1 and 3 are exact and
 	option 2 will approximate the float input as integer ratio:
 
-		1. `Rational(int, int)`
-		2. `Rational(float, 1)` or `Rational(float)`
-		3. `Rational(rational_instance, 1)` or `Rational(rational_instance)`
+		+----------------------+----------------------+-----------+
+		| parameter `a`        | parameter `b`        | exact?    |
+		+======================+======================+===========+
+		| int                  | int                  | yes       |
+		+----------------------+----------------------+-----------+
+		| float                | 1 or -               | no        |
+		+----------------------+----------------------+-----------+
+		| Rational             | 1 or -               | yes       |
+		+----------------------+----------------------+-----------+
 
 	:param a: may be an int, float or Rational
 	:param b: may be an int if a is an int, otherwise should be 1 or left out
@@ -41,9 +47,7 @@ class Rational:
 	
 	#Decorator
 	def _prepare_int_binary_op(func : Callable[..., Any]) -> Callable[..., Any]:
-		"""
-		Do type checking of arithmetic binary operations on Rationals and auto-convert int or float to Rational type.
-		"""
+		"""Do type checking of arithmetic binary operations on Rationals and auto-convert int or float to Rational type."""
 		def __wrapper__(self, other):
 			if not (type(other) in (int, float) or type(other) is Rational):
 				raise TypeError("Illegal binary operation '{}' of type 'Rational' and '{}' (expected 'int', 'Rational' or 'float')."\
@@ -60,15 +64,15 @@ class Rational:
 
 	@staticmethod
 	def __simplify__(a : int, b : int) -> Tuple[int, int]:
+		r"""
+		Takes in a tuple :math:`(a, b)` for integers a and b and returns a simplified tuple :math:`(c, d)` where :math:`a/b\equiv c/d`.
 		"""
-		Takes in a tuple :math:`(a, b)` for integers a and b and returns a simplified tuple :math:`(c, d)` where :math:`a/b\\equiv c/d`.
-		"""
-		_gcd = gcd(a, b) #divide a and b by gcd(a, b). When gcd is 1, already fully simplified 
+		_gcd = gcd(a, b) # divide a and b by gcd(a, b). When gcd is 1, already fully simplified
 		return a // _gcd, b // _gcd
 	
 	@property
 	def sign(self) -> int:
-		return (self._sign[0] ^ self._sign[1]) + 1 #xor hack, amounts to sign[0] * sign[1]
+		return (self._sign[0] ^ self._sign[1]) + 1 # xor hack, amounts to sign[0] * sign[1]
 	
 	@property
 	def a(self) -> int:
@@ -120,7 +124,7 @@ class Rational:
 		return self.a if key == "a" or key == 0 else self.b
 		
 	def __hash__(self):
-		return hash(tuple([self.sign, self._a, self._b]))
+		return hash((self.a, self.b))
 	
 	@_prepare_int_binary_op
 	def __compare__(self, other) -> int:
@@ -133,6 +137,7 @@ class Rational:
 			# abs(a / b) - abs(c / d)
 			# abs(ad / bd) - abs(cb / db)
 			# abs(ad) - abs(cb)
+			# noinspection PyProtectedMember
 			return sign(self._a * other._b - other._a * self._b)
 				
 	def __eq__(self, other) -> bool:
@@ -152,7 +157,8 @@ class Rational:
 		
 	def __ge__(self, other) -> bool:
 		return self.__compare__(other) >= 0
-	
+
+	# noinspection PyProtectedMember
 	@_prepare_int_binary_op
 	def __add__(self, other) -> Rational:
 		"""
@@ -253,8 +259,8 @@ class Rational:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def find_rational_approximation(num : Real, precision :int=4) -> Rational:
-	"""
-	Returns a Rational x with numerator and denominator a, b where :math:`\\text{float}(x) = a/b \\approx \\text{num}`.
+	r"""
+	Returns a Rational x with numerator and denominator a, b where :math:`\text{float}(x) = a/b \approx \text{num}`.
 
 	:param num: the number to approximate as float or int
 	:param precision: the number of decimal digits of precision, if this exceeds the limits of the floating point
@@ -294,8 +300,8 @@ def find_rational_approximation(num : Real, precision :int=4) -> Rational:
 	return Rational(int(copysign(iteration_vars[0] + int(abs(num)) * iteration_vars[1], num)), iteration_vars[1])
 
 def get_possible_rationals(_set : Union[list, set]) -> Set[Rational]:
-	"""
-	Returns unique Rationals in a set with :math:`a/b \\quad \\forall a, b \\in \\text{_set}`.
+	r"""
+	Returns unique Rationals in a set with :math:`a/b \quad \forall a, b \in \text{_set}`.
 
 	:param _set: all elements of `_set` must be integers.
 
@@ -309,111 +315,14 @@ def get_possible_rationals(_set : Union[list, set]) -> Set[Rational]:
 	# all rationals (a, b) over Cartesian product length 2 of _set
 	return {Rational(*a) for a in product(_set, repeat=2) if a[1] != 0}
 
-def is_group(_set : Union[list, set], operator : Callable[[Any, Any], Any], tolerance :int=0, abelian :bool=False) -> bool:
-	"""
-	Test if a set and an operator form a group.
-
-	:param operator: described by a function of form `(a, b) -> (c)`
-	:param tolerance: a value from 0 to 10, where 0 is the least and 10 is the most tolerance in floating point precision
-	:param abelian: test for a regular or an abelian group
-
-	:raises ValueError: if tolerance is not between 0 and 10
-	"""
-	#input sanitation
-	if type(_set) not in (list, set):
-		raise TypeError("'_set' must be of type 'list' or 'set' (received '{}').".format(_set.__class__.__name__))
-	
-	try:
-		_arg_count = operator.__code__.co_argcount - operator.__code__.co_kwonlyargcount #count positional arguments of operator function
-	except Exception:
-		_arg_count = 0
-	if (not type(operator) is types.FunctionType) or _arg_count != 2: 
-		raise TypeError("'operator' must be of type 'function' and receive two positional arguments (has {}).".format(_arg_count))
-	
-	if not type(tolerance) is int:
-		raise TypeError("'tolerance' must be of type 'int' (received '{}').".format(tolerance.__class__.__name__))
-	if tolerance < 0 or tolerance > 10:
-		raise ValueError("'tolerance' must be between 0 (least) and 10 (most) (received {}).".format(tolerance))
-	
-	#TODO: figure out what to do with these properties
-	# hasNeutral, isAssociative, hasInverses, isCommutative = False, True, True, True
-	neutral_element = None
-	
-	#define custom equal to test if values are approximately equal according to 'tolerance' value
-	if tolerance == 0:
-		equal = lambda a, b: a == b
-	else:
-		_tol = 10**(12-tolerance)
-		equal = lambda a, b: isclose(a, b, rel_tol=_tol)
-	
-	#list so we do not recompute the same values
-	_computed = {}
-	
-	def add_or_get_computed(a, b):
-		"""
-		Retrieve already computed values or compute and then store them in _computed.
-		"""
-		_ab = (a, b)
-		try:
-			return _computed[_ab]
-		except KeyError:
-			_computed[_ab] = operator(a, b)
-			return _computed[_ab]
-	
-	#++++test associativity++++
-	for a, b, c in combinations(_set, 3):
-		if not equal(operator(a, add_or_get_computed(b, c)), operator(add_or_get_computed(a, b), c)):
-			# isAssociative = False
-			return False #cannot be a group
-	
-	#++++test for commutativity++++
-	if abelian:
-		for a, b in combinations(_set, 2):
-			if not equal(add_or_get_computed(a, b), add_or_get_computed(b, a)):
-				# isCommutative = False
-				return False
-	
-	#++++find neutral element++++
-	for a in _set:
-		_neutralFlag = True
-		for b in _set:
-			if not equal(add_or_get_computed(a, b), b):
-				_neutralFlag = False
-				break
-		if _neutralFlag:
-			neutral_element = a
-			# hasNeutral = True
-			break
-	
-	if neutral_element is None: return False #cannot be a group
-	
-	#++++test for inverses++++
-	for a in _set:
-		_hasInverseFlag = False
-		for b in _set:
-			if equal(add_or_get_computed(a, b), neutral_element):
-				_hasInverseFlag = True
-				break
-		if not _hasInverseFlag: 
-			# hasInverses = False
-			return False #cannot be group
-	
-	return True
-
-def is_abelian_group(_set : Union[list, set], operator : Callable[[Any, Any], Any], tolerance :int=0) -> bool:
-	"""
-	Works the same way as :py:func:`is_group` but tests for Abelian groups.
-	"""
-	return is_group(_set, operator, tolerance=tolerance, abelian=True)
-
 def fibonacci(n : int, fib_list=None) -> int:
 	n = abs(n) if n < 0 else n
 	if fib_list is None:
 		fib_list = {-2:0, -1:0, 0:0, 1:1}
-	def __fast_fib__(n, fibList):
-		if not n in fibList:
-			fibList[n] = __fast_fib__(n - 1, fibList) + __fast_fib__(n - 2, fibList)
-		return fibList[n]
+	def __fast_fib__(n, fib_list):
+		if not n in fib_list:
+			fib_list[n] = __fast_fib__(n - 1, fib_list) + __fast_fib__(n - 2, fib_list)
+		return fib_list[n]
 	return __fast_fib__(n, fib_list)
 
 def slow_fibonacci(n : int) -> int:
@@ -433,3 +342,24 @@ def sign(x : int, zero : int=0) -> int:
 	:param zero: defaults to 0, but 1 may be useful in certain applications
 	"""
 	return -1 if x < 0 else (1 if x > 0 else zero)
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ DEPRECATED ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def is_group():
+	"""
+	..	deprecated:: 0.1.1.dev0
+
+		:py:func:`is_group` functionality was moved to :py:mod:`SEPModules.SEPAlgebra`
+	"""
+	raise DeprecationWarning("removed in 0.1.1.dev0, functionality was moved to SEPModules.SEPAlgebra")
+
+def is_abelian_group():
+	"""
+	..	deprecated:: 0.1.1.dev0
+
+		:py:func:`is_abelian_group` functionality was moved to :py:mod:`SEPModules.SEPAlgebra`.
+	"""
+	is_group()

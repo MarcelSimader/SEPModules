@@ -1,0 +1,575 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SEPAlgebra &mdash; SEPModules 0.1.1.dev0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SEPIO" href="SEPIO.html" />
+    <link rel="prev" title="SEPMaths" href="SEPMaths.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SEPModules
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="SEPMaths.html">SEPMaths</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SEPAlgebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPIO.html">SEPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPDecorators.html">SEPDecorators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPPrinting.html">SEPPrinting</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SEPModules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>SEPAlgebra</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/modules/SEPAlgebra.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="module-SEPModules.SEPAlgebra">
+<span id="sepalgebra"></span><h1>SEPAlgebra<a class="headerlink" href="#module-SEPModules.SEPAlgebra" title="Permalink to this headline">¶</a></h1>
+<p>Author: Marcel Simader</p>
+<p>Date: 11.04.2021</p>
+<dl class="py class">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">SEPModules.SEPAlgebra.</span></code><code class="sig-name descname"><span class="pre">AlgebraicStructure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">binary_operators</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="SEPModules.SEPAlgebra.AlgebraicStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlgebraicStructure</span></code></a> is a class designed to represent a structure <span class="math notranslate nohighlight">\((G, \circ_1, \circ_2, \ldots, \circ_n)\)</span>
+with one collection containing any number of elements of type <cite>Element</cite> and another collection of callable objects which
+represent the binary operators applied to the elements of <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>The usual relational operators can be performed on this class:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 16%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\leq\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(&lt;\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(&gt;\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\geq\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(=\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\neq\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__le__" title="SEPModules.SEPAlgebra.AlgebraicStructure.__le__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__le__()</span></code></a></p></td>
+<td><p><a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__lt__" title="SEPModules.SEPAlgebra.AlgebraicStructure.__lt__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__lt__()</span></code></a></p></td>
+<td><p><a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__gt__" title="SEPModules.SEPAlgebra.AlgebraicStructure.__gt__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__gt__()</span></code></a></p></td>
+<td><p><a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__ge__" title="SEPModules.SEPAlgebra.AlgebraicStructure.__ge__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__ge__()</span></code></a></p></td>
+<td><p><a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__eq__" title="SEPModules.SEPAlgebra.AlgebraicStructure.__eq__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__eq__()</span></code></a></p></td>
+<td><p><a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__ne__" title="SEPModules.SEPAlgebra.AlgebraicStructure.__ne__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__ne__()</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Performing a boolean test using <code class="docutils literal notranslate"><span class="pre">bool(algebraic_struct)</span></code> (see <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__bool__" title="SEPModules.SEPAlgebra.AlgebraicStructure.__bool__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__bool__()</span></code></a>) will intenrally call the function
+<a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.is_valid" title="SEPModules.SEPAlgebra.AlgebraicStructure.is_valid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_valid()</span></code></a> of the respective class instance.</p>
+<p>An example usage of <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="SEPModules.SEPAlgebra.AlgebraicStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlgebraicStructure</span></code></a> could look as follows, where we define an algebraic structure over
+the set <span class="math notranslate nohighlight">\(\mathbb{Z}_3 = \{ 0, 1, 2 \}\)</span> along with the binary operator <span class="math notranslate nohighlight">\(f\colon \mathbb{Z}_3 \times \mathbb{Z}_3
+\to \mathbb{Z}_3\)</span>, <span class="math notranslate nohighlight">\(f(a, b) = a + b \mod 3\)</span>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">struct</span> <span class="o">=</span> <span class="n">AlgebraicStructure</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="nb">bool</span><span class="p">(</span><span class="n">struct</span><span class="p">)</span> <span class="o">==</span> <span class="n">struct</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span> <span class="c1"># since struct is valid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">neutral_elements</span><span class="p">())</span> <span class="c1"># only one neutral el for our one operator</span>
+<span class="go">[0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">find_inverses</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1"># finds one inverse of element 1 for operator 0</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elements</strong> – a collection containing n elements of any but the same type <cite>Element</cite>, where the type given must
+be honored in all other uses of this instance</p></li>
+<li><p><strong>binary_operators</strong> – a collection of callable objects taking two arguments of type <cite>Element</cite> and returning one
+single object of type <cite>Element</cite> representing the application of the given operator onto the objects given as
+arguments</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Parameter <cite>elements</cite> will internally be stored as a <code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code> object and parameter <cite>binary_operators</cite> will
+internally be stored as a <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> object.</p>
+<p>This class implements most methods by exhaustively iterating over all elements over the set, at times even in up
+to three nested loops, leading to very bad time complexity. More efficient and tailored solutions for these problems
+may be implemented as subclasses that are less general than this one.</p>
+</div>
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__bool__">
+<code class="sig-name descname"><span class="pre">__bool__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__bool__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether this algebraic structure is valid or not (see <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.is_valid" title="SEPModules.SEPAlgebra.AlgebraicStructure.is_valid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_valid()</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>boolean value describing whether this algebraic structure is valid or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__eq__">
+<code class="sig-name descname"><span class="pre">__eq__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if all of the following criteria are met:</p>
+<ol class="arabic simple">
+<li><p><cite>self</cite> and <cite>other</cite> are an instance of <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="SEPModules.SEPAlgebra.AlgebraicStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlgebraicStructure</span></code></a></p></li>
+<li><p><span class="math notranslate nohighlight">\(G_{self} \triangle G_{other} = \emptyset\)</span>, ie. the sets are equal in elements</p></li>
+<li><p><span class="math notranslate nohighlight">\(\forall i \in \{0,\ldots,|G|-1\} \;\forall a, b \in G: a \circ^i_{self} b = a \circ^i_{other} b\)</span>, ie. all operators of <cite>self</cite> and <cite>other</cite> return the same value if they are passed the same arguments</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a boolean value describing whether <cite>self</cite> and <cite>other</cite> are algebraically equal or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__ge__">
+<code class="sig-name descname"><span class="pre">__ge__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether or not algebraic structure <cite>other</cite> is a substructure of this algebraic structure or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a boolean value describing whether or not <cite>other</cite> is a substructure of <cite>self</cite> or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__gt__">
+<code class="sig-name descname"><span class="pre">__gt__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether or not algebraic structure <cite>other</cite> is a true substructure of this algebraic structure or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a boolean value describing whether or not <cite>other</cite> is a true substructure of <cite>self</cite> or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__hash__">
+<code class="sig-name descname"><span class="pre">__hash__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return hash(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">binary_operators</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__le__">
+<code class="sig-name descname"><span class="pre">__le__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__le__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether or not this algebraic structure is a substructure of algebraic structure <cite>other</cite> or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a boolean value describing whether or not <cite>self</cite> is a substructure of <cite>other</cite> or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__lt__">
+<code class="sig-name descname"><span class="pre">__lt__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether or not this algebraic structure is a true substructure of algebraic structure <cite>other</cite> or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a boolean value describing whether or not <cite>self</cite> is a true substructure of <cite>other</cite> or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__ne__">
+<code class="sig-name descname"><span class="pre">__ne__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>See negation of <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__eq__" title="SEPModules.SEPAlgebra.AlgebraicStructure.__eq__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__eq__()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__repr__">
+<code class="sig-name descname"><span class="pre">__repr__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__str__">
+<code class="sig-name descname"><span class="pre">__str__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.__weakref__">
+<code class="sig-name descname"><span class="pre">__weakref__</span></code><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.binary_operators">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">binary_operators</span></code><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.binary_operators" title="Permalink to this definition">¶</a></dt>
+<dd><p>A collection of binary operators representing the operators <span class="math notranslate nohighlight">\(\circ_1, \circ_2, \ldots, \circ_n\)</span> of
+this algebraic structure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.elements">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">elements</span></code><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>A collection representing set <span class="math notranslate nohighlight">\(G\)</span> in this algebraic structure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.find_inverses">
+<code class="sig-name descname"><span class="pre">find_inverses</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator_num</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">SEPModules.SEPAlgebra._NoElement</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.find_inverses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the inverses of an element <cite>element</cite> under operator <span class="math notranslate nohighlight">\(\circ_{operator\_num}\)</span> stored in this instance
+at position <cite>operator_num</cite>. This function will return a list of possible inverses for each operator and each
+neutral element of said operator. Note that any neutral element may match an inverse and there is no distinction
+made between these cases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operator_num</strong> – the position of operator <span class="math notranslate nohighlight">\(\circ_{operator\_num}\)</span> in this structure <span class="math notranslate nohighlight">\(G\)</span></p></li>
+<li><p><strong>element</strong> – the element to find inverses under operator <span class="math notranslate nohighlight">\(\circ_{operator\_num}\)</span> of</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if <cite>operator_num &lt; 0</cite> or no operator exists in this instance at position <cite>operator_num</cite></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>either a list of objects of type <cite>Element</cite>, an <cite>Element</cite> object or the <a class="reference internal" href="#SEPModules.SEPAlgebra.NoElement" title="SEPModules.SEPAlgebra.NoElement"><code class="xref py py-data docutils literal notranslate"><span class="pre">NoElement</span></code></a> literal if
+no inverses exists</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.has_inverses">
+<code class="sig-name descname"><span class="pre">has_inverses</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.has_inverses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test every element of <span class="math notranslate nohighlight">\(G\)</span> on every operator <span class="math notranslate nohighlight">\(\circ_n\)</span> to see if inverses exist for each element for
+any neutral element of said operator. This function calls <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.neutral_elements" title="SEPModules.SEPAlgebra.AlgebraicStructure.neutral_elements"><code class="xref py py-meth docutils literal notranslate"><span class="pre">neutral_elements()</span></code></a> to test for inverses and
+abort if the substructure trivially has no inverses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of boolean values for each operator in order, corresponding to whether all objects have an inverse
+under said operator or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.is_associative">
+<code class="sig-name descname"><span class="pre">is_associative</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.is_associative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether this algebraic structure is associative for every operator <span class="math notranslate nohighlight">\(\circ_n\)</span> in <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.binary_operators" title="SEPModules.SEPAlgebra.AlgebraicStructure.binary_operators"><code class="xref py py-attr docutils literal notranslate"><span class="pre">binary_operators</span></code></a>
+over set <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of booleans describing for every operator whether it is associative with set <span class="math notranslate nohighlight">\(G\)</span> or not in order</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.is_closed">
+<code class="sig-name descname"><span class="pre">is_closed</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.is_closed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether or not set <span class="math notranslate nohighlight">\(G\)</span> is closed under <span class="math notranslate nohighlight">\(\circ_n\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of boolean values corresponding to whether or not every operator is closed or not in order</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.is_commutative">
+<code class="sig-name descname"><span class="pre">is_commutative</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.is_commutative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test every element in <span class="math notranslate nohighlight">\(G\)</span> on every operator <span class="math notranslate nohighlight">\(\circ_n\)</span> to see if it is commutative or not. This function
+keeps track of any tuple <span class="math notranslate nohighlight">\((a, b)\)</span> it has seen to speed up computation. Since for commutativity we need to test
+<span class="math notranslate nohighlight">\(\forall a, b: a \circ_n b = b \circ_n a\)</span>, once we have seen <span class="math notranslate nohighlight">\((a, b)\)</span> we do not need to also test
+<span class="math notranslate nohighlight">\((b, a)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of boolean values corresponding to whether each operator is commutative or not in order</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.is_valid">
+<code class="sig-name descname"><span class="pre">is_valid</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether or not this algebraic structure is considered as valid. In this case this means that
+<span class="math notranslate nohighlight">\((G, \circ_1, \circ_2, \ldots, \circ_n)\)</span> must be closed under all operators <span class="math notranslate nohighlight">\(\circ_n\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a boolean value determining the validity of this algebraic structure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.AlgebraicStructure.neutral_elements">
+<code class="sig-name descname"><span class="pre">neutral_elements</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">SEPModules.SEPAlgebra._NoElement</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#SEPModules.SEPAlgebra.AlgebraicStructure.neutral_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to find the neutral element for every operator <span class="math notranslate nohighlight">\(\circ_n\)</span> in <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure.binary_operators" title="SEPModules.SEPAlgebra.AlgebraicStructure.binary_operators"><code class="xref py py-attr docutils literal notranslate"><span class="pre">binary_operators</span></code></a> over set <span class="math notranslate nohighlight">\(G\)</span>.
+This function matches an arbitrary amount of neutral elements per operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of neutral elements or a list of lists of neutral elements of type <cite>Element</cite> for every operator in order,
+if no such neutral element is found the literal <a class="reference internal" href="#SEPModules.SEPAlgebra.NoElement" title="SEPModules.SEPAlgebra.NoElement"><code class="xref py py-data docutils literal notranslate"><span class="pre">NoElement</span></code></a> is returned</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt id="SEPModules.SEPAlgebra.Element">
+<code class="sig-prename descclassname"><span class="pre">SEPModules.SEPAlgebra.</span></code><code class="sig-name descname"><span class="pre">Element</span></code><a class="headerlink" href="#SEPModules.SEPAlgebra.Element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic type <cite>Element</cite> for use in statically typing <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="SEPModules.SEPAlgebra.AlgebraicStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlgebraicStructure</span></code></a>.</p>
+<p>alias of TypeVar(‘Element’)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="SEPModules.SEPAlgebra.Monoid">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">SEPModules.SEPAlgebra.</span></code><code class="sig-name descname"><span class="pre">Monoid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary_operator</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.Monoid" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPAlgebra.Monoid" title="SEPModules.SEPAlgebra.Monoid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Monoid</span></code></a> is a subclass of <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="SEPModules.SEPAlgebra.AlgebraicStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlgebraicStructure</span></code></a> and represents an algebraic structure of form
+<span class="math notranslate nohighlight">\((G, \circ)\)</span>. To test whether or not this instance is a valid monoid in the mathematical sense this class
+implements <a class="reference internal" href="#SEPModules.SEPAlgebra.Monoid.is_valid" title="SEPModules.SEPAlgebra.Monoid.is_valid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_valid()</span></code></a> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">__bool__()</span></code> (see <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="SEPModules.SEPAlgebra.AlgebraicStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlgebraicStructure</span></code></a>).</p>
+<p>Unlike <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="SEPModules.SEPAlgebra.AlgebraicStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlgebraicStructure</span></code></a>, this class is can only be instantiated with one operator (e.g.
+<code class="docutils literal notranslate"><span class="pre">monoid</span> <span class="pre">=</span> <span class="pre">Monoid({...},</span> <span class="pre">add)</span></code> is allowed but <code class="docutils literal notranslate"><span class="pre">monoid</span> <span class="pre">=</span> <span class="pre">Monoid({...},</span> <span class="pre">add,</span> <span class="pre">subtract)</span></code> is not since it
+can never be a valid monoid).</p>
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.Monoid.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary_operator</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPAlgebra.Monoid.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.Monoid.is_associative">
+<code class="sig-name descname"><span class="pre">is_associative</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#SEPModules.SEPAlgebra.Monoid.is_associative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether this algebraic structure is associative for operator <span class="math notranslate nohighlight">\(\circ\)</span> over set <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a boolean value describing whether this <a class="reference internal" href="#SEPModules.SEPAlgebra.Monoid" title="SEPModules.SEPAlgebra.Monoid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Monoid</span></code></a> instance is associative or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SEPModules.SEPAlgebra.Monoid.is_valid">
+<code class="sig-name descname"><span class="pre">is_valid</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#SEPModules.SEPAlgebra.Monoid.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether or not this <a class="reference internal" href="#SEPModules.SEPAlgebra.Monoid" title="SEPModules.SEPAlgebra.Monoid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Monoid</span></code></a> instance is a valid mathematical monoid or not. For this to be true,
+two conditions must be met:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>self</cite> is a valid <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="SEPModules.SEPAlgebra.AlgebraicStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlgebraicStructure</span></code></a> (ie. is closed)</p></li>
+<li><p><cite>self</cite> is commutative with <span class="math notranslate nohighlight">\(\circ\)</span> over <span class="math notranslate nohighlight">\(G\)</span></p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a boolean representing whether this instance is a valid monoid or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt id="SEPModules.SEPAlgebra.NoElement">
+<code class="sig-prename descclassname"><span class="pre">SEPModules.SEPAlgebra.</span></code><code class="sig-name descname"><span class="pre">NoElement</span></code><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">&lt;NoElement&gt;</span></em><a class="headerlink" href="#SEPModules.SEPAlgebra.NoElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Singleton used to indicate that an algebraic structure does not have an element under a method or operator.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="SEPModules.SEPAlgebra.Operator">
+<code class="sig-prename descclassname"><span class="pre">SEPModules.SEPAlgebra.</span></code><code class="sig-name descname"><span class="pre">Operator</span></code><a class="headerlink" href="#SEPModules.SEPAlgebra.Operator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type alias <cite>Operator</cite> for use in typing <a class="reference internal" href="#SEPModules.SEPAlgebra.AlgebraicStructure" title="SEPModules.SEPAlgebra.AlgebraicStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlgebraicStructure</span></code></a>. Represents a <cite>Callable</cite> taking two arguments 
+of type <a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><code class="xref py py-data docutils literal notranslate"><span class="pre">Element</span></code></a> and returning an object of type <a class="reference internal" href="#SEPModules.SEPAlgebra.Element" title="SEPModules.SEPAlgebra.Element"><code class="xref py py-data docutils literal notranslate"><span class="pre">Element</span></code></a>.</p>
+<p>alias of Callable[[Element, Element], Element]</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="SEPIO.html" class="btn btn-neutral float-right" title="SEPIO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SEPMaths.html" class="btn btn-neutral float-left" title="SEPMaths" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcel Simader.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

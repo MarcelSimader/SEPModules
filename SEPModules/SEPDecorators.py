@@ -37,6 +37,7 @@ def timed_return(func : Callable) -> Callable:
 		return {"return": r, "time": t_time}
 	
 	__wrapper__.__name__ = "{}timedReturn_{}".format(__WRAPPER_NAME__, func.__name__)
+	__wrapper__.__doc__ = func.__doc__
 	return __wrapper__
 
 def timed(func : Callable) -> Callable:
@@ -52,4 +53,5 @@ def timed(func : Callable) -> Callable:
 		return r["return"]
 	
 	__wrapper__.__name__ = "{}timed_{}".format(__WRAPPER_NAME__, func.__name__)
+	__wrapper__.__doc__ = func.__doc__
 	return __wrapper__

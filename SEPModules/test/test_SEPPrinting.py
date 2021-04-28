@@ -1,14 +1,13 @@
 import math
 import unittest
 from random import random
-from threading import Thread
 import time
 
 from colorama import Back
 
-import SEPPrinting
 from SEPModules.SEPPrinting import get_time_str, console_graph, console_progress_bar, FILL_CHARACTERS, REL_POS, NORMAL, BRIGHT, RED, GREEN
 
+# noinspection PyTypeChecker
 def test_console_graph_demo(debug=True):
 
 	def edge_change(value, change_in_value, relative_position, top_distance):
@@ -70,6 +69,7 @@ def test_console_graph_demo(debug=True):
 		elif i % _temp_rows == _temp_rows - 1:
 			print(REL_POS(demo2_width + demo2_center[0], -(demo2_height + demo2_center[3]) * _temp_rows), end="", flush=True)
 
+# noinspection PyTypeChecker
 def test_console_progress_bar_demo(debug=True,
 								   step_time_per_s=100,
 								   step_size=lambda x: (x + 0.1 * max(0.1, (1 / (x + 1)))) if x < 5 else x * 1.005):
@@ -107,6 +107,7 @@ def test_console_progress_bar_demo(debug=True,
 	print(REL_POS(0, ((1 + 2 * offset_height) * len(options)) - 1), end="")
 
 
+# noinspection PyTypeChecker
 class TestPrinting(unittest.TestCase):
 
 	def test_get_time_str_return(self):
