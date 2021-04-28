@@ -236,7 +236,7 @@ class AlgebraicStructure:
 		r"""
 		Test every element of :math:`G` on every operator :math:`\circ_n` to see if inverses exist for each element for
 		any neutral element of said operator. This function calls :py:meth:`neutral_elements` to test for inverses and
-		abort if the substructure trivially has no inverses.
+		aborts if the substructure trivially has no inverses.
 
 		:return: a list of boolean values for each operator in order, corresponding to whether all objects have an inverse
 			under said operator or not
@@ -443,8 +443,16 @@ class AlgebraicStructure:
 		"""
 		return self.is_valid()
 
+	def __repr_general__(self, msg : str) -> str:
+		"""
+		Create a repr string for this instance.
+		:param msg: the text to be inserted in this repr string
+		:return: a repr string
+		"""
+		return f"<{msg}({self.elements}, {self.binary_operators})>"
+
 	def __repr__(self) -> str:
-		return f"<AlgebraicStructure({self.elements}, {self.binary_operators}>"
+		return self.__repr_general__(self.__class__.__name__)
 
 	def __str__(self) -> str:
 		return f"(G={self.elements}, {str([op.__qualname__ for op in self.binary_operators])[1:-1]})"
@@ -496,38 +504,107 @@ class Monoid(AlgebraicStructure):
 		return super().neutral_elements()[0]
 
 	def find_inverses(self, element : Element) -> Union[List[Element], Element, _NoElement]:
+		r"""
+		Finds the inverses of an element `element` under operator :math:`\circ` stored in this instance. This function
+		will return a list of possible inverses for each neutral element of said operator. Note that any neutral element
+		may match an inverse and there is no distinction made between these cases.
+
+		:param element: the element to find inverses under operator :math:`\circ` of
+
+		:return: either a list of objects of type `Element`, an `Element` object or the :py:data:`NoElement` literal if
+			no inverses exists
+		"""
 		return super().find_inverses_per_operator(0, element)
 
-	# TODO: write docstrings here
 	def has_inverses(self) -> bool:
+		r"""
+		Test every element of :math:`G` on operator :math:`\circ` to see if inverses exist for each element for any
+		neutral element of said operator. This function calls :py:meth:`neutral_elements` to test for inverses and
+		aborts if the substructure trivially has no inverses.
+
+		:return: a boolean value corresponding to whether every element has an inverse or not
+		"""
 		return super().has_inverses()[0]
 
 	def is_commutative(self) -> bool:
+		r"""
+		Test every element in :math:`G` on operator :math:`\circ` to see if it is commutative or not. See
+		:py:meth:`AlgebraicStructure.is_commutative` for implementation details.
+
+		:return: a boolean value corresponding to whether this structure is commutative or not
+		"""
 		return super().is_commutative()[0]
 
 	def is_closed(self) -> bool:
+		"""
+		Test whether or not set :math:`G` is closed under :math:`\circ`.
+
+		:return: a boolean value corresponding to whether or not this structure is closed or not
+		"""
 		return super().is_closed()[0]
 
-	def __repr__(self) -> str:
-		return f"<Monoid({self.elements}, {self.binary_operators[0]}>"
+	def __repr_general__(self, msg : str) -> str:
+		return f"<{msg}({self.elements}, {self.binary_operators[0]})>"
 
 	def __str__(self) -> str:
 		return f"(G={self.elements}, {self.binary_operators[0].__qualname__})"
 
 class Semigroup(Monoid):
+	r"""
+	:py:class:`Semigroup` is a subclass of :py:class:`Monoid` and represents an algebraic structure of form
+	:math:`(G, \circ)`. To test whether or not this instance is a valid semigroup in the mathematical sense this class
+	implements :py:meth:`is_valid` and :py:meth:`__bool__` (see :py:class:`AlgebraicStructure`).
+	"""
 
-	def __init__(self):
-		raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
+	def is_valid(self) -> bool:
+		r"""
+		Test whether or not this :py:class:`Semigroup` instance is a valid mathematical semigroup or not. For this to
+		be true, two conditions must be met:
+
+			* `self` is a valid :py:class:`Monoid` (ie. is closed and associative)
+			* `self` has a neutral element :math:`e` for ever element in set :math:`G` over operator :math:`\circ`
+
+		:return: a boolean representing whether this instance is a valid semigroup or not
+		"""
+		return super().is_valid() and self.neutral_elements() is not NoElement
 
 class Group(Semigroup):
+	r"""
+	:py:class:`Group` is a subclass of :py:class:`Semigroup` and represents an algebraic structure of form
+	:math:`(G, \circ)`. To test whether or not this instance is a valid group in the mathematical sense this class
+	implements :py:meth:`is_valid` and :py:meth:`__bool__` (see :py:class:`AlgebraicStructure`).
+	"""
 
-	def __init__(self):
-		raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
+	def is_valid(self) -> bool:
+		r"""
+		Test whether or not this :py:class:`Group` instance is a valid mathematical group or not. For this to
+		be true, two conditions must be met:
+
+			* `self` is a valid :py:class:`Semigroup` (ie. is closed, associative and has a neutral element)
+			* `self` has an inverse element :math:`a^{-1}` for ever element in set :math:`G` over operator :math:`\circ`
+
+		:return: a boolean representing whether this instance is a valid group or not
+		"""
+		return super().is_valid() and self.has_inverses()
 
 class AbelianGroup(Group):
+	r"""
+	:py:class:`AbelianGroup` is a subclass of :py:class:`Group` and represents an algebraic structure of form
+	:math:`(G, \circ)`. To test whether or not this instance is a valid Abelian group in the mathematical sense this
+	class implements :py:meth:`is_valid` and :py:meth:`__bool__` (see :py:class:`AlgebraicStructure`).
+	"""
 
-	def __init__(self):
-		raise NotImplementedError("upcoming SEPModules v0.1.1 feature")
+	def is_valid(self) -> bool:
+		r"""
+		Test whether or not this :py:class:`AbelianGroup` instance is a valid mathematical Abelian group or not. For
+		this to be true, two conditions must be met:
+
+			* `self` is a valid :py:class:`Group` (ie. is closed, associative, has a neutral element and inverses)
+			* `self` is commutative under operator :math:`\circ`
+
+		:return: a boolean representing whether this instance is a valid Abelian group or not
+		"""
+		return super().is_valid() and self.is_commutative()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
