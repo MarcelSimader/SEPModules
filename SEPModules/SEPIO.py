@@ -1,7 +1,8 @@
 """
-Author: Marcel Simader
+:Author: Marcel Simader
+:Date: 01.04.2021
 
-Date: 01.04.2021
+.. versionadded:: v0.1.0
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -12,10 +13,11 @@ import sys
 from getopt import getopt
 from typing import List, Callable, Any, Dict, Union, Tuple, Final
 
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# TODO: typed arguments idea
 
 class ConsoleArguments:
 	"""
@@ -33,7 +35,7 @@ class ConsoleArguments:
 	"""
 
 	#constants
-	_SET_TOTAL : Final		 = "set"
+	_SET_TOTAL : Final		  = "set"
 	_SET_ARGS : Final         = "args"
 	_SET_KWARGS : Final       = "kwargs"
 	_SET_PARS : Final         = "parameters"
@@ -45,12 +47,6 @@ class ConsoleArguments:
 		"""
 		See other size properties:
 
-			* :py:attr:`set_args`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`set_pars`
-			* :py:attr:`required`
-			* :py:attr:`required_and_set`
-
 		:returns: the amount of set args and keyword args.
 		"""
 		return self.__size__[self._SET_TOTAL]
@@ -59,12 +55,6 @@ class ConsoleArguments:
 	def set_args(self) -> int:
 		"""
 		See other size properties:
-
-			* :py:attr:`set_total`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`set_pars`
-			* :py:attr:`required`
-			* :py:attr:`required_and_set`
 
 		:returns: the amount of set args.
 		"""
@@ -75,12 +65,6 @@ class ConsoleArguments:
 		"""
 		See other size properties:
 
-			* :py:attr:`set_total`
-			* :py:attr:`set_args`
-			* :py:attr:`set_pars`
-			* :py:attr:`required`
-			* :py:attr:`required_and_set`
-
 		:returns: the amount of set keyword args.
 		"""
 		return self.__size__[self._SET_KWARGS]
@@ -89,12 +73,6 @@ class ConsoleArguments:
 	def set_pars(self) -> int:
 		"""
 		See other size properties:
-
-			* :py:attr:`set_total`
-			* :py:attr:`set_args`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`required`
-			* :py:attr:`required_and_set`
 
 		:returns: the amount of set parameters.
 		"""
@@ -105,12 +83,6 @@ class ConsoleArguments:
 		"""
 		See other size properties:
 
-			* :py:attr:`set_total`
-			* :py:attr:`set_args`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`set_pars`
-			* :py:attr:`required_and_set`
-
 		:returns: the amount of required args (e.g. a flag `'a:'`).
 		"""
 		return self.__size__[self._REQUIRED]
@@ -119,12 +91,6 @@ class ConsoleArguments:
 	def required_and_set(self) -> int:
 		"""
 		See other size properties:
-
-			* :py:attr:`set_total`
-			* :py:attr:`set_args`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`set_pars`
-			* :py:attr:`required`
 
 		:returns: the amount of required and set args (i.e. same as :py:attr:`required` but only counts `'a:'` if it
 			was also set).

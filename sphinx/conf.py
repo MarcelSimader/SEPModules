@@ -21,7 +21,7 @@ copyright = '2021, Marcel Simader'
 author = 'Marcel Simader'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.1.dev0'
+release = '0.1.1.dev1'
 version = release
 
 
@@ -49,7 +49,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'sphinx_rtd_theme'
 
 html_theme_options = {
-		"display_version": True
+		"display_version": True,
+		"collapse_navigation": False
 		# "github_url": "https://github.com/SEOriginal/SEPModules"
 	}
 
@@ -69,3 +70,16 @@ html_static_path = ['_static']
 
 # ~~~~~~~~~~~~~~~ sphinx.ext.todo CONFIG ~~~~~~~~~~~~~~~
 todo_include_todos = True
+
+# ~~~~~~~~~~~~~~~ AUTODOC CONFIG ~~~~~~~~~~~~~~~
+
+autodoc_typehints = "signature"
+autodoc_inherit_docstrings = True
+autodoc_type_aliases = {"Operator": "Operator",
+						"NoElementType": "NoElementType"}
+
+autodoc_default_options = {
+    "member-order": "bysource"
+}
+
+

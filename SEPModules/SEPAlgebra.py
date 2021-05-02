@@ -1,15 +1,18 @@
 """
-Author: Marcel Simader
+:Author: Marcel Simader
+:Date: 11.04.2021
 
-Date: 11.04.2021
+.. versionadded:: v0.1.1.dev0
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ IMPORTS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+from __future__ import annotations
+
 from itertools import permutations
-from typing import Collection, Callable, TypeVar, List, final, Union, Final, Set, Tuple
+from typing import Collection, Callable, TypeVar, List, final, Union, Final, Set, Tuple, Literal, Any
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ GLOBALS ~~~~~~~~~~~~~~~
@@ -49,6 +52,8 @@ of type :py:data:`Element` and returning an object of type :py:data:`Element`.""
 
 NoElement : Final = _NoElement()
 """Singleton used to indicate that an algebraic structure does not have an element under a method or operator."""
+NoElementType : Final = _NoElement
+
 # stop new instances from being created and lock setting
 _NoElement.__new__ = _lock_element("__new__", "instantiate")
 _NoElement.__setattr__ = _lock_element("__setattr__", "set attribute for")
@@ -90,6 +95,7 @@ class AlgebraicStructure:
 	:param binary_operators: a collection of callable objects taking two arguments of type `Element` and returning one
 		single object of type `Element` representing the application of the given operator onto the objects given as
 		arguments
+	:param test_for_closure: a keyword-only argument that defaults to False, see :py:attr:`test_for_closure` for details
 
 	..	note::
 
@@ -103,9 +109,11 @@ class AlgebraicStructure:
 
 	def __init__(self,
 				 elements : Collection[Element],
-				 *binary_operators : Operator):
+				 *binary_operators : Operator,
+				 test_for_closure : bool=False):
 		self._elements = set(elements)
 		self._binary_operators = tuple(binary_operators)
+		self._test_for_closure = test_for_closure
 
 	@property
 	def elements(self) -> Set[Element]:
@@ -120,14 +128,25 @@ class AlgebraicStructure:
 		"""
 		return self._binary_operators
 
+	@property
+	def test_for_closure(self):
+		r"""
+		Determines whether this algebraic structure will test for closure or not. Turning this value off can be useful for
+		testing infinite sets using a finite selection of elements from it. Because of this property, :py:attr:`test_for_closure`
+		is set to ``False`` by default. It may be set to ``True`` if an exact mathematical definition of an algebraic
+		structure is desired.
+		"""
+		return self._test_for_closure
+
 	def is_valid(self) -> bool:
 		r"""
 		Test whether or not this algebraic structure is considered as valid. In this case this means that
-		:math:`(G, \circ_1, \circ_2, \ldots, \circ_n)` must be closed under all operators :math:`\circ_n`.
+		:math:`(G, \circ_1, \circ_2, \ldots, \circ_n)` must be closed under all operators :math:`\circ_n` if the property
+		:py:attr:`test_for_closure` is set to ``True``. Otherwise, this function will always return True.
 
 		:return: a boolean value determining the validity of this algebraic structure
 		"""
-		return all(AlgebraicStructure.is_closed(self))
+		return not self.test_for_closure or all(AlgebraicStructure.is_closed(self))
 
 	def is_associative(self) -> List[bool]:
 		r"""
@@ -139,18 +158,18 @@ class AlgebraicStructure:
 		result_list = list()
 
 		for operator in self.binary_operators:
-			is_commutative = True # assume that new operator is commutative
+			is_associative = True # assume that new operator is associative
 			for el_tuple in permutations(self.elements, 3):
 				if not (operator(operator(el_tuple[0], el_tuple[1]), el_tuple[2]) ==
 						operator(el_tuple[0], operator(el_tuple[1], el_tuple[2]))):
-					is_commutative = False
+					is_associative = False
 					break
 
-			result_list.append(is_commutative)
+			result_list.append(is_associative)
 
 		return result_list
 
-	def neutral_elements(self) -> List[Union[List[Element], Element, _NoElement]]:
+	def neutral_elements(self) -> List[Union[List[Element], Element, NoElementType]]:
 		r"""
 		Try to find the neutral element for every operator :math:`\circ_n` in :py:attr:`binary_operators` over set :math:`G`.
 		This function matches an arbitrary amount of neutral elements per operator.
@@ -188,7 +207,7 @@ class AlgebraicStructure:
 
 		return result_list
 
-	def find_inverses_per_operator(self, operator_num : int, element : Element) -> Union[List[Element], Element, _NoElement]:
+	def find_inverses_per_operator(self, operator_num : int, element : Element) -> Union[List[Element], Element, NoElementType]:
 		r"""
 		Finds the inverses of an element `element` under operator :math:`\circ_{operator\_num}` stored in this instance
 		at position `operator_num`. This function will return a list of possible inverses for each operator and each
@@ -215,7 +234,7 @@ class AlgebraicStructure:
 			return NoElement
 
 		# create a list out of neutral_elements if it is only one element
-		if not type(neutral_elements) is list:
+		if not isinstance(neutral_elements, list):
 			neutral_elements = (neutral_elements,)
 
 		# find inverse
@@ -254,7 +273,7 @@ class AlgebraicStructure:
 				continue
 
 			# create list if not already
-			if not type(neutral_els) is list:
+			if not isinstance(neutral_els, list):
 				neutral_els = (neutral_els,)
 
 			# test for inverses
@@ -302,7 +321,6 @@ class AlgebraicStructure:
 				# break out of loop if not commutative
 				if not is_commutative:
 					break
-
 				for el_other in self.elements:
 					# continue if this tuple has been tested
 					if (el_test, el_other) in seen_element_pairs:
@@ -351,6 +369,7 @@ class AlgebraicStructure:
 		3. :math:`\forall i \in \{0,\ldots,|G|-1\} \;\forall a, b \in G: a \circ^i_{self} b = a \circ^i_{other} b`, ie. all operators of `self` and `other` return the same value if they are passed the same arguments
 
 		:returns: a boolean value describing whether `self` and `other` are algebraically equal or not
+		:meta public:
 		"""
 		if self is other:
 			return True
@@ -388,6 +407,7 @@ class AlgebraicStructure:
 		Test whether or not this algebraic structure is a true substructure of algebraic structure `other` or not.
 
 		:return: a boolean value describing whether or not `self` is a true substructure of `other` or not
+		:meta public:
 		"""
 		if not isinstance(other, AlgebraicStructure):
 			return False
@@ -416,6 +436,7 @@ class AlgebraicStructure:
 		Test whether or not this algebraic structure is a substructure of algebraic structure `other` or not.
 
 		:return: a boolean value describing whether or not `self` is a substructure of `other` or not
+		:meta public:
 		"""
 		return self < other or self == other
 
@@ -440,12 +461,14 @@ class AlgebraicStructure:
 		Returns whether this algebraic structure is valid or not (see :py:meth:`is_valid`).
 
 		:return: boolean value describing whether this algebraic structure is valid or not
+		:meta public:
 		"""
 		return self.is_valid()
 
 	def __repr_general__(self, msg : str) -> str:
 		"""
 		Create a repr string for this instance.
+
 		:param msg: the text to be inserted in this repr string
 		:return: a repr string
 		"""
@@ -456,6 +479,8 @@ class AlgebraicStructure:
 
 	def __str__(self) -> str:
 		return f"(G={self.elements}, {str([op.__qualname__ for op in self.binary_operators])[1:-1]})"
+
+# ~~~~~~~~~~~~~~~ ONE OPERATOR STRUCTURES ~~~~~~~~~~~~~~~
 
 class Monoid(AlgebraicStructure):
 	r"""
@@ -470,15 +495,30 @@ class Monoid(AlgebraicStructure):
 
 	def __init__(self,
 				 elements: Collection[Element],
-				 binary_operator: Operator):
-		super().__init__(elements, binary_operator)
+				 binary_operator: Operator,
+				 *,
+				 test_for_closure : bool=False):
+		"""
+		:param elements: a collection containing n elements of any but the same type `Element`, where the type given must
+			be honored in all other uses of this instance
+		:param binary_operator: a callable object taking two arguments of type `Element` and returning one
+			single object of type `Element` representing the application of the given operator onto the objects given as
+			arguments
+		:param test_for_closure: a keyword-only argument that defaults to False, see :py:attr:`test_for_closure` for details
+		"""
+		super().__init__(elements, binary_operator, test_for_closure=test_for_closure)
+
+	@property
+	def binary_operator(self) -> Operator:
+		r"""The single operator :math:`\circ` of this algebraic structure."""
+		return self.binary_operators[0]
 
 	def is_valid(self) -> bool:
 		r"""
 		Test whether or not this :py:class:`Monoid` instance is a valid mathematical monoid or not. For this to be true,
 		two conditions must be met:
 
-			* `self` is a valid :py:class:`AlgebraicStructure` (ie. is closed)
+			* `self` is a valid :py:class:`AlgebraicStructure` (see :py:meth:`AlgebraicStructure.is_valid`)
 			* `self` is commutative with :math:`\circ` over :math:`G`
 
 		:return: a boolean representing whether this instance is a valid monoid or not
@@ -493,7 +533,7 @@ class Monoid(AlgebraicStructure):
 		"""
 		return super().is_associative()[0]
 
-	def neutral_elements(self) -> Union[List[Element], Element, _NoElement]:
+	def neutral_elements(self) -> Union[List[Element], Element, NoElementType]:
 		r"""
 		Try to find the neutral element for operator :math:`\circ` over set :math:`G`. This function matches an arbitrary
 		amount of neutral elements but will almost always simply return one object of type `Element`.
@@ -503,7 +543,7 @@ class Monoid(AlgebraicStructure):
 		"""
 		return super().neutral_elements()[0]
 
-	def find_inverses(self, element : Element) -> Union[List[Element], Element, _NoElement]:
+	def find_inverses(self, element : Element) -> Union[List[Element], Element, NoElementType]:
 		r"""
 		Finds the inverses of an element `element` under operator :math:`\circ` stored in this instance. This function
 		will return a list of possible inverses for each neutral element of said operator. Note that any neutral element
@@ -544,10 +584,10 @@ class Monoid(AlgebraicStructure):
 		return super().is_closed()[0]
 
 	def __repr_general__(self, msg : str) -> str:
-		return f"<{msg}({self.elements}, {self.binary_operators[0]})>"
+		return f"<{msg}({self.elements}, {self.binary_operator})>"
 
 	def __str__(self) -> str:
-		return f"(G={self.elements}, {self.binary_operators[0].__qualname__})"
+		return f"(G={self.elements}, {self.binary_operator.__qualname__})"
 
 class Semigroup(Monoid):
 	r"""
@@ -561,7 +601,7 @@ class Semigroup(Monoid):
 		Test whether or not this :py:class:`Semigroup` instance is a valid mathematical semigroup or not. For this to
 		be true, two conditions must be met:
 
-			* `self` is a valid :py:class:`Monoid` (ie. is closed and associative)
+			* `self` is a valid :py:class:`Monoid` (ie. is associative, see :py:meth:`Monoid.is_valid`)
 			* `self` has a neutral element :math:`e` for ever element in set :math:`G` over operator :math:`\circ`
 
 		:return: a boolean representing whether this instance is a valid semigroup or not
@@ -580,7 +620,8 @@ class Group(Semigroup):
 		Test whether or not this :py:class:`Group` instance is a valid mathematical group or not. For this to
 		be true, two conditions must be met:
 
-			* `self` is a valid :py:class:`Semigroup` (ie. is closed, associative and has a neutral element)
+			* `self` is a valid :py:class:`Semigroup` (ie. is associative and has a neutral element, see
+			  :py:meth:`Semigroup.is_valid`)
 			* `self` has an inverse element :math:`a^{-1}` for ever element in set :math:`G` over operator :math:`\circ`
 
 		:return: a boolean representing whether this instance is a valid group or not
@@ -599,12 +640,192 @@ class AbelianGroup(Group):
 		Test whether or not this :py:class:`AbelianGroup` instance is a valid mathematical Abelian group or not. For
 		this to be true, two conditions must be met:
 
-			* `self` is a valid :py:class:`Group` (ie. is closed, associative, has a neutral element and inverses)
+			* `self` is a valid :py:class:`Group` (ie. is associative, has a neutral element and inverses, see
+			  :py:meth:`Group.is_valid`)
 			* `self` is commutative under operator :math:`\circ`
 
 		:return: a boolean representing whether this instance is a valid Abelian group or not
 		"""
 		return super().is_valid() and self.is_commutative()
+
+# ~~~~~~~~~~~~~~~ TWO OPERATOR STRUCTURES ~~~~~~~~~~~~~~~
+
+class Ring(AlgebraicStructure):
+	r"""
+	:py:class:`Ring` is a subclass of :py:class:`AlgebraicStructure` and represents an algebraic structure of form
+	:math:`(G, +, \cdot)`. To test whether or not this instance is a valid ring in the mathematical sense this class
+	implements :py:meth:`is_valid` and :py:meth:`__bool__` (see :py:class:`AlgebraicStructure`).
+
+	Unlike :py:class:`AlgebraicStructure`, this class is can only be instantiated with exactly two operators (e.g.
+	``ring = Ring({...}, add, mul)`` is allowed but ``ring = Ring({...}, add)`` is not since it can never be a
+	valid ring).
+	"""
+
+	@staticmethod
+	def __tuple_returner__(func : Callable[..., List[Any, Any]]):
+		"""
+		Calls ``func`` and passes the returned list value back to the callee as tuple of length `2`.
+		:param func: the function to call
+		:return: a tuple of length two with the resulting values
+		"""
+		result = func()
+		return result[0], result[1]
+
+	def __init__(self,
+				 elements: Collection[Element],
+				 binary_operator_one: Operator,
+				 binary_operator_two: Operator,
+				 *,
+				 test_for_closure: bool = False):
+		"""
+		:param elements: a collection containing n elements of any but the same type `Element`, where the type given must
+			be honored in all other uses of this instance
+		:param binary_operator_one: a callable object taking two arguments of type `Element` and returning one
+			single object of type `Element` representing the application of the given operator onto the objects given as
+			arguments
+		:param binary_operator_two: the second operator following the same rules as ``binary_operator_one``
+		:param test_for_closure: a keyword-only argument that defaults to False, see :py:attr:`test_for_closure` for details
+		"""
+		super().__init__(elements, binary_operator_one, binary_operator_two, test_for_closure=test_for_closure)
+
+	@property
+	def elements_without_zero(self) -> Set[Element]:
+		"""
+		The same set as :py:attr:`elements` but without the zero element (according to the neutral element of operator
+		:math:`+`).
+		"""
+		zero_elements = self.neutral_elements()[0]
+
+		if zero_elements is NoElement:
+			return self.elements
+
+		if not isinstance(zero_elements, list):
+			zero_elements = (zero_elements,)
+
+		# now zero_element is iterable and not NoElement
+		return self.elements.difference(zero_elements)
+
+	def is_valid(self) -> bool:
+		r"""
+		Test whether or not this :py:class:`Ring` instance is a valid mathematical ring or not. For this to be true,
+		four conditions must be met:
+
+			* `self` is a valid :py:class:`AlgebraicStructure` (see :py:meth:`AlgebraicStructure.is_valid`)
+			* `self` forms a valid Abelian group with :math:`(G, +)` (see :py:meth:`AbelianGroup.is_valid`)
+			* `self` forms a valid semigroup with :math:`(G, \cdot)` (see :py:meth:`Semigroup.is_valid`)
+			* `self` is distributive over :math:`+` and :math:`\cdot`
+
+		:return: a boolean representing whether this instance is a valid ring or not
+		"""
+		return super().is_valid() \
+			   and AbelianGroup(self.elements, self.binary_operators[0], test_for_closure=self.test_for_closure).is_valid() \
+			   and Semigroup(self.elements, self.binary_operators[1], test_for_closure=self.test_for_closure).is_valid() \
+			   and self.is_distributive()
+
+	def is_associative(self) -> Tuple[bool, bool]:
+		r"""
+		Test whether this algebraic structure is associative for operator :math:`+` and :math:`\cdot` over set :math:`G`.
+
+		:return: a tuple of two boolean values describing the associativity of either operator
+		"""
+		return Ring.__tuple_returner__(super().is_associative)
+
+	def neutral_elements(self) \
+			-> Tuple[Union[List[Element], Element, NoElementType], Union[List[Element], Element, NoElementType]]:
+		r"""
+		Try to find the neutral element for operator :math:`+` and :math:`\cdot` over set :math:`G`. This function
+		matches an arbitrary amount of neutral elements but will almost always simply return one object of type `Element`.
+
+		:return: a tuple of a list of neutral elements or a single neutral elements of type `Element`, if no such neutral element
+			is found the literal :py:data:`NoElement` is returned
+		"""
+		return Ring.__tuple_returner__(super().neutral_elements)
+
+	def find_inverses(self, operator_num : Literal[0, 1], element : Element) -> Union[List[Element], Element, NoElementType]:
+		r"""
+		Finds the inverses of an element `element` under operator :math:`+` or :math:`\cdot` stored in this instance.
+		This function will return a list of possible inverses for each neutral element of said operator. Note that any
+		neutral element may match an inverse and there is no distinction made between these cases.
+
+		:param operator_num: which operator to find an inverse for, must be either `0` or `1` for :math:`+` and :math:`\cdot`
+			respectively
+		:param element: the element to find inverses under operator :math:`+` or :math:`\cdot` of
+
+		:return: either a list of objects of type `Element`, an `Element` object or the :py:data:`NoElement` literal if
+			no inverses exists
+		"""
+		return super().find_inverses_per_operator(operator_num, element)
+
+	def has_inverses(self) -> Tuple[bool, bool]:
+		r"""
+		Test every element of :math:`G` on operator :math:`\circ` to see if inverses exist for each element for any
+		neutral element of said operator. This function calls :py:meth:`neutral_elements` to test for inverses and
+		aborts if the substructure trivially has no inverses.
+
+		:return: a tuple of two boolean values corresponding to whether every element has an inverse under operators
+			:math:`+` and :math:`\cdot` or not
+		"""
+		return Ring.__tuple_returner__(super().has_inverses)
+
+	def is_commutative(self) -> Tuple[bool, bool]:
+		r"""
+		Test every element in :math:`G` on operator :math:`\circ` to see if it is commutative or not. See
+		:py:meth:`AlgebraicStructure.is_commutative` for implementation details.
+
+		:return: a tuple of boolean values corresponding to whether this structure is commutative under operators
+			:math:`+` and :math:`\cdot` or not
+		"""
+		return Ring.__tuple_returner__(super().is_commutative)
+
+	def is_closed(self) -> Tuple[bool, bool]:
+		"""
+		Test whether or not set :math:`G` is closed under :math:`\circ`.
+
+		:return: a tuple of boolean values corresponding to whether or not this structure is closed under operators
+			:math:`+` and :math:`\cdot` or not
+		"""
+		return Ring.__tuple_returner__(super().is_closed)
+
+	def is_distributive(self) -> bool:
+		"""
+		Determine whether this algebraic structure is distributive for operators :math:`+` and :math:`\cdot` for every
+		element in :math:`G`.
+
+		:return: whether or not this algebraic structure is distributive
+		"""
+		# save operators into var for easier reading
+		add, mul = self.binary_operators
+
+		# iterate over all 3-valued pairs of elements
+		for a, b, c in permutations(self.elements, 3):
+			if not (mul(a, add(b, c)) == add(mul(a, b), mul(a, c)) and mul(add(a, b), c) == add(mul(a, c), mul(b, c))):
+				return False
+		return True
+
+class Field(Ring):
+	r"""
+	:py:class:`Field` is a subclass of :py:class:`Ring` and represents an algebraic structure of form :math:`(G, +, \cdot)`.
+	To test whether or not this instance is a valid field in the mathematical sense this class implements :py:meth:`is_valid`
+	and :py:meth:`__bool__` (see :py:class:`AlgebraicStructure`).
+	"""
+
+	def is_valid(self) -> bool:
+		r"""
+		Test whether or not this :py:class:`Field` instance is a valid mathematical field or not. For this to be true,
+		four conditions must be met:
+
+			* `self` is a valid :py:class:`AlgebraicStructure` (see :py:meth:`AlgebraicStructure.is_valid`)
+			* `self` forms a valid Abelian group with :math:`(G, +)` (see :py:meth:`AbelianGroup.is_valid`)
+			* `self` forms a valid Abelian group with :math:`(G\backslash\{0\}, \cdot)` , where :math:`0` is the zero
+			  element of operator :math:`+` (see :py:meth:`Semigroup.is_valid`)
+			* `self` is distributive over :math:`+` and :math:`\cdot`
+
+		:return: a boolean representing whether this instance is a valid field or not
+		"""
+		return super(Ring, self).is_valid() \
+			   and AbelianGroup(self.elements, self.binary_operators[0]).is_valid() \
+			   and AbelianGroup(self.elements_without_zero, self.binary_operators[1]).is_valid() \
+			   and self.is_distributive()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~

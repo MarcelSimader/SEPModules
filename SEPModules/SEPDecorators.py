@@ -1,7 +1,8 @@
 """
-Author: Marcel Simader
+:Author: Marcel Simader
+:Date: 01.04.2021
 
-Date: 01.04.2021
+.. versionadded:: v0.1.0
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

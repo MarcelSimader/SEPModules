@@ -1,7 +1,8 @@
 """
-Author: Marcel Simader
+:Author: Marcel Simader
+:Date: 01.04.2021
 
-Date: 01.04.2021
+.. versionadded:: v0.1.0
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -10,7 +11,7 @@ Date: 01.04.2021
 from __future__ import annotations
 
 from numbers import Real
-from typing import Tuple, Callable, Any, Union, Set
+from typing import Tuple, Callable, Any, Union, Set, Literal
 
 import sys
 from itertools import product
@@ -72,14 +73,17 @@ class Rational:
 	
 	@property
 	def sign(self) -> int:
+		"""The sign of this fraction. :returns: either 1 or -1"""
 		return (self._sign[0] ^ self._sign[1]) + 1 # xor hack, amounts to sign[0] * sign[1]
 	
 	@property
 	def a(self) -> int:
+		"""The enumerator of this fraction."""
 		return self.sign * self._a
 	
 	@property
 	def b(self) -> int:
+		"""The denominator of this fraction."""
 		return self._b
 
 	def __init__(self, a : Union[int, float, Rational]=1, b : int=1):
@@ -87,7 +91,7 @@ class Rational:
 			raise TypeError("Values 'a' and 'b' must be of type 'int' (received {}, {}). \
 						Alternatively 'a' can be of type 'float' or 'Rational' when \
 						'b' is set to 1 or left blank.".format(a.__class__.__name__, b.__class__.__name__))
-		
+
 		#TODO: write tests for input type Rational
 		if type(a) in (Rational, float) and b == 1: #handle Rational or float input
 			if type(a) is float:
@@ -299,6 +303,7 @@ def find_rational_approximation(num : Real, precision :int=4) -> Rational:
 	
 	return Rational(int(copysign(iteration_vars[0] + int(abs(num)) * iteration_vars[1], num)), iteration_vars[1])
 
+# TODO: fix typing
 def get_possible_rationals(_set : Union[list, set]) -> Set[Rational]:
 	r"""
 	Returns unique Rationals in a set with :math:`a/b \quad \forall a, b \in \text{_set}`.
