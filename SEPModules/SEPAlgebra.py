@@ -45,13 +45,13 @@ class _NoElement(object):
 	__delattr__ = _lock_element("__delattr__", "delete attribute for")
 
 Element : Final = TypeVar("Element")
-"""Generic type `Element` for use in statically typing :py:class:`AlgebraicStructure`."""
+""" Generic type `Element` for use in statically typing :py:class:`AlgebraicStructure`. """
 Operator : Final = Callable[[Element, Element], Element]
-"""Type alias `Operator` for use in typing :py:class:`AlgebraicStructure`. Represents a `Callable` taking two arguments 
-of type :py:data:`Element` and returning an object of type :py:data:`Element`."""
+""" Type alias `Operator` for use in typing :py:class:`AlgebraicStructure`. Represents a `Callable` taking two arguments 
+of type :py:data:`Element` and returning an object of type :py:data:`Element`. """
 
 NoElement : Final = _NoElement()
-"""Singleton used to indicate that an algebraic structure does not have an element under a method or operator."""
+""" Singleton used to indicate that an algebraic structure does not have an element under a method or operator. """
 NoElementType : Final = _NoElement
 
 # stop new instances from being created and lock setting

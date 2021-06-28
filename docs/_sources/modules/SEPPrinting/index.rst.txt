@@ -6,4 +6,4 @@ SEPPrinting
    :maxdepth: 4
 
    SEPPrinting
-   SEPPrinting.FILL_CHARACTERS
+   SEPPrinting.FillCharacters

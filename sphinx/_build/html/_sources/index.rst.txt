@@ -15,6 +15,7 @@ SEPModules
    modules/SEPMaths
    modules/SEPAlgebra
    modules/SEPIO
+   modules/SEPLogger
    modules/SEPDecorators
    modules/SEPPrinting/index
 

@@ -2,17 +2,21 @@
 :Author: Marcel Simader
 :Date: 01.04.2021
 
-.. versionadded:: v0.1.0
+..	versionadded:: v0.1.0
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ IMPORTS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-from numbers import Real
-from typing import Any, Collection, Tuple, Callable, Union, Final, Literal, Dict, Optional
+from __future__ import annotations
 
-from colorama import Fore, Style, Cursor, init as cl_init
+from enum import Enum
+from numbers import Real
+from typing import Any, Collection, Tuple, Callable, Union, Final, Literal, Dict, Optional, TypeVar, AnyStr
+
+from colorama import Cursor, init as cl_init
+from colorama.ansi import AnsiFore, AnsiStyle, code_to_chars
 import math
 from math import ceil
 
@@ -21,6 +25,7 @@ from math import ceil
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 __PRINT_COLORS__ = True
+
 def _get_print_color() -> bool:
 	return __PRINT_COLORS__
 def _set_print_color(val : bool):
@@ -35,26 +40,6 @@ print_colors = property(_get_print_color, _set_print_color,
 # initialize colorama and set up constants
 cl_init()
 
-SUPPRESS : Final = (Style.DIM,)
-ERROR : Final = (Fore.RED,)
-LIGHT_ERROR : Final = (Fore.RED, Style.BRIGHT)
-WARNING : Final = (Fore.YELLOW,)
-NUMBER : Final = (Style.BRIGHT,)
-NAME : Final = (Fore.CYAN,)
-
-RED : Final = (Fore.RED,)
-GREEN : Final = (Fore.GREEN,)
-BLUE : Final = (Fore.BLUE,)
-YELLOW : Final = (Fore.YELLOW,)
-CYAN : Final = (Fore.CYAN,)
-MAGENTA : Final = (Fore.MAGENTA,)
-WHITE : Final = (Fore.WHITE,)
-BLACK : Final = (Fore.BLACK,)
-
-BRIGHT : Final = (Style.BRIGHT,)
-DIM : Final = (Style.DIM,)
-NORMAL :Final = (Style.NORMAL,)
-
 POS : Final = lambda x=0, y=0: Cursor.POS(x, y)
 REL_POS : Final = lambda x=0, y=0: (Cursor.FORWARD(x) if x >= 0 else Cursor.BACK(-x)) + (Cursor.DOWN(y) if y >= 0 else Cursor.UP(-y))
 SAVE_POS : Final = "\033[s"
@@ -65,13 +50,128 @@ DOWN : Final = Cursor.DOWN
 FORWARD : Final =  Cursor.FORWARD
 BACK : Final = Cursor.BACK
 
-RESET_ALL : Final = (Style.RESET_ALL,)
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class FILL_CHARACTERS:
+class Style:
+	r"""
+	A helper class to represent styles and colors and which actions can be performed on them. New :py:class:`Style` objects
+	may be instantiated using ``int`` ANSI style codes, or the :py:mod:`colorama.ansi` classes of `Colorama`. Furthermore,
+	styles can be combined into composite styles by the bitwise ``&`` and ``|`` and the ``+`` operator. Inplace operations
+	are **not** supported as the instances of this class are immutable by design.
+	"""
+
+	def __init__(self, *styles : Union[int, AnsiStyle, AnsiFore]):
+		if any([isinstance(x, tuple) for x in styles]):
+			raise TypeError("styles parameter contained a nested tuple, but must be a flat tuple")
+		self._styles = styles
+
+	@property
+	def styles(self) -> Tuple[Union[int, AnsiStyle, AnsiFore]]:
+		r""" :return: the style tuple of this instance """
+		return self._styles
+
+	def __len__(self) -> int:
+		r""" :return: the amount of different styles contained in this instance """
+		return len(self._styles)
+
+	def __and__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+		r"""
+		Combines two styles or strings into one.
+
+		:param other: a different style to combine with this one
+		:return: a new style combining both given styles, if a string is given as ``other`` the return value will be the
+			application of the :py:meth:`__str__` function to the style concatenated with the other operand
+		"""
+		if isinstance(other, Style):
+			return Style(*self._styles, *other._styles)
+		elif isinstance(other, str):
+			return str(self) + other
+		elif isinstance(other, bytes):
+			return bytes(str(self), "UTF-8") + other
+		else:
+			raise TypeError(f"other is of type {other.__class__.__name__}, but expected type 'Style', 'str', or 'bytes'")
+
+	def __or__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+		r""" See :py:meth:`__and__` for details. """
+		return self.__and__(other)
+
+	def __add__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+		r""" See :py:meth:`__and__` for details. """
+		return self.__and__(other)
+
+	def __rand__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+		r""" See :py:meth:`__and__` for details. """
+		return self.__and__(other)
+
+	def __ror__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+		r""" See :py:meth:`__and__` for details. """
+		return self.__and__(other)
+
+	def __radd__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+		r""" See :py:meth:`__and__` for details. """
+		return self.__and__(other)
+
+	def __eq__(self, other : Style) -> bool:
+		if not isinstance(other, Style):
+			raise TypeError(f"other is of type {other.__class__.__name__}, but expected type 'Style'")
+		return self._styles == other._styles
+
+	def __repr__(self) -> str:
+		return f"Style({', '.join(repr(x) for x in self._styles)})"
+
+	def __str__(self) -> str:
+		return str().join(code_to_chars(x) for x in self._styles)
+
+STYLE_CONCAT : Final = TypeVar("STYLE_CONCAT", Style, str, bytes)
+""" Generic type variable for the :py:class:`Style` class. """
+
+SUPPRESS : Final = Style()
+r""" 
+Default styles to import into a project.
+
+..	deprecated:: 0.1.2
+
+	Deprecated because of the introduction of :py:class:`Style`. These values are kept for backwards compatibility but
+	will have the empty style associated with them.
+
+"""
+ERROR = LIGHT_ERROR = WARNING = NUMBER = NAME = SUPPRESS
+
+RED            : Final = Style(AnsiFore.RED)
+YELLOW         : Final = Style(AnsiFore.YELLOW)
+GREEN          : Final = Style(AnsiFore.GREEN)
+BLUE           : Final = Style(AnsiFore.BLUE)
+CYAN           : Final = Style(AnsiFore.CYAN)
+MAGENTA        : Final = Style(AnsiFore.MAGENTA)
+
+LIGHT_RED      : Final = Style(91)
+LIGHT_YELLOW   : Final = Style(93)
+LIGHT_GREEN    : Final = Style(92)
+LIGHT_BLUE     : Final = Style(94)
+LIGHT_CYAN     : Final = Style(96)
+LIGHT_MAGENTA  : Final = Style(95)
+
+BLACK          : Final = Style(AnsiFore.BLACK)
+DARK_GRAY      : Final = Style(90)
+GRAY           : Final = Style(37)
+WHITE          : Final = Style(97)
+
+ITALICS        : Final = Style(3)
+UNDERLINE      : Final = Style(4)
+BOLD_UNDERLINE : Final = Style(21)
+STRIKETHROUGH  : Final = Style(9)
+BOXED          : Final = Style(51)
+
+BRIGHT         : Final = Style(AnsiStyle.BRIGHT)
+DIM            : Final = Style(AnsiStyle.DIM)
+NORMAL         : Final = Style(AnsiStyle.NORMAL)
+
+
+RESET_ALL : Final = Style(AnsiStyle.RESET_ALL)
+
+class FillCharacters:
 	"""
 	Auto-generated (by font/console_glyph_gen.py) and hand-made fill character sets for the :py:func:`console_graph` function.
 	"""
@@ -154,21 +254,22 @@ class FILL_CHARACTERS:
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def color_print(s : Any, *styles : Tuple[str, ...], boolean : bool=False) -> str:
+def color_string(s : Any, style : Style, boolean : bool=False) -> str:
 	"""
-	Use color to print to console. Longer name version of :py:func:`cl_p`.
+	Add color ANSI escape sequences to a string. Longer name version of :py:func:`cl_s`.
 
-	.. seealso:: Function :py:func:`cl_p` for documentation.
+	.. seealso:: Function :py:func:`cl_s` for documentation.
 	"""
-	return cl_p(s, *styles, boolean=boolean)
+	return cl_s(s, style, boolean=boolean)
 
-def cl_p(s : Any, *styles : Tuple[str, ...], boolean : bool=False) -> str:
+def cl_s(s : Any, style : Style, *, boolean : bool=False) -> str:
 	"""
-	Use color to print to console. Shorter name version of :py:func:`color_print`.
+	Add color ANSI escape sequences to a string. Shorter name version of :py:func:`color_string`.
 
-	:param s: object to print (any type, but must be `bool` if `boolean` is set to `True`)
-	:param styles: arbitrarily many style variables
-	:param boolean: when set to `True`, automatically formats a boolean input as green or red string
+	:param s: object to convert to string (any type, but must be `bool` if `boolean` is set to `True`)
+	:param style: a :py:class:`Style` instance of arbitrary length
+	:param boolean: keyword only parameter, when set to `True` automatically formats the input as green or red string based
+		on its boolean value
 
 	:returns: styled string with auto-cast input s, which can be of any type
 
@@ -179,20 +280,17 @@ def cl_p(s : Any, *styles : Tuple[str, ...], boolean : bool=False) -> str:
 	"""
 	if not print_colors: return s
 
-	# sanitize input
-	if boolean and not type(s) is bool:
-		raise TypeError("Keyword-only argument 'boolean' set to 'True', but argument 's' is of type '{}' (expected 'bool').".format(s.__class__.__name__))
-
-	# set default style
-	if not styles or len(styles) == 0:
-		styles = (NORMAL, )
 	# set boolean style
 	if boolean:
-		styles = (*styles, Fore.GREEN) if s else (*styles, Fore.RED)
+		style = style + GREEN if bool(s) else style + RED
 
-	return "{}{}{}".format(str().join(styles), s, *RESET_ALL)
+	# default style
+	if len(style) <= 0:
+		style = NORMAL
 
-def get_time_str(secs : Real, force_unit : Literal["ns","µs","ms","s","m","h"]=None):
+	return "{}{}{}".format(str(style), str(s), str(RESET_ALL))
+
+def get_time_str(secs : Real, force_unit : Optional[Literal["ns","µs","ms","s","m","h"]]=None):
 	"""
 	Helper function to format durations.
 
@@ -205,14 +303,12 @@ def get_time_str(secs : Real, force_unit : Literal["ns","µs","ms","s","m","h"]=
 	:raises ValueError: if type of force_unit is not one of the specified literals
 	"""
 	# input sanitation
-	if not type(secs) in (float, int):
-		raise TypeError("Expected 'secs' to be of type 'int' or 'float' but received {}.".format(secs.__class__.__name__))
 	if secs < 0 or math.copysign(1, secs) == -1:
 		raise ValueError("Value for 'secs' must be positive (received {}).".format(secs))
 
 	# ++++FORCE UNIT++++
-	if force_unit:
-		if type(force_unit) is not str:
+	if force_unit is not None:
+		if not isinstance(force_unit, str):
 			raise TypeError("'forceUnit' must be of type 'str' (received {}).".format(force_unit.__class__.__name__))
 		if force_unit == "ns":
 			factor = 1000000000
@@ -238,7 +334,8 @@ def get_time_str(secs : Real, force_unit : Literal["ns","µs","ms","s","m","h"]=
 	elif secs <= 0.1:
 		return "{:.3f}ms".format(secs * 1000)
 	elif secs < 60:
-		if round(60 - secs, 3) == 0: secs = 60 - 0.001
+		if round(60 - secs, 3) == 0:
+			secs = 60 - 0.001
 		return "{:.3f}s".format(secs)
 	else:
 		return "{:n}m {:.3f}s".format(int(secs / 60), secs % 60)
@@ -272,7 +369,7 @@ def console_graph(data : Collection,
 				  scale_spacing : int=1,
 				  rounding : int=2,
 				  scale_in_front : bool=False,
-				  fill_characters=FILL_CHARACTERS.SIMPLE,
+				  fill_characters=FillCharacters.SIMPLE,
 				  color_function : Callable[[int, int, int, int], Tuple[str, ...]]=None,
 				  bg_color : Tuple[str, ...]=NORMAL,
 				  use_full_width : bool=True,
@@ -444,7 +541,7 @@ def console_graph(data : Collection,
 			"""
 
 			def __pad__(height, zero_char_index):
-				self.data.extend([bg_color + zero_chars[zero_char_index] + RESET_ALL] * int(height))
+				self.data.extend([str(bg_color) + zero_chars[zero_char_index] + str(RESET_ALL)] * int(height))
 
 			# by finding distance between current value (or x-axis if non-negative value) and minimum global value
 			__pad__(max(ceil(abs(y_offset)) + min(0, cell_value), 0), 1)
@@ -459,7 +556,7 @@ def console_graph(data : Collection,
 				# else move on to next char
 				while charValue <= unsigned_value_loop:
 					# invert index for color val  (total height - current height)
-					temp_char_list.append(self.color[int(signed_value - unsigned_value_loop)] + char[val_sign] + RESET_ALL)
+					temp_char_list.append(str(self.color[int(signed_value - unsigned_value_loop)]) + char[val_sign] + str(RESET_ALL))
 
 					# move down one line/row
 					unsigned_value_loop = unsigned_value_loop - 1
@@ -593,7 +690,7 @@ def console_graph(data : Collection,
 		# {Numbers}_{|}_ or _{|}_{Numbers} if scale not in front
 		scale_cell.data.extend([("{num} {sym} " if scale_in_front else " {sym} {num}").format(
 				sym=_side_scale_sym(char_val),
-				num=cl_p(scale_just(unit_format_dict[char_val])(longest_unit_format, spacer_char), BRIGHT))
+				num=cl_s(scale_just(unit_format_dict[char_val])(longest_unit_format, spacer_char), BRIGHT))
 			for char_val in unit_range])
 
 		# add 2 extra rows side scale fill characters to match top scale
@@ -638,7 +735,7 @@ def console_graph(data : Collection,
 
 	# add debug color and character if desired
 	if debug:
-		new_line = cl_p(debug_newline, CYAN) + new_line
+		new_line = cl_s(debug_newline, CYAN) + new_line
 
 	# one empty line to pre- or append to output
 	empty_line = full_graph_struct_width * spacer_char + new_line
@@ -733,7 +830,7 @@ def console_progress_bar(position : Real,
 	if relative_cursor_position:
 		newline = REL_POS(-(length + (2 if debug else 0)), 1)
 	if debug:
-		newline = cl_p("\\n", *CYAN) + newline
+		newline = cl_s("\\n", *CYAN) + newline
 		space = "'"
 
 	text_format_str_part = "{:." + str(text_rounding) + "f}"

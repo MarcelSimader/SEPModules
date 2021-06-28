@@ -4,16 +4,18 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>SEPModules &mdash; SEPModules 0.1.1.dev1 documentation</title>
+  <title>SEPModules &mdash; SEPModules 0.1.2 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -63,7 +66,7 @@
             
             
               <div class="version">
-                0.1.1.dev1
+                0.1.2
               </div>
             
           
@@ -88,7 +91,7 @@
               
             
             
-              <p><span class="caption-text">API Documentation</span></p>
+              <p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules/SEPMaths.html">SEPMaths</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/SEPMaths.html#rational">Rational</a></li>
@@ -110,6 +113,11 @@
 <li class="toctree-l2"><a class="reference internal" href="modules/SEPIO.html#console-arguments">Console Arguments</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="modules/SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="modules/SEPDecorators.html">SEPDecorators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/SEPPrinting/index.html">SEPPrinting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
@@ -117,11 +125,11 @@
 <li class="toctree-l3"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.html#progress-bar">Progress Bar</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.FILL_CHARACTERS.html">SEPPrinting.FILL_CHARACTERS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="examples/test.html">Test</a></li>
 </ul>
@@ -191,11 +199,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="sepmodules">
+  <div class="section" id="sepmodules">
 <h1>SEPModules<a class="headerlink" href="#sepmodules" title="Permalink to this headline">¶</a></h1>
 <p><em>SEPModules</em> provides a handful of modules to aid in speeding up the production of small or medium-sized scripts.</p>
 <div class="toctree-wrapper compound">
-<p><span class="caption-text">API Documentation</span></p>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules/SEPMaths.html">SEPMaths</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/SEPMaths.html#rational">Rational</a></li>
@@ -217,6 +225,11 @@
 <li class="toctree-l2"><a class="reference internal" href="modules/SEPIO.html#console-arguments">Console Arguments</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="modules/SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="modules/SEPDecorators.html">SEPDecorators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/SEPPrinting/index.html">SEPPrinting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
@@ -224,18 +237,18 @@
 <li class="toctree-l3"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.html#progress-bar">Progress Bar</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.FILL_CHARACTERS.html">SEPPrinting.FILL_CHARACTERS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="examples/test.html">Test</a></li>
 </ul>
 </div>
-</section>
+</div>
 
 
            </div>

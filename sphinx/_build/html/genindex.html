@@ -7,12 +7,15 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; SEPModules 0.1.1.dev1 documentation</title>
+  <title>Index &mdash; SEPModules 0.1.2 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   
   
@@ -29,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -61,7 +65,7 @@
             
             
               <div class="version">
-                0.1.1.dev1
+                0.1.2
               </div>
             
           
@@ -86,7 +90,7 @@
               
             
             
-              <p><span class="caption-text">API Documentation</span></p>
+              <p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules/SEPMaths.html">SEPMaths</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/SEPMaths.html#rational">Rational</a></li>
@@ -108,6 +112,11 @@
 <li class="toctree-l2"><a class="reference internal" href="modules/SEPIO.html#console-arguments">Console Arguments</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="modules/SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="modules/SEPDecorators.html">SEPDecorators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/SEPPrinting/index.html">SEPPrinting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
@@ -115,11 +124,11 @@
 <li class="toctree-l3"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.html#progress-bar">Progress Bar</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.FILL_CHARACTERS.html">SEPPrinting.FILL_CHARACTERS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="examples/test.html">Test</a></li>
 </ul>
@@ -195,11 +204,13 @@
  | <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
@@ -207,6 +218,8 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="_">_</h2>
@@ -222,10 +235,10 @@
 </li>
       <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.__getitem__">__getitem__() (SEPModules.SEPIO.ConsoleArguments method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.__gt__">__gt__() (SEPModules.SEPAlgebra.AlgebraicStructure method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.__iter__">__iter__() (SEPModules.SEPIO.ConsoleArguments method)</a>
 </li>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.__le__">__le__() (SEPModules.SEPAlgebra.AlgebraicStructure method)</a>
@@ -233,6 +246,8 @@
       <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.__load_arguments__">__load_arguments__() (SEPModules.SEPIO.ConsoleArguments method)</a>
 </li>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.__lt__">__lt__() (SEPModules.SEPAlgebra.AlgebraicStructure method)</a>
+</li>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.__provide_timestamp__">__provide_timestamp__() (SEPModules.SEPLogger.Logger method)</a>
 </li>
       <li><a href="modules/SEPMaths.html#SEPModules.SEPMaths.Rational.__simplify__">__simplify__() (SEPModules.SEPMaths.Rational static method)</a>
 </li>
@@ -254,11 +269,11 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Monoid.binary_operator">binary_operator() (SEPModules.SEPAlgebra.Monoid property)</a>
+      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Monoid.binary_operator">binary_operator (SEPModules.SEPAlgebra.Monoid property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.binary_operators">binary_operators() (SEPModules.SEPAlgebra.AlgebraicStructure property)</a>
+      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.binary_operators">binary_operators (SEPModules.SEPAlgebra.AlgebraicStructure property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -266,9 +281,9 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.cl_p">cl_p() (in module SEPModules.SEPPrinting)</a>
+      <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.cl_s">cl_s() (in module SEPModules.SEPPrinting)</a>
 </li>
-      <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.color_print">color_print() (in module SEPModules.SEPPrinting)</a>
+      <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.color_string">color_string() (in module SEPModules.SEPPrinting)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -281,16 +296,30 @@
   </ul></td>
 </tr></table>
 
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.debug">debug() (SEPModules.SEPLogger.Logger method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.DefaultLevels">DefaultLevels (class in SEPModules.SEPLogger)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Element">Element (in module SEPModules.SEPAlgebra)</a>
 </li>
+      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.elements">elements (SEPModules.SEPAlgebra.AlgebraicStructure property)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.elements">elements() (SEPModules.SEPAlgebra.AlgebraicStructure property)</a>
+      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Ring.elements_without_zero">elements_without_zero (SEPModules.SEPAlgebra.Ring property)</a>
 </li>
-      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Ring.elements_without_zero">elements_without_zero() (SEPModules.SEPAlgebra.Ring property)</a>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.ERROR">ERROR (in module SEPModules.SEPLogger)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -298,18 +327,20 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.FATAL_ERROR">FATAL_ERROR (in module SEPModules.SEPLogger)</a>
+</li>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Field">Field (class in SEPModules.SEPAlgebra)</a>
 </li>
-      <li><a href="modules/SEPPrinting/SEPPrinting.FILL_CHARACTERS.html#SEPModules.SEPPrinting.FILL_CHARACTERS">FILL_CHARACTERS (class in SEPModules.SEPPrinting)</a>
+      <li><a href="modules/SEPPrinting/SEPPrinting.FillCharacters.html#SEPModules.SEPPrinting.FillCharacters">FillCharacters (class in SEPModules.SEPPrinting)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Monoid.find_inverses">find_inverses() (SEPModules.SEPAlgebra.Monoid method)</a>
 
       <ul>
         <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Ring.find_inverses">(SEPModules.SEPAlgebra.Ring method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.find_inverses_per_operator">find_inverses_per_operator() (SEPModules.SEPAlgebra.AlgebraicStructure method)</a>
 </li>
       <li><a href="modules/SEPMaths.html#SEPModules.SEPMaths.find_rational_approximation">find_rational_approximation() (in module SEPModules.SEPMaths)</a>
@@ -322,10 +353,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.get_appropriate_time_unit">get_appropriate_time_unit() (in module SEPModules.SEPPrinting)</a>
 </li>
-      <li><a href="modules/SEPMaths.html#SEPModules.SEPMaths.get_possible_rationals">get_possible_rationals() (in module SEPModules.SEPMaths)</a>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Levels.get_debug">get_debug() (SEPModules.SEPLogger.Levels class method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPMaths.html#SEPModules.SEPMaths.get_possible_rationals">get_possible_rationals() (in module SEPModules.SEPMaths)</a>
+</li>
       <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.get_time_str">get_time_str() (in module SEPModules.SEPPrinting)</a>
 </li>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Group">Group (class in SEPModules.SEPAlgebra)</a>
@@ -350,6 +383,8 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.INFO">INFO (in module SEPModules.SEPLogger)</a>
+</li>
       <li><a href="modules/SEPMaths.html#SEPModules.SEPMaths.is_abelian_group">is_abelian_group() (in module SEPModules.SEPMaths)</a>
 </li>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.is_associative">is_associative() (SEPModules.SEPAlgebra.AlgebraicStructure method)</a>
@@ -401,6 +436,20 @@
   </ul></td>
 </tr></table>
 
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Levels">Levels (class in SEPModules.SEPLogger)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.log">log() (SEPModules.SEPLogger.Logger method)</a>
+</li>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger">Logger (class in SEPModules.SEPLogger)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -411,6 +460,8 @@
         <li><a href="modules/SEPAlgebra.html#module-SEPModules.SEPAlgebra">SEPModules.SEPAlgebra</a>
 </li>
         <li><a href="modules/SEPIO.html#module-SEPModules.SEPIO">SEPModules.SEPIO</a>
+</li>
+        <li><a href="modules/SEPLogger.html#module-SEPModules.SEPLogger">SEPModules.SEPLogger</a>
 </li>
         <li><a href="modules/SEPMaths.html#module-SEPModules.SEPMaths">SEPModules.SEPMaths</a>
 </li>
@@ -445,6 +496,10 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.OK">OK (in module SEPModules.SEPLogger)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Operator">Operator (in module SEPModules.SEPAlgebra)</a>
 </li>
   </ul></td>
@@ -465,7 +520,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.required">required() (SEPModules.SEPIO.ConsoleArguments property)</a>
+      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.required">required (SEPModules.SEPIO.ConsoleArguments property)</a>
 </li>
       <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.Ring">Ring (class in SEPModules.SEPAlgebra)</a>
 </li>
@@ -492,23 +547,32 @@
 </li>
       </ul></li>
       <li>
+    SEPModules.SEPLogger
+
+      <ul>
+        <li><a href="modules/SEPLogger.html#module-SEPModules.SEPLogger">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
     SEPModules.SEPMaths
 
       <ul>
         <li><a href="modules/SEPMaths.html#module-SEPModules.SEPMaths">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.set_args">set_args() (SEPModules.SEPIO.ConsoleArguments property)</a>
+      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.set_args">set_args (SEPModules.SEPIO.ConsoleArguments property)</a>
 </li>
-      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.set_kwargs">set_kwargs() (SEPModules.SEPIO.ConsoleArguments property)</a>
+      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.set_kwargs">set_kwargs (SEPModules.SEPIO.ConsoleArguments property)</a>
 </li>
-      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.set_pars">set_pars() (SEPModules.SEPIO.ConsoleArguments property)</a>
+      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.set_pars">set_pars (SEPModules.SEPIO.ConsoleArguments property)</a>
 </li>
-      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.set_total">set_total() (SEPModules.SEPIO.ConsoleArguments property)</a>
+      <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.set_total">set_total (SEPModules.SEPIO.ConsoleArguments property)</a>
 </li>
       <li><a href="modules/SEPMaths.html#SEPModules.SEPMaths.sign">sign() (in module SEPModules.SEPMaths)</a>
+</li>
+      <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.Style">Style (class in SEPModules.SEPPrinting)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -516,13 +580,29 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.test_for_closure">test_for_closure() (SEPModules.SEPAlgebra.AlgebraicStructure property)</a>
+      <li><a href="modules/SEPAlgebra.html#SEPModules.SEPAlgebra.AlgebraicStructure.test_for_closure">test_for_closure (SEPModules.SEPAlgebra.AlgebraicStructure property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPDecorators.html#SEPModules.SEPDecorators.timed">timed() (in module SEPModules.SEPDecorators)</a>
 </li>
       <li><a href="modules/SEPDecorators.html#SEPModules.SEPDecorators.timed_return">timed_return() (in module SEPModules.SEPDecorators)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.VERBOSE">VERBOSE (in module SEPModules.SEPLogger)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.WARNING">WARNING (in module SEPModules.SEPLogger)</a>
 </li>
   </ul></td>
 </tr></table>

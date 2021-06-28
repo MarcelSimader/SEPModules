@@ -42,7 +42,7 @@ def test_performance_rational():
 			# r = op(Rational(k, j), Rational(i, l))
 			# t = op_int(k/j, i/l)
 			# if float(r) - t >= 10**-14:
-				# print(cl_p("{},{}: {} is not equal to {}!".format((k, j), (i, l), float(r), t), RED))
+				# print(cl_s("{},{}: {} is not equal to {}!".format((k, j), (i, l), float(r), t), RED))
 
 	_prnt = lambda s, n: print("(n={}) {}: ".format(n, s.ljust(2)), end="")
 	_prnt("+", n)
