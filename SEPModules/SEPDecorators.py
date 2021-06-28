@@ -1,7 +1,8 @@
 """
-Author: Marcel Simader
+:Author: Marcel Simader
+:Date: 01.04.2021
 
-Date: 01.04.2021
+.. versionadded:: v0.1.0
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -11,7 +12,7 @@ Date: 01.04.2021
 import time
 from typing import Callable, Dict, Union, Any, Final
 
-from SEPModules.SEPPrinting import cl_p, get_time_str, NAME
+from SEPModules.SEPPrinting import cl_s, get_time_str, NAME
 
 __WRAPPER_NAME__ : Final = "wrapped_"
 
@@ -49,7 +50,7 @@ def timed(func : Callable) -> Callable:
 	def __wrapper__(*args, **kwargs):
 		timed_func = timed_return(func)
 		r = timed_func(*args, **kwargs)
-		print("{} took {} to execute.".format(cl_p(func.__name__, NAME), cl_p(get_time_str(r["time"]))))
+		print("{} took {} to execute.".format(cl_s(func.__name__, NAME), cl_s(get_time_str(r["time"]))))
 		return r["return"]
 	
 	__wrapper__.__name__ = "{}timed_{}".format(__WRAPPER_NAME__, func.__name__)

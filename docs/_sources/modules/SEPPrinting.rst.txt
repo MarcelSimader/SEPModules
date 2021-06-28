@@ -1,5 +1,20 @@
 SEPPrinting
 ==========================
 
-..  automodule:: SEPModules.SEPPrinting
-    :members:
+..	autodata:: SEPModules.SEPPrinting.print_colors
+
+..	autofunction:: SEPModules.SEPPrinting.color_print
+..	autofunction:: SEPModules.SEPPrinting.cl_p
+
+..	autofunction:: SEPModules.SEPPrinting.get_time_str
+..	autofunction:: SEPModules.SEPPrinting.get_appropriate_time_unit
+
+Console Graph
+-------------------
+
+..	autofunction:: SEPModules.SEPPrinting.console_graph
+
+Progress Bar
+-------------------
+
+..	autofunction:: SEPModules.SEPPrinting.console_progress_bar

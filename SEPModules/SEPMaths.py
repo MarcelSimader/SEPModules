@@ -1,22 +1,23 @@
 """
-Author: Marcel Simader
+:Author: Marcel Simader
+:Date: 01.04.2021
 
-Date: 01.04.2021
+.. versionadded:: v0.1.0
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ IMPORTS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from __future__ import annotations
 
-from numbers import Real
-from typing import Tuple, Callable, Any, Union, Set
+from __future__ import annotations
 
 import sys
 from itertools import product
 from math import copysign, gcd, floor, ceil
+from numbers import Real
+from typing import Tuple, Callable, Any, Union, Set, Optional, Iterable
 
-from SEPModules.SEPPrinting import cl_p, WARNING
+from SEPModules.SEPPrinting import cl_s, WARNING
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
@@ -46,7 +47,7 @@ class Rational:
 	"""
 	
 	#Decorator
-	def _prepare_int_binary_op(func : Callable[..., Any]) -> Callable[..., Any]:
+	def __prepare_int_binary_op__(func : Callable[..., Any]) -> Callable[..., Any]:
 		"""Do type checking of arithmetic binary operations on Rationals and auto-convert int or float to Rational type."""
 		def __wrapper__(self, other):
 			if not (type(other) in (int, float) or type(other) is Rational):
@@ -72,14 +73,17 @@ class Rational:
 	
 	@property
 	def sign(self) -> int:
+		"""The sign of this fraction. :returns: either 1 or -1"""
 		return (self._sign[0] ^ self._sign[1]) + 1 # xor hack, amounts to sign[0] * sign[1]
 	
 	@property
 	def a(self) -> int:
+		"""The enumerator of this fraction."""
 		return self.sign * self._a
 	
 	@property
 	def b(self) -> int:
+		"""The denominator of this fraction."""
 		return self._b
 
 	def __init__(self, a : Union[int, float, Rational]=1, b : int=1):
@@ -87,7 +91,7 @@ class Rational:
 			raise TypeError("Values 'a' and 'b' must be of type 'int' (received {}, {}). \
 						Alternatively 'a' can be of type 'float' or 'Rational' when \
 						'b' is set to 1 or left blank.".format(a.__class__.__name__, b.__class__.__name__))
-		
+
 		#TODO: write tests for input type Rational
 		if type(a) in (Rational, float) and b == 1: #handle Rational or float input
 			if type(a) is float:
@@ -126,7 +130,7 @@ class Rational:
 	def __hash__(self):
 		return hash((self.a, self.b))
 	
-	@_prepare_int_binary_op
+	@__prepare_int_binary_op__
 	def __compare__(self, other) -> int:
 		"""
 		Function that returns -1 if :math:`a < b`, 0 if :math:`a = b`, or 1 if :math:`a > b` for Rationals a and b.
@@ -159,7 +163,7 @@ class Rational:
 		return self.__compare__(other) >= 0
 
 	# noinspection PyProtectedMember
-	@_prepare_int_binary_op
+	@__prepare_int_binary_op__
 	def __add__(self, other) -> Rational:
 		"""
 		:math:`(a1 / b1) + (a2 / b2) = (a1 * b2 + a2 * b1) / ( b1 * b2)`
@@ -168,7 +172,7 @@ class Rational:
 		b = self._b * other._b
 		return Rational(a, b)
 	
-	@_prepare_int_binary_op
+	@__prepare_int_binary_op__
 	def __sub__(self, other) -> Rational:
 		"""
 		:math:`(a1 / b1) - (a2 / b2) = (a1 * b2 - a2 * b1) / ( b1 * b2)`
@@ -177,7 +181,7 @@ class Rational:
 		b = self._b * other._b
 		return Rational(a, b)
 	
-	@_prepare_int_binary_op
+	@__prepare_int_binary_op__
 	def __mul__(self, other) -> Rational:
 		"""
 		:math:`(a1 * a2) / (b1 * b2)`
@@ -186,7 +190,7 @@ class Rational:
 		b = self._b * other._b
 		return Rational(a, b)
 	
-	@_prepare_int_binary_op
+	@__prepare_int_binary_op__
 	def __truediv__(self, other) -> Rational:
 		"""
 		:math:`(a1 * b2) / (b1 * a2)`
@@ -209,7 +213,7 @@ class Rational:
 			b = self.a ** -other
 		return Rational(a, b)
 	
-	@_prepare_int_binary_op
+	@__prepare_int_binary_op__
 	def __mod__(self, other) -> Rational:
 		"""
 		:math:`((a * d) - (c * b * floor((a * d) / (b * c))) / (b * d)`
@@ -219,7 +223,7 @@ class Rational:
 		b = self._b * other._b
 		return Rational(a, b)
 	
-	@_prepare_int_binary_op
+	@__prepare_int_binary_op__
 	def __and__(self, other) -> Rational:
 		"""
 		:math:`(a1 + a2) / (b1 + b2)`
@@ -242,7 +246,7 @@ class Rational:
 	def __float__(self) -> float:
 		return float(self.a / self._b)
 		
-	def __round__(self, n_digits : int=None) -> float:
+	def __round__(self, n_digits : Optional[int]=None) -> float:
 		if n_digits:
 			return round(float(self), n_digits)
 		else: 
@@ -268,10 +272,6 @@ def find_rational_approximation(num : Real, precision :int=4) -> Rational:
 
 	:raises ValueError: if precision is negative
 	"""
-	if type(num) not in (float, int):
-		raise TypeError("Type of 'num' must be 'int' or 'float' (received '{}').".format(num.__class__.__name__))
-	if type(precision) is not int:
-		raise TypeError("Type of 'precision' must be 'int' (received type '{}').".format(precision.__class__.__name__))
 	if precision < 0:
 		raise ValueError("Value of 'precision' must be non-negative (received '{}').".format(precision))
 
@@ -281,10 +281,12 @@ def find_rational_approximation(num : Real, precision :int=4) -> Rational:
 	try:
 		#handle precision values that are too large
 		if precision > sys.float_info.dig - 1:
-			print(cl_p("Warning: The precision of findRationalApproximation was set to {}, but the maximum system specification is {} (precision has been automatically set to the system maximum).".format(precision, sys.float_info.dig - 1), WARNING))
+			print(cl_s("Warning: The precision of findRationalApproximation was set to {}, "
+					   "but the maximum system specification is {} (precision has been automatically set to the system maximum)."
+					   .format(precision, sys.float_info.dig - 1), WARNING))
 			precision = sys.float_info.dig
 	except Exception as e:
-		print(cl_p("Warning: Something went wrong while getting sys.float_info!\n\t{}".format(e), WARNING))
+		print(cl_s("Warning: Something went wrong while getting sys.float_info!\n\t{}".format(e), WARNING))
 
 	# starting, left_bound, right_bound
 	iteration_vars = (1, 2, 0, 1, 1, 1)
@@ -299,7 +301,7 @@ def find_rational_approximation(num : Real, precision :int=4) -> Rational:
 	
 	return Rational(int(copysign(iteration_vars[0] + int(abs(num)) * iteration_vars[1], num)), iteration_vars[1])
 
-def get_possible_rationals(_set : Union[list, set]) -> Set[Rational]:
+def get_possible_rationals(_set : Iterable[int]) -> Set[Rational]:
 	r"""
 	Returns unique Rationals in a set with :math:`a/b \quad \forall a, b \in \text{_set}`.
 
@@ -307,38 +309,17 @@ def get_possible_rationals(_set : Union[list, set]) -> Set[Rational]:
 
 	:raises ValueError: if elements of `_set` are not all integers
 	"""
-	if not type(_set) in (list, set):
-		raise TypeError("Argument must be of type 'list' or 'set' (received '{}').".format(_set.__class__.__name__))
 	if [None for el in _set if type(el) is not int]:
 		raise ValueError("All elements of input set must be integers.")
 	
 	# all rationals (a, b) over Cartesian product length 2 of _set
 	return {Rational(*a) for a in product(_set, repeat=2) if a[1] != 0}
 
-def fibonacci(n : int, fib_list=None) -> int:
-	n = abs(n) if n < 0 else n
-	if fib_list is None:
-		fib_list = {-2:0, -1:0, 0:0, 1:1}
-	def __fast_fib__(n, fib_list):
-		if not n in fib_list:
-			fib_list[n] = __fast_fib__(n - 1, fib_list) + __fast_fib__(n - 2, fib_list)
-		return fib_list[n]
-	return __fast_fib__(n, fib_list)
-
-def slow_fibonacci(n : int) -> int:
-	n = abs(n) if n < 0 else n
-	def __slow_fib__(n):
-		if n < 1:
-			return 0
-		elif n == 1:
-			return 1
-		return __slow_fib__(n - 1) + __slow_fib__(n - 2)
-	return __slow_fib__(n)
-	
-def sign(x : int, zero : int=0) -> int:
+def sign(x : Real, zero : Any=0) -> int:
 	"""
 	Returns the sign of x, where sign(0) = `zero`.
 
+	:param x: the value to get the sign of
 	:param zero: defaults to 0, but 1 may be useful in certain applications
 	"""
 	return -1 if x < 0 else (1 if x > 0 else zero)

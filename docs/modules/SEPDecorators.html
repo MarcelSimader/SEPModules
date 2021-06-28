@@ -4,16 +4,18 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>SEPDecorators &mdash; SEPModules 0.1.1.dev0 documentation</title>
+  <title>SEPDecorators &mdash; SEPModules 0.1.2 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
 
   
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -39,8 +42,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="SEPPrinting" href="SEPPrinting.html" />
-    <link rel="prev" title="SEPIO" href="SEPIO.html" /> 
+    <link rel="next" title="SEPPrinting" href="SEPPrinting/index.html" />
+    <link rel="prev" title="SEPLogger" href="SEPLogger.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -64,7 +67,7 @@
             
             
               <div class="version">
-                0.1.1.dev0
+                0.1.2
               </div>
             
           
@@ -89,13 +92,47 @@
               
             
             
-              <p><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="SEPMaths.html">SEPMaths</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SEPIO.html">SEPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPMaths.html">SEPMaths</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPMaths.html#rational">Rational</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#group">Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#abelian-group">Abelian Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#ring">Ring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#field">Field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPIO.html">SEPIO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPIO.html#console-arguments">Console Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">SEPDecorators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SEPPrinting.html">SEPPrinting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPPrinting/index.html">SEPPrinting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPPrinting/SEPPrinting.html#console-graph">Console Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPPrinting/SEPPrinting.html#progress-bar">Progress Bar</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/test.html">Test</a></li>
 </ul>
 
             
@@ -163,13 +200,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="module-SEPModules.SEPDecorators">
-<span id="sepdecorators"></span><h1>SEPDecorators<a class="headerlink" href="#module-SEPModules.SEPDecorators" title="Permalink to this headline">¶</a></h1>
-<p>Author: Marcel Simader</p>
-<p>Date: 01.04.2021</p>
+  <div class="section" id="sepdecorators">
+<h1>SEPDecorators<a class="headerlink" href="#sepdecorators" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="SEPModules.SEPDecorators.timed">
-<code class="sig-prename descclassname"><span class="pre">SEPModules.SEPDecorators.</span></code><code class="sig-name descname"><span class="pre">timed</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Callable</span><a class="headerlink" href="#SEPModules.SEPDecorators.timed" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPDecorators.timed">
+<span class="sig-prename descclassname"><span class="pre">&#64;</span></span><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPDecorators.</span></span><span class="sig-name descname"><span class="pre">timed</span></span><a class="headerlink" href="#SEPModules.SEPDecorators.timed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Times the decorated function and prints the amount of time it took to execute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -179,8 +214,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="SEPModules.SEPDecorators.timed_return">
-<code class="sig-prename descclassname"><span class="pre">SEPModules.SEPDecorators.</span></code><code class="sig-name descname"><span class="pre">timed_return</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Callable</span><a class="headerlink" href="#SEPModules.SEPDecorators.timed_return" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPDecorators.timed_return">
+<span class="sig-prename descclassname"><span class="pre">&#64;</span></span><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPDecorators.</span></span><span class="sig-name descname"><span class="pre">timed_return</span></span><a class="headerlink" href="#SEPModules.SEPDecorators.timed_return" title="Permalink to this definition">¶</a></dt>
 <dd><p>Same functionality as <a class="reference internal" href="#SEPModules.SEPDecorators.timed" title="SEPModules.SEPDecorators.timed"><code class="xref py py-func docutils literal notranslate"><span class="pre">timed()</span></code></a> decorator but does not print automatically.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -189,7 +224,7 @@
 </dl>
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>
@@ -197,8 +232,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="SEPPrinting.html" class="btn btn-neutral float-right" title="SEPPrinting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="SEPIO.html" class="btn btn-neutral float-left" title="SEPIO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SEPPrinting/index.html" class="btn btn-neutral float-right" title="SEPPrinting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SEPLogger.html" class="btn btn-neutral float-left" title="SEPLogger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

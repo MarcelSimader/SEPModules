@@ -1,7 +1,8 @@
 """
-Author: Marcel Simader
+:Author: Marcel Simader
+:Date: 01.04.2021
 
-Date: 01.04.2021
+.. versionadded:: v0.1.0
 """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -10,12 +11,13 @@ Date: 01.04.2021
 
 import sys
 from getopt import getopt
-from typing import List, Callable, Any, Dict, Union, Tuple, Final
-
+from typing import List, Callable, Any, Dict, Union, Tuple, Final, Iterable
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# TODO: typed arguments idea
 
 class ConsoleArguments:
 	"""
@@ -33,7 +35,7 @@ class ConsoleArguments:
 	"""
 
 	#constants
-	_SET_TOTAL : Final		 = "set"
+	_SET_TOTAL : Final		  = "set"
 	_SET_ARGS : Final         = "args"
 	_SET_KWARGS : Final       = "kwargs"
 	_SET_PARS : Final         = "parameters"
@@ -45,12 +47,6 @@ class ConsoleArguments:
 		"""
 		See other size properties:
 
-			* :py:attr:`set_args`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`set_pars`
-			* :py:attr:`required`
-			* :py:attr:`required_and_set`
-
 		:returns: the amount of set args and keyword args.
 		"""
 		return self.__size__[self._SET_TOTAL]
@@ -59,12 +55,6 @@ class ConsoleArguments:
 	def set_args(self) -> int:
 		"""
 		See other size properties:
-
-			* :py:attr:`set_total`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`set_pars`
-			* :py:attr:`required`
-			* :py:attr:`required_and_set`
 
 		:returns: the amount of set args.
 		"""
@@ -75,12 +65,6 @@ class ConsoleArguments:
 		"""
 		See other size properties:
 
-			* :py:attr:`set_total`
-			* :py:attr:`set_args`
-			* :py:attr:`set_pars`
-			* :py:attr:`required`
-			* :py:attr:`required_and_set`
-
 		:returns: the amount of set keyword args.
 		"""
 		return self.__size__[self._SET_KWARGS]
@@ -89,12 +73,6 @@ class ConsoleArguments:
 	def set_pars(self) -> int:
 		"""
 		See other size properties:
-
-			* :py:attr:`set_total`
-			* :py:attr:`set_args`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`required`
-			* :py:attr:`required_and_set`
 
 		:returns: the amount of set parameters.
 		"""
@@ -105,12 +83,6 @@ class ConsoleArguments:
 		"""
 		See other size properties:
 
-			* :py:attr:`set_total`
-			* :py:attr:`set_args`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`set_pars`
-			* :py:attr:`required_and_set`
-
 		:returns: the amount of required args (e.g. a flag `'a:'`).
 		"""
 		return self.__size__[self._REQUIRED]
@@ -120,23 +92,12 @@ class ConsoleArguments:
 		"""
 		See other size properties:
 
-			* :py:attr:`set_total`
-			* :py:attr:`set_args`
-			* :py:attr:`set_kwargs`
-			* :py:attr:`set_pars`
-			* :py:attr:`required`
-
 		:returns: the amount of required and set args (i.e. same as :py:attr:`required` but only counts `'a:'` if it
 			was also set).
 		"""
 		return self.__size__[self._REQUIRED_AND_SET]
 
-	def __init__(self, argnames : List[str], kwargnames : List[str], no_load : bool=False):
-		#check if arg-names and kwarg-names are of type list
-		if not (type(argnames) is list and type(kwargnames) is list):
-			raise TypeError("Parameters 'arg-names' and 'kwarg-names' must be of type list (received {} and {}).".format(
-					argnames.__class__.__name__, kwargnames.__class__.__name__))
-
+	def __init__(self, argnames : Iterable[str], kwargnames : Iterable[str], no_load : bool=False):
 		#check that arg-names and kwarg-names don't overlap
 		overlap = [(a, b) for a in argnames for b in kwargnames if a.replace(":", "") == b.replace("=", "")]
 		if len(overlap):
@@ -158,7 +119,8 @@ class ConsoleArguments:
 			self.requires_arg[kwargname.replace("=", "")]	= kwargname[-1:] == "="
 
 		#load arguments into class
-		if not no_load: self.__load_arguments__()
+		if not no_load:
+			self.__load_arguments__()
 
 	def __load_arguments__(self):
 		"""	
@@ -166,7 +128,8 @@ class ConsoleArguments:
 		"""
 		_args_in = getopt(sys.argv[1:], self._argnames, self._kwargnames)
 
-		#check if _args_in order is fishy by seeing if any parameter is also named in the args or kwargs
+		# check if _args_in order has potentially been read incorrectly by seeing if any parameter is
+		# also named in the args or kwargs
 		if any([arg in ["-" + a.replace(":", "") for a in self._argnames] or arg in ["--" + a.replace("=", "") for a in self._kwargnames] for arg in _args_in[1]]):
 			raise Exception("Argument or keyword argument '{}' not recognized. (Maybe the arguments are in the wrong order?)".format(
 					_args_in[1][0]))
@@ -265,9 +228,16 @@ class ConsoleArguments:
 		elif is_str:
 			return options in self._args.keys() or options in self._kwargs.keys() #check if key exists
 		elif is_list:
-			return len(set(options) & set(self._args.keys())) + len(set(options) & set(self._kwargs.keys())) + len(set(options) & set(range(len(self._pars)))) > intersection_min #check if all keys exist
+			return len(set(options) & set(self._args.keys())) + \
+				   len(set(options) & set(self._kwargs.keys())) + \
+				   len(set(options) & set(range(len(self._pars)))) \
+				   > intersection_min #check if all keys exist
 		elif is_dict:
-			return len([None for b in options.items() if b in self._args.items() or b in self._kwargs.items() or b in [(i, par) for i, par in enumerate(self._pars)]]) > intersection_min #check if all keys exist and all values match
+			return len([None for b in options.items()
+						if b in self._args.items()
+						or b in self._kwargs.items()
+						or b in [(i, par) for i, par in enumerate(self._pars)]]) \
+				   > intersection_min #check if all keys exist and all values match
 
 	def __repr__(self) -> str:
 		return "ConsoleArguments<(%s, %s)>" % ([a if b != ":" else a + ":" for a, b in zip(self._argnames, self._argnames[1:] + " ") if a != ":"], self._kwargnames)

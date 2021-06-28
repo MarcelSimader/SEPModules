@@ -1,0 +1,14 @@
+###########################
+API Documentation
+###########################
+
+.. toctree::
+   :maxdepth: 4
+   :caption: Contents:
+
+   SEPMaths
+   SEPAlgebra
+   SEPIO
+   SEPDecorators
+
+   SEPPrinting/index

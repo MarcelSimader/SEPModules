@@ -12,6 +12,10 @@
 
 import os
 import sys
+
+import sphinx
+from sphinx.application import Sphinx
+
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
@@ -21,7 +25,7 @@ copyright = '2021, Marcel Simader'
 author = 'Marcel Simader'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.1.dev0'
+release = '0.1.2.dev0'
 version = release
 
 
@@ -49,23 +53,35 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'sphinx_rtd_theme'
 
 html_theme_options = {
-		"display_version": True
+		"display_version": True,
+		"collapse_navigation": False,
 		# "github_url": "https://github.com/SEOriginal/SEPModules"
 	}
-
-# FOR DEFAULT THEME
-# html_theme_options = {
-# 	"description": "Python package providing basic modules and functionality for various common tasks.",
-# 	"github_user": "SEOriginal",
-# 	"github_repo": "SEPModules",
-# 	"page_width": "1280px",
-# 	"show_relbars": True
-# 	}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
+
+html_css_files = ["custom.css"]
 
 # ~~~~~~~~~~~~~~~ sphinx.ext.todo CONFIG ~~~~~~~~~~~~~~~
 todo_include_todos = True
+
+# ~~~~~~~~~~~~~~~ AUTODOC CONFIG ~~~~~~~~~~~~~~~
+
+# autodoc_preserve_defaults = True
+autodoc_typehints = "description"
+autodoc_inherit_docstrings = True
+autodoc_class_signature = "separated"
+autodoc_typehints_description_target = "documented"
+autodoc_type_aliases = {
+	"Style": "Style",
+	"Element": "Element",
+	"Operator": "Operator",
+	"NoElementType": "NoElementType"
+	}
+
+autodoc_default_options = {
+    "member-order": "bysource",
+}

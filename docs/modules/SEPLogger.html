@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SEPLogger &mdash; SEPModules 0.1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SEPDecorators" href="SEPDecorators.html" />
+    <link rel="prev" title="SEPIO" href="SEPIO.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SEPModules
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="SEPMaths.html">SEPMaths</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPMaths.html#rational">Rational</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#group">Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#abelian-group">Abelian Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#ring">Ring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#field">Field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPIO.html">SEPIO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPIO.html#console-arguments">Console Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPDecorators.html">SEPDecorators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPPrinting/index.html">SEPPrinting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPPrinting/SEPPrinting.html#console-graph">Console Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPPrinting/SEPPrinting.html#progress-bar">Progress Bar</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/test.html">Test</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SEPModules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>SEPLogger</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/modules/SEPLogger.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-SEPModules.SEPLogger">
+<span id="seplogger"></span><h1>SEPLogger<a class="headerlink" href="#module-SEPModules.SEPLogger" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Marcel Simader</p>
+</dd>
+<dt class="field-even">Date</dt>
+<dd class="field-even"><p>12.05.2021</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version v0.1.2.</span></p>
+</div>
+<div class="section" id="logger-levels">
+<h2>Logger Levels<a class="headerlink" href="#logger-levels" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Levels">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">Levels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for all <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> level enums. <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> values are comparable using the standard
+compare operators and additionally must be instantiated with a tuple of form <code class="docutils literal notranslate"><span class="pre">(level,</span> <span class="pre">prefix,</span> <span class="pre">style)</span></code> with types
+<code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">AnyStr</span></code>, and <a class="reference internal" href="SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.Style" title="SEPModules.SEPPrinting.Style"><code class="xref py py-class docutils literal notranslate"><span class="pre">SEPModules.SEPPrinting.Style</span></code></a> which can be accessed as properties of the instances
+of this class. The <a class="reference internal" href="#SEPModules.SEPLogger.Levels.get_debug" title="SEPModules.SEPLogger.Levels.get_debug"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_debug()</span></code></a> function of this class <strong>must</strong> be overwritten and helps to customize the level
+number, prefix, and style of the debug level (see <a class="reference internal" href="#SEPModules.SEPLogger.DefaultLevels" title="SEPModules.SEPLogger.DefaultLevels"><code class="xref py py-class docutils literal notranslate"><span class="pre">DefaultLevels</span></code></a> as example).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Levels.get_debug">
+<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">get_debug</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Levels.get_debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function provides the debug enum for use in the <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> class. It must be overwritten to change
+the value of this enum. This function is needed to provide the logger class with a debug level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">Levels</span></code></a> enum entry</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels">SEPModules.SEPLogger.Levels</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.DefaultLevels">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">DefaultLevels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.DefaultLevels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">SEPModules.SEPLogger.Levels</span></code></a></p>
+<p>Default set of levels to pass to a <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.VERBOSE">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">VERBOSE</span></span><a class="headerlink" href="#SEPModules.SEPLogger.VERBOSE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.INFO">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">INFO</span></span><a class="headerlink" href="#SEPModules.SEPLogger.INFO" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.OK">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">OK</span></span><a class="headerlink" href="#SEPModules.SEPLogger.OK" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.WARNING">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">WARNING</span></span><a class="headerlink" href="#SEPModules.SEPLogger.WARNING" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.ERROR">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">ERROR</span></span><a class="headerlink" href="#SEPModules.SEPLogger.ERROR" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.FATAL_ERROR">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">FATAL_ERROR</span></span><a class="headerlink" href="#SEPModules.SEPLogger.FATAL_ERROR" title="Permalink to this definition">¶</a></dt>
+<dd><p>These constants are provided as aliases for <code class="docutils literal notranslate"><span class="pre">SEPModules.SEPLogger.DefaultLevels.*</span></code>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="logger">
+<h2>Logger<a class="headerlink" href="#logger" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">Logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">level_class=&lt;enum</span> <span class="pre">'DefaultLevels'&gt;</span></em>, <em class="sig-param"><span class="pre">min_level=&lt;DefaultLevels.VERBOSE:</span> <span class="pre">(0</span></em>, <em class="sig-param"><span class="pre">'[Verbose]</span> <span class="pre">'</span></em>, <em class="sig-param"><span class="pre">Style(37))&gt;</span></em>, <em class="sig-param"><span class="pre">level_mask=None</span></em>, <em class="sig-param"><span class="pre">ignore_level_restrictions=False</span></em>, <em class="sig-param"><span class="pre">print_function=&lt;function</span> <span class="pre">Logger.&lt;lambda&gt;&gt;</span></em>, <em class="sig-param"><span class="pre">use_timestamp=False</span></em>, <em class="sig-param"><span class="pre">use_date=False</span></em>, <em class="sig-param"><span class="pre">use_color=True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> provides a convenient way to handle printing to the console, or to another stream or file.</p>
+<p>A logger instance holds configurations on how to print data and what additional meta-data to include. The <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">Levels</span></code></a>
+enum can be used to configure different levels of verbosity (e.g. WARNING, ERROR, etc.) with default levels already
+implemented in <a class="reference internal" href="#SEPModules.SEPLogger.DefaultLevels" title="SEPModules.SEPLogger.DefaultLevels"><code class="xref py py-class docutils literal notranslate"><span class="pre">DefaultLevels</span></code></a>, which are also accessible through their aliases <a class="reference internal" href="#SEPModules.SEPLogger.VERBOSE" title="SEPModules.SEPLogger.VERBOSE"><code class="xref py py-data docutils literal notranslate"><span class="pre">VERBOSE</span></code></a>,
+<a class="reference internal" href="#SEPModules.SEPLogger.INFO" title="SEPModules.SEPLogger.INFO"><code class="xref py py-data docutils literal notranslate"><span class="pre">INFO</span></code></a>, <a class="reference internal" href="#SEPModules.SEPLogger.WARNING" title="SEPModules.SEPLogger.WARNING"><code class="xref py py-data docutils literal notranslate"><span class="pre">WARNING</span></code></a>, <a class="reference internal" href="#SEPModules.SEPLogger.ERROR" title="SEPModules.SEPLogger.ERROR"><code class="xref py py-data docutils literal notranslate"><span class="pre">ERROR</span></code></a>, <a class="reference internal" href="#SEPModules.SEPLogger.FATAL_ERROR" title="SEPModules.SEPLogger.FATAL_ERROR"><code class="xref py py-data docutils literal notranslate"><span class="pre">FATAL_ERROR</span></code></a>. Logger also includes a convenience method
+<a class="reference internal" href="#SEPModules.SEPLogger.Logger.debug" title="SEPModules.SEPLogger.Logger.debug"><code class="xref py py-meth docutils literal notranslate"><span class="pre">debug()</span></code></a> which can be used to debug and includes additional meta-data such as the file name and line number.</p>
+<p>For convenience, one might want to set up the logger as a constant in the following fashion:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">default_logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">(</span><span class="n">min_level</span><span class="o">=</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">use_timestamp</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span> <span class="o">=</span> <span class="n">default_logger</span><span class="o">.</span><span class="n">log</span> <span class="c1"># alias to the log function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">debug</span> <span class="o">=</span> <span class="n">default_logger</span><span class="o">.</span><span class="n">debug</span> <span class="c1"># alias to the debug function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fatal_error</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">msg</span><span class="p">:</span> <span class="n">default_logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">FATAL_ERROR</span><span class="p">)</span> <span class="c1"># alias to an error output of the log function</span>
+</pre></div>
+</div>
+<p>Now we can simply use the aliases to access the logger:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;this is an error&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="go">[Error] [&lt;Timestamp&gt;] this is an error</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">debug</span><span class="p">((</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;tuple&quot;</span><span class="p">),</span> <span class="mi">123</span><span class="p">)</span>
+<span class="go">[Debug] [&lt;Timestamp&gt;] [&lt;input&gt;::&lt;function&gt;:&lt;lineno&gt;] (&#39;test&#39;, &#39;tuple&#39;) 123</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fatal_error</span><span class="p">(</span><span class="s2">&quot;halting problem is not decidable!&quot;</span><span class="p">)</span>
+<span class="go">[Fatal Error] [&lt;Timestamp&gt;] halting problem is not decidable!</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level_class</strong> (<em>EnumMeta</em>) – which <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">Levels</span></code></a> subclass to use as enum for the verbosity levels of this instance</p></li>
+<li><p><strong>min_level</strong> (<em>_LEVELS</em>) – the minimum level an entry must have to be printed or written to the log</p></li>
+<li><p><strong>level_mask</strong> (<em>Optional</em><em>[</em><em>Container</em><em>[</em><em>_LEVELS</em><em>]</em><em>]</em>) – a container of levels to ignore when printing or writing to the log</p></li>
+<li><p><strong>ignore_level_restrictions</strong> (<em>bool</em>) – if set to True, this will ignore the values of the <code class="docutils literal notranslate"><span class="pre">min_level</span></code> and <code class="docutils literal notranslate"><span class="pre">level_mask</span></code>
+parameters</p></li>
+<li><p><strong>print_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>AnyStr</em><em>, </em><em>AnyStr</em><em>]</em><em>, </em><em>None</em><em>]</em>) – a callable taking two strings as input and then performing a write or print operation for each
+entry in the log, the two string arguments are: 1. the actual log string, and 2. the end character similar to the
+end keyword argument in the <code class="docutils literal notranslate"><span class="pre">print</span></code> builtin</p></li>
+<li><p><strong>use_timestamp</strong> (<em>bool</em>) – whether or not to print a timestamp with each log entry (see <a class="reference internal" href="#SEPModules.SEPLogger.Logger.__provide_timestamp__" title="SEPModules.SEPLogger.Logger.__provide_timestamp__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__provide_timestamp__()</span></code></a>)</p></li>
+<li><p><strong>use_date</strong> (<em>bool</em>) – whether or not to add the current date to each timestamp</p></li>
+<li><p><strong>use_color</strong> (<em>bool</em>) – whether or not to use color when printing or writing to the log</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.__provide_timestamp__">
+<span class="sig-name descname"><span class="pre">__provide_timestamp__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.__provide_timestamp__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides the current time as timestamp.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a timestamp in the format <code class="docutils literal notranslate"><span class="pre">DAY.MONTH.YEAR</span> <span class="pre">HOUR:MINUTE:SECOND.MILLISECOND</span></code> with the date only appearing
+if <code class="xref py py-attr docutils literal notranslate"><span class="pre">use_date</span></code> is True, if <code class="xref py py-attr docutils literal notranslate"><span class="pre">use_timestamp</span></code> is False this method will simply return the empty
+string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a log entry with this instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>Any</em>) – the message to log, can be any number of objects</p></li>
+<li><p><strong>level</strong> (<em>SEPModules.SEPLogger._LEVELS</em>) – which level to mark this entry as (see <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> and <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">Levels</span></code></a>)</p></li>
+<li><p><strong>end</strong> (<em>AnyStr</em>) – the ending character of the log entry, similar to the end keyword argument of the <code class="docutils literal notranslate"><span class="pre">print</span></code> builtin</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.debug">
+<span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stack_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_function_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a debug log entry with this instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>Any</em>) – the message to log, can be any number of objects</p></li>
+<li><p><strong>stack_depth</strong> (<em>int</em>) – how far back into the stack to trace the origin of this call</p></li>
+<li><p><strong>include_function_name</strong> (<em>bool</em>) – whether to include the name of the function scope of the call or not</p></li>
+<li><p><strong>end</strong> (<em>AnyStr</em>) – the ending character of the log entry, similar to the end keyword argument of the <code class="docutils literal notranslate"><span class="pre">print</span></code> builtin</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="SEPDecorators.html" class="btn btn-neutral float-right" title="SEPDecorators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SEPIO.html" class="btn btn-neutral float-left" title="SEPIO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcel Simader.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

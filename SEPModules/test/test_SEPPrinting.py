@@ -1,11 +1,11 @@
-import math
 import unittest
 from random import random
 import time
 
 from colorama import Back
 
-from SEPModules.SEPPrinting import get_time_str, console_graph, console_progress_bar, FILL_CHARACTERS, REL_POS, NORMAL, BRIGHT, RED, GREEN
+from SEPModules.SEPPrinting import *
+
 
 # noinspection PyTypeChecker
 def test_console_graph_demo(debug=True):
@@ -18,7 +18,7 @@ def test_console_graph_demo(debug=True):
 	print(console_graph(list(range(-2, 7, 1)) + list(range(10, 0, -1)),
 						color_function=edge_change, scale_spacing=1, rounding=2,
 						max_height=12, max_width=128, center=(10, 0, 1, 1), show_scale=True,
-						scale_in_front=False, fill_characters=FILL_CHARACTERS.CONSOLAS,
+						scale_in_front=False, fill_characters=FillCharacters.CONSOLAS,
 						bg_color=NORMAL, unit_format_function=lambda x: (x,),
 						use_middle_for_unit_position=True, debug=debug),
 		  end="")
@@ -27,7 +27,7 @@ def test_console_graph_demo(debug=True):
 	print(console_graph([10 * (1 + math.sin(0.3 * x)) + 0.2 * x ** 1.4 - 60 for x in range(0, 128)],
 						color_function=edge_change, scale_spacing=1, rounding=2,
 						max_height=12, max_width=128, center=(10, 0, 0, 1), show_scale=True,
-						scale_in_front=True, fill_characters=FILL_CHARACTERS.CONSOLAS,
+						scale_in_front=True, fill_characters=FillCharacters.CONSOLAS,
 						bg_color=NORMAL, unit_format_function=lambda x: (x, " pt"),
 						use_middle_for_unit_position=False, debug=debug),
 		  end="")
@@ -36,19 +36,19 @@ def test_console_graph_demo(debug=True):
 	print(console_graph([random() * 100 - 50 for _ in range(0, 129)],
 						color_function=None, scale_spacing=0, rounding=0,
 						max_height=12, max_width=116, center=(16, 6, 0, 1), show_scale=False,
-						scale_in_front=True, fill_characters=FILL_CHARACTERS.CONSOLAS,
+						scale_in_front=True, fill_characters=FillCharacters.CONSOLAS,
 						bg_color=(Back.CYAN, BRIGHT), unit_format_function=lambda x: (x,),
 						use_middle_for_unit_position=False, debug=debug),
 		  end="")
 
 	#TEST CHARACTER SETS ON DEMO 2
 	demo2_data_list = [10 * (1 + 2 * math.sin(0.3 * x)) + 0.2 * x**1.4 - 80 for x in range(0, 128)]
-	character_sets = [FILL_CHARACTERS.MINIMAL,
-					  FILL_CHARACTERS.SIMPLE,
-					  FILL_CHARACTERS.CONSOLAS_MANUAL,
-					  FILL_CHARACTERS.CONSOLAS,
-					  FILL_CHARACTERS.CASCADIA_MONO,
-					  FILL_CHARACTERS.CASCADIA_MONO]
+	character_sets = [FillCharacters.MINIMAL,
+					  FillCharacters.SIMPLE,
+					  FillCharacters.CONSOLAS_MANUAL,
+					  FillCharacters.CONSOLAS,
+					  FillCharacters.CASCADIA_MONO,
+					  FillCharacters.CASCADIA_MONO]
 	demo2_height, demo2_width, demo2_center = 10, 59, (10, 0, 0, 1)
 
 	_temp_rows = len(character_sets) // 2
@@ -110,6 +110,24 @@ def test_console_progress_bar_demo(debug=True,
 # noinspection PyTypeChecker
 class TestPrinting(unittest.TestCase):
 
+	def test_color_print(self):
+		for _cl_s in [color_string, cl_s]:
+			with self.subTest(func=_cl_s.__name__):
+				for msg in [True, False, [], "this is a\n test", u"unicode string\u0394", 1, 2, [1, 2], "ovo", (object())]:
+					with self.subTest(type=type(msg).__name__):
+						with self.subTest(boolean=False):
+							self.assertMultiLineEqual(_cl_s(msg, NORMAL		 ), str(NORMAL) 		+ str(msg) + str(RESET_ALL))
+							self.assertMultiLineEqual(_cl_s(msg, RED		 ), str(RED) 			+ str(msg) + str(RESET_ALL))
+							self.assertMultiLineEqual(_cl_s(msg, RED | BRIGHT), str(RED + BRIGHT) 	+ str(msg) + str(RESET_ALL))
+							self.assertMultiLineEqual(_cl_s(msg, RED & BRIGHT), str(RED & BRIGHT) 	+ str(msg) + str(RESET_ALL))
+							self.assertMultiLineEqual(_cl_s(msg, RED + BRIGHT), str(RED | BRIGHT) 	+ str(msg) + str(RESET_ALL))
+							self.assertMultiLineEqual(_cl_s(msg, Style()	 ), str(NORMAL) 		+ str(msg) + str(RESET_ALL))
+
+						with self.subTest(boolean=True):
+							self.assertMultiLineEqual(_cl_s(msg, NORMAL,        boolean=True), str(NORMAL + (GREEN if msg else RED))        + str(msg) + str(RESET_ALL))
+							self.assertMultiLineEqual(_cl_s(msg, NORMAL + BLUE, boolean=True), str(NORMAL + BLUE + (GREEN if msg else RED)) + str(msg) + str(RESET_ALL))
+							self.assertMultiLineEqual(_cl_s(msg, DIM,           boolean=True), str(DIM + (GREEN if msg else RED)) 		    + str(msg) + str(RESET_ALL))
+
 	def test_get_time_str_return(self):
 		self.assertMultiLineEqual(get_time_str(0), "0.000ns")
 		self.assertMultiLineEqual(get_time_str(0.0000000000001), "0.000ns")
@@ -123,7 +141,7 @@ class TestPrinting(unittest.TestCase):
 		self.assertMultiLineEqual(get_time_str(60), "1m 0.000s")
 		self.assertMultiLineEqual(get_time_str(113.238), "1m 53.238s")
 		self.assertMultiLineEqual(get_time_str(3620.001), "60m 20.001s")
-					
+
 	def test_get_time_str_forceUnit(self):
 		self.assertMultiLineEqual(get_time_str(13.29732, force_unit="ns"), "13297320000.000ns")
 		self.assertMultiLineEqual(get_time_str(13.29732, force_unit="µs"), "13297320.000µs")
@@ -131,16 +149,16 @@ class TestPrinting(unittest.TestCase):
 		self.assertMultiLineEqual(get_time_str(13.29732, force_unit="s"), "13.297s")
 		self.assertMultiLineEqual(get_time_str(13.29732, force_unit="m"), "0.222m")
 		self.assertMultiLineEqual(get_time_str(13.29732, force_unit="h"), "0.004h")
-		
+
 	def test_get_time_str_TypeError_ValueError(self):
 		with self.subTest(value="secs"):
 			with self.assertRaises(TypeError):
 				get_time_str("abc")
-			
+
 		with self.subTest(value="forceUnit"):
 			with self.assertRaises(TypeError):
 				get_time_str(3.23, True)
-			
+
 		with self.subTest(value="secs"):
 			with self.assertRaises(ValueError):
 				get_time_str(-0.01023)
@@ -148,7 +166,7 @@ class TestPrinting(unittest.TestCase):
 				get_time_str(-1293)
 			with self.assertRaises(ValueError):
 				get_time_str(-0.0)
-		
+
 		with self.subTest(value="forceUnit"):
 			with self.assertRaises(ValueError):
 				get_time_str(9.3927, force_unit="d")

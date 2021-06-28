@@ -4,16 +4,18 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>SEPIO &mdash; SEPModules 0.1.1.dev0 documentation</title>
+  <title>SEPIO &mdash; SEPModules 0.1.2 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
 
   
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -39,7 +42,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="SEPDecorators" href="SEPDecorators.html" />
+    <link rel="next" title="SEPLogger" href="SEPLogger.html" />
     <link rel="prev" title="SEPAlgebra" href="SEPAlgebra.html" /> 
 </head>
 
@@ -64,7 +67,7 @@
             
             
               <div class="version">
-                0.1.1.dev0
+                0.1.2
               </div>
             
           
@@ -89,13 +92,47 @@
               
             
             
-              <p><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="SEPMaths.html">SEPMaths</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">SEPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPMaths.html">SEPMaths</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPMaths.html#rational">Rational</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#group">Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#abelian-group">Abelian Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#ring">Ring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#field">Field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SEPIO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#console-arguments">Console Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="SEPDecorators.html">SEPDecorators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SEPPrinting.html">SEPPrinting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPPrinting/index.html">SEPPrinting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPPrinting/SEPPrinting.html#console-graph">Console Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPPrinting/SEPPrinting.html#progress-bar">Progress Bar</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/test.html">Test</a></li>
 </ul>
 
             
@@ -163,23 +200,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="module-SEPModules.SEPIO">
+  <div class="section" id="module-SEPModules.SEPIO">
 <span id="sepio"></span><h1>SEPIO<a class="headerlink" href="#module-SEPModules.SEPIO" title="Permalink to this headline">¶</a></h1>
-<p>Author: Marcel Simader</p>
-<p>Date: 01.04.2021</p>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Marcel Simader</p>
+</dd>
+<dt class="field-even">Date</dt>
+<dd class="field-even"><p>01.04.2021</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version v0.1.0.</span></p>
+</div>
+<div class="section" id="console-arguments">
+<h2>Console Arguments<a class="headerlink" href="#console-arguments" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="SEPModules.SEPIO.ConsoleArguments">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">SEPModules.SEPIO.</span></code><code class="sig-name descname"><span class="pre">ConsoleArguments</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argnames</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargnames</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPIO.</span></span><span class="sig-name descname"><span class="pre">ConsoleArguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_load</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments" title="Permalink to this definition">¶</a></dt>
 <dd><p>A console arguments manager that holds information and offers API functionality regarding the console options and
 flags passed into the program. It immediately tries to read from <cite>sys.argv</cite> if the <cite>no_load</cite> option is not set upon creation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>argnames</strong> – a list of single-letter strings defining the options, adding ‘:’
+<li><p><strong>argnames</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – a list of single-letter strings defining the options, adding ‘:’
 to the end of a letter indicates that a value must be passed to this flag</p></li>
-<li><p><strong>kwargnames</strong> – a list of multi-letter string defining long options, adding ‘=’
+<li><p><strong>kwargnames</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – a list of multi-letter string defining long options, adding ‘=’
 to the end of a string indicates that a value must be passed to this flag</p></li>
-<li><p><strong>no_load</strong> – prohibit the console manager from automatically reading <cite>sys.argv</cite> upon creation
+<li><p><strong>no_load</strong> (<em>bool</em>) – prohibit the console manager from automatically reading <cite>sys.argv</cite> upon creation
 of the console arguments manager object</p></li>
 </ul>
 </dd>
@@ -187,146 +235,101 @@ of the console arguments manager object</p></li>
 <dd class="field-even"><p><strong>ValueError</strong> – if any option or long option share the same name</p>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt id="SEPModules.SEPIO.ConsoleArguments.REQUIRED">
-<code class="sig-name descname"><span class="pre">REQUIRED</span></code><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">'required'</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.REQUIRED" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key for the amount of required args (e.g. a flag <cite>‘a:’</cite>).</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="SEPModules.SEPIO.ConsoleArguments.REQUIRED_AND_SET">
-<code class="sig-name descname"><span class="pre">REQUIRED_AND_SET</span></code><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">'required</span> <span class="pre">and</span> <span class="pre">set'</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.REQUIRED_AND_SET" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key for the amount of required and set args (i.e. same as <a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.REQUIRED" title="SEPModules.SEPIO.ConsoleArguments.REQUIRED"><code class="xref py py-const docutils literal notranslate"><span class="pre">REQUIRED</span></code></a> but only counts <cite>‘a:’</cite> if it 
-was also set).</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="SEPModules.SEPIO.ConsoleArguments.SET_ARGS">
-<code class="sig-name descname"><span class="pre">SET_ARGS</span></code><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">'args'</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.SET_ARGS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key for the amount of set args.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="SEPModules.SEPIO.ConsoleArguments.SET_KWARGS">
-<code class="sig-name descname"><span class="pre">SET_KWARGS</span></code><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">'kwargs'</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.SET_KWARGS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key for the amount of set keyword args.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="SEPModules.SEPIO.ConsoleArguments.SET_PARS">
-<code class="sig-name descname"><span class="pre">SET_PARS</span></code><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">'parameters'</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.SET_PARS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key for the amount of set parameters.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="SEPModules.SEPIO.ConsoleArguments.SET_TOTAL">
-<code class="sig-name descname"><span class="pre">SET_TOTAL</span></code><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">'set'</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.SET_TOTAL" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key for the amount of set args and keyword args.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.__contains__">
-<code class="sig-name descname"><span class="pre">__contains__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_all</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__contains__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns <cite>True</cite> if the options is found in <cite>args</cite> or <cite>kwargs</cite>.</p>
+<p class="rubric"><strong>Size properties of</strong> <a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments" title="SEPModules.SEPIO.ConsoleArguments"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConsoleArguments</span></code></a>:</p>
+<p><a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.set_total" title="SEPModules.SEPIO.ConsoleArguments.set_total"><code class="xref py py-attr docutils literal notranslate"><span class="pre">set_total</span></code></a>, <a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.set_args" title="SEPModules.SEPIO.ConsoleArguments.set_args"><code class="xref py py-attr docutils literal notranslate"><span class="pre">set_args</span></code></a>, <a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.set_kwargs" title="SEPModules.SEPIO.ConsoleArguments.set_kwargs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">set_kwargs</span></code></a>, <a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.set_pars" title="SEPModules.SEPIO.ConsoleArguments.set_pars"><code class="xref py py-attr docutils literal notranslate"><span class="pre">set_pars</span></code></a>,  <a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.required" title="SEPModules.SEPIO.ConsoleArguments.required"><code class="xref py py-attr docutils literal notranslate"><span class="pre">required</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.set_total">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">set_total</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.set_total" title="Permalink to this definition">¶</a></dt>
+<dd><p>See other size properties:</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>_all</strong> – can be set to <cite>True</cite> for checking against all values of <cite>type(options) == list/set</cite> or to <cite>False</cite> for only checking if any match</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the amount of set args and keyword args.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.set_args">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">set_args</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.set_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>See other size properties:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the amount of set args.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.set_kwargs">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">set_kwargs</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.set_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>See other size properties:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the amount of set keyword args.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.set_pars">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">set_pars</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.set_pars" title="Permalink to this definition">¶</a></dt>
+<dd><p>See other size properties:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the amount of set parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.required">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.required" title="Permalink to this definition">¶</a></dt>
+<dd><p>See other size properties:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the amount of required args (e.g. a flag <cite>‘a:’</cite>).</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.__getitem__">
-<code class="sig-name descname"><span class="pre">__getitem__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__getitem__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns an argument/keyword argument if the supplied key is a <cite>str</cite> object. If the supplied key is of type <cite>int</cite>, the
-corresponding parameter is returned. If the key is not found, <cite>None</cite> is returned.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argnames</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargnames</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.__iter__">
-<code class="sig-name descname"><span class="pre">__iter__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__iter__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enumerate <cite>args</cite>, then <cite>kwargs</cite>, then <cite>pars</cite>, where the latter is of the form ‘((#order, par value, ), …)’.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.__load_arguments__">
-<code class="sig-name descname"><span class="pre">__load_arguments__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__load_arguments__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.__load_arguments__">
+<span class="sig-name descname"><span class="pre">__load_arguments__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__load_arguments__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load all arguments defined by the passed arg and kwarg names into <a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments" title="SEPModules.SEPIO.ConsoleArguments"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConsoleArguments</span></code></a> by reading from <cite>sys.argv</cite>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.__repr__">
-<code class="sig-name descname"><span class="pre">__repr__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__repr__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return repr(self).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.__str__">
-<code class="sig-name descname"><span class="pre">__str__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__str__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return str(self).</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="SEPModules.SEPIO.ConsoleArguments.__weakref__">
-<code class="sig-name descname"><span class="pre">__weakref__</span></code><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__weakref__" title="Permalink to this definition">¶</a></dt>
-<dd><p>list of weak references to the object (if defined)</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.args">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">args</span></code><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns all flags passed in <cite>sys.argv</cite> as iterator.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.kwargs">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">kwargs</span></code><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns all long flags passed in <cite>sys.argv</cite> as iterator.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.pars">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pars</span></code><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.pars" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns all parameters passed in <cite>sys.argv</cite> as iterator.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.requires">
-<code class="sig-name descname"><span class="pre">requires</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">…</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.requires" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function decorator that only executes the function if the desired options are detected using the same mechanism
-by which <a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.__contains__" title="SEPModules.SEPIO.ConsoleArguments.__contains__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__contains__()</span></code></a> operates.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="SEPModules.SEPIO.ConsoleArguments.size">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">size</span></code><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.size" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Returns either:</dt><dd><ul class="simple">
-<li><p>the amount of set args + keyword args (<a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.SET_TOTAL" title="SEPModules.SEPIO.ConsoleArguments.SET_TOTAL"><code class="xref py py-const docutils literal notranslate"><span class="pre">SET_TOTAL</span></code></a>),</p></li>
-<li><p>the amount of set args (<a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.SET_ARGS" title="SEPModules.SEPIO.ConsoleArguments.SET_ARGS"><code class="xref py py-const docutils literal notranslate"><span class="pre">SET_ARGS</span></code></a>),</p></li>
-<li><p>the amount of set keyword args (<a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.SET_KWARGS" title="SEPModules.SEPIO.ConsoleArguments.SET_KWARGS"><code class="xref py py-const docutils literal notranslate"><span class="pre">SET_KWARGS</span></code></a>),</p></li>
-<li><p>the amount of set parameters (<a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.SET_PARS" title="SEPModules.SEPIO.ConsoleArguments.SET_PARS"><code class="xref py py-const docutils literal notranslate"><span class="pre">SET_PARS</span></code></a>),</p></li>
-<li><p>the amount of required args (<a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.REQUIRED" title="SEPModules.SEPIO.ConsoleArguments.REQUIRED"><code class="xref py py-const docutils literal notranslate"><span class="pre">REQUIRED</span></code></a>),</p></li>
-<li><p>the amount of required and set args (<a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.REQUIRED_AND_SET" title="SEPModules.SEPIO.ConsoleArguments.REQUIRED_AND_SET"><code class="xref py py-const docutils literal notranslate"><span class="pre">REQUIRED_AND_SET</span></code></a>).</p></li>
-</ul>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.__contains__">
+<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> if the options is found in <cite>args</cite> or <cite>kwargs</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a dictionary containing the keys held as constant static variables in the ConsoleArguments class</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>_all</strong> (<em>bool</em>) – can be set to <cite>True</cite> for checking against all values of <cite>type(options) == list/set</cite> or to <cite>False</cite> for only checking if any match</p>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an argument/keyword argument if the supplied key is a <cite>str</cite> object. If the supplied key is of type <cite>int</cite>, the
+corresponding parameter is returned. If the key is not found, <cite>None</cite> is returned.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumerate <cite>args</cite>, then <cite>kwargs</cite>, then <cite>pars</cite>, where the latter is of the form ‘((#order, par value, ), …)’.</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
 </dd></dl>
 
-</section>
+</div>
+</div>
 
 
            </div>
@@ -334,7 +337,7 @@ by which <a class="reference internal" href="#SEPModules.SEPIO.ConsoleArguments.
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="SEPDecorators.html" class="btn btn-neutral float-right" title="SEPDecorators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SEPLogger.html" class="btn btn-neutral float-right" title="SEPLogger" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="SEPAlgebra.html" class="btn btn-neutral float-left" title="SEPAlgebra" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
