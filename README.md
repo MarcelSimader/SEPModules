@@ -17,6 +17,9 @@ The package includes four base modules:
 - ### SEPIO
   Aids in IO tasks such as reading console line arguments and parameters.
 
+- ### SEPLogger
+  Provides logging functionality interfacing with the color printing features of SEPPrinting.
+
 - ### SEPDecorators
   Contains miscellaneous function decorators.
 
