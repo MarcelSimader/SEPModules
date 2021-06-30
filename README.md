@@ -26,6 +26,9 @@ The package includes four base modules:
 - ### SEPPrinting
   Provides easy and quick implementations of console UI elements like graphs, progress bars, and colored console printing.
 
+- ### SEPTeX
+  Provides a Python wrapper API for constructing LaTeX documents in code.
+
 ---
 
 ## Exmaple usages
