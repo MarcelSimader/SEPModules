@@ -18,6 +18,7 @@ SEPModules
    modules/SEPLogger
    modules/SEPDecorators
    modules/SEPPrinting/index
+   modules/SEPTeX
 
 .. toctree::
    :maxdepth: 4

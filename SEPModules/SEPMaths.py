@@ -14,7 +14,7 @@ from __future__ import annotations
 import sys
 from itertools import product
 from math import copysign, gcd, floor, ceil
-from numbers import Real
+from numbers import Real, Number
 from typing import Tuple, Callable, Any, Union, Set, Optional, Iterable
 
 from SEPModules.SEPPrinting import cl_s, WARNING
@@ -24,7 +24,7 @@ from SEPModules.SEPPrinting import cl_s, WARNING
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # noinspection PyArgumentList,PyProtectedMember
-class Rational:
+class Rational(Number):
 	r"""
 	Rational number of the form :math:`a/b` with :math:`a, b \in \mathbb{Z}`. Used for symbolic computations in :mod:`SEPMaths`
 	module. Values are automatically simplified. The following forms are accepted, where option 1 and 3 are exact and
