@@ -7,7 +7,7 @@ Python package providing basic modules and functionality for various common task
 
 ---
 
-The package includes four base modules:
+The package includes the following base modules:
 - ### SEPMaths
   For mathematical operations, helper functions, and classes.
 
