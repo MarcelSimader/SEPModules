@@ -10,49 +10,69 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 import time
-from typing import Callable, Dict, Union, Any, Final
+from typing import Callable, Final, Tuple, TypeVar
 
-from SEPModules.SEPPrinting import cl_s, get_time_str, NAME
-
-__WRAPPER_NAME__ : Final = "wrapped_"
+from SEPModules.SEPPrinting import get_time_str
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ GLOBALS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+__WRAPPER_NAME__: Final = "wrapped_"
+""" The name to use for wrapped functions. """
+
+R : Final = TypeVar("R")
+""" The type variable to use for functions. """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def timed_return(func : Callable) -> Callable:
+def timed_return(func: Callable[..., R]) -> Callable[..., Tuple[R, float]]:
 	"""
-	Same functionality as :py:func:`timed` decorator but does not print automatically.
+	Same functionality as :py:func:`timed` decorator but does not print automatically. Can be used in the following way: ::
 
-	:returns: the time and return value as dictionary
+		@timed_return
+		def advanced_add(a: int, b: int) -> int:
+			for _ in range(b):
+				a += 1
+			return a
+
+	And now calling the function: ::
+
+		result, time = advanced_add(20, 621421)
+
+	:returns: the return value of the function and the time it took to execute in seconds
 	"""
-	def __wrapper__(*args, **kwargs) -> Dict[str, Union[Any, int]]:
+
+	def __wrapper__(*args, **kwargs) -> Tuple[R, float]:
 		s_time = time.perf_counter()
-		r = func(*args, **kwargs)
-		t_time = time.perf_counter() - s_time
+		ret = func(*args, **kwargs)
+		dur = time.perf_counter() - s_time
+		return ret, dur
 
-		return {"return": r, "time": t_time}
-	
-	__wrapper__.__name__ = "{}timedReturn_{}".format(__WRAPPER_NAME__, func.__name__)
-	__wrapper__.__doc__ = func.__doc__
-	return __wrapper__
+	try:
+		__wrapper__.__name__ = f"{__WRAPPER_NAME__}timed_return_{func.__name__}"
+		__wrapper__.__annotations__ = func.__annotations__
+		__wrapper__.__doc__ = func.__doc__
+	finally:
+		return __wrapper__
 
-def timed(func : Callable) -> Callable:
+def timed(func: Callable[..., R]) -> Callable[..., R]:
 	"""
 	Times the decorated function and prints the amount of time it took to execute.
 
-	:returns: the return value of provided function.
+	:returns: the return value of provided function
 	"""
-	def __wrapper__(*args, **kwargs):
-		timed_func = timed_return(func)
-		r = timed_func(*args, **kwargs)
-		print("{} took {} to execute.".format(cl_s(func.__name__, NAME), cl_s(get_time_str(r["time"]))))
-		return r["return"]
-	
-	__wrapper__.__name__ = "{}timed_{}".format(__WRAPPER_NAME__, func.__name__)
-	__wrapper__.__doc__ = func.__doc__
-	return __wrapper__
+
+	def __wrapper__(*args, **kwargs) -> R:
+		ret, dur = timed_return(func)(*args, **kwargs)
+		print(f"{func.__name__} took {get_time_str(dur)} to execute.")
+		return ret
+
+	try:
+		__wrapper__.__name__ = f"{__WRAPPER_NAME__}timed_{func.__name__}"
+		__wrapper__.__annotations__ = func.__annotations__
+		__wrapper__.__doc__ = func.__doc__
+	finally:
+		return __wrapper__

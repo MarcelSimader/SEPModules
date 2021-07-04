@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>SEPIO &mdash; SEPModules 0.1.2.dev1 documentation</title>
+  <title>SEPIO &mdash; SEPModules 0.1.3 documentation</title>
   
 
   
@@ -42,8 +42,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="SEPLogger" href="SEPLogger.html" />
-    <link rel="prev" title="SEPAlgebra" href="SEPAlgebra.html" /> 
+    <link rel="next" title="SEPDecorators" href="SEPDecorators.html" />
+    <link rel="prev" title="SEPLogger" href="SEPLogger.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.1.2.dev1
+                0.1.3
               </div>
             
           
@@ -94,32 +94,25 @@
             
               <p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="SEPMaths.html">SEPMaths</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SEPMaths.html#rational">Rational</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maths/index.html">maths</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maths/SEPMaths.html">SEPMaths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPMaths.html#rational">Rational</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#semigroup">Semigroup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#group">Group</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#abelian-group">Abelian Group</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#ring">Ring</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#field">Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maths/SEPAlgebra.html">SEPAlgebra</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#monoid">Monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#group">Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#abelian-group">Abelian Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#ring">Ring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#field">Field</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">SEPIO</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#console-arguments">Console Arguments</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="SEPLogger.html">SEPLogger</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger-levels">Logger Levels</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger">Logger</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="SEPDecorators.html">SEPDecorators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SEPPrinting/index.html">SEPPrinting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="SEPPrinting/SEPPrinting.html#console-graph">Console Graph</a></li>
@@ -129,7 +122,55 @@
 <li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="SEPTeX.html">SEPTeX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TeX/index.html">TeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TeX/SEPTeX.html">SEPTeX</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TeX/SEPTeX.html#implementation-details">Implementation Details</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTeX.html#latexerror">LaTeXError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTeX.html#latexhandler">LaTeXHandler</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TeX/SEPTeX.html#abstract-base-class">Abstract Base Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTeX.html#latexresource">LaTeXResource</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TeX/SEPTeX.html#documents-and-environments">Documents and Environments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTeX.html#latexdocument">LaTeXDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTeX.html#latexenvironment">LaTeXEnvironment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTeX.html#center">Center</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTeX.html#figure">Figure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTeX.html#mathsenvironment">MathsEnvironment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="TeX/SEPTikZ.html">SEPTikZ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TeX/SEPTikZ.html#abstract-base-classes">Abstract Base Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTikZ.html#tikzwriteable">TikZWriteable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTikZ.html#tikzstyled">TikZStyled</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TeX/SEPTikZ.html#styles-and-tikz-objects">Styles and TikZ Objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTikZ.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTikZ.html#tikzstyle">TikZStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTikZ.html#tikzpath">TikZPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTikZ.html#tikzpicture">TikZPicture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TeX/SEPTikZ.html#tikzscope">TikZScope</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SEPIO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#console-arguments">Console Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPDecorators.html">SEPDecorators</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -218,7 +259,7 @@
 <h2>Console Arguments<a class="headerlink" href="#console-arguments" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPIO.</span></span><span class="sig-name descname"><span class="pre">ConsoleArguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_load</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPIO.</span></span><span class="sig-name descname"><span class="pre">ConsoleArguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargnames</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_load</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments" title="Permalink to this definition">¶</a></dt>
 <dd><p>A console arguments manager that holds information and offers API functionality regarding the console options and
 flags passed into the program. It immediately tries to read from <cite>sys.argv</cite> if the <cite>no_load</cite> option is not set upon creation.</p>
 <dl class="field-list simple">
@@ -228,8 +269,8 @@ flags passed into the program. It immediately tries to read from <cite>sys.argv<
 to the end of a letter indicates that a value must be passed to this flag</p></li>
 <li><p><strong>kwargnames</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – a list of multi-letter string defining long options, adding ‘=’
 to the end of a string indicates that a value must be passed to this flag</p></li>
-<li><p><strong>no_load</strong> (<em>bool</em>) – prohibit the console manager from automatically reading <cite>sys.argv</cite> upon creation
-of the console arguments manager object</p></li>
+<li><p><strong>no_load</strong> (<em>bool</em>) – keyword-only argument, prohibits the console manager from automatically reading <cite>sys.argv</cite> upon
+creation of the console arguments manager object</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -322,7 +363,7 @@ corresponding parameter is returned. If the key is not found, <cite>None</cite> 
 <dl class="py method">
 <dt class="sig sig-object py" id="SEPModules.SEPIO.ConsoleArguments.__iter__">
 <span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPIO.ConsoleArguments.__iter__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enumerate <cite>args</cite>, then <cite>kwargs</cite>, then <cite>pars</cite>, where the latter is of the form ‘((#order, par value, ), …)’.</p>
+<dd><p>Iterate over <code class="xref py py-attr docutils literal notranslate"><span class="pre">args</span></code>, then <code class="xref py py-attr docutils literal notranslate"><span class="pre">kwargs</span></code>, and finally enumerate all <code class="xref py py-attr docutils literal notranslate"><span class="pre">pars</span></code> entries.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -338,8 +379,8 @@ corresponding parameter is returned. If the key is not found, <cite>None</cite> 
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="SEPLogger.html" class="btn btn-neutral float-right" title="SEPLogger" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="SEPAlgebra.html" class="btn btn-neutral float-left" title="SEPAlgebra" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SEPDecorators.html" class="btn btn-neutral float-right" title="SEPDecorators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SEPLogger.html" class="btn btn-neutral float-left" title="SEPLogger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -9,19 +9,18 @@ SEPModules
 *SEPModules* provides a handful of modules to aid in speeding up the production of small or medium-sized scripts.
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 3
    :caption: API Documentation
 
-   modules/SEPMaths
-   modules/SEPAlgebra
-   modules/SEPIO
-   modules/SEPLogger
-   modules/SEPDecorators
+   modules/maths/index
    modules/SEPPrinting/index
-   modules/SEPTeX
+   modules/TeX/index
+   modules/SEPLogger
+   modules/SEPIO
+   modules/SEPDecorators
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
    :caption: Examples
 
    examples/test
