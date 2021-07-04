@@ -1,0 +1,803 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SEPTeX &mdash; SEPModules 0.1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SEPTikZ" href="SEPTikZ.html" />
+    <link rel="prev" title="TeX" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SEPModules
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../maths/index.html">maths</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../maths/SEPMaths.html">SEPMaths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../maths/SEPMaths.html#rational">Rational</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../maths/SEPAlgebra.html">SEPAlgebra</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../maths/SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../maths/SEPAlgebra.html#monoid">Monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../maths/SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../maths/SEPAlgebra.html#group">Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../maths/SEPAlgebra.html#abelian-group">Abelian Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../maths/SEPAlgebra.html#ring">Ring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../maths/SEPAlgebra.html#field">Field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPPrinting/index.html">SEPPrinting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../SEPPrinting/SEPPrinting.html#console-graph">Console Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SEPPrinting/SEPPrinting.html#progress-bar">Progress Bar</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">TeX</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SEPTeX</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-details">Implementation Details</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#latexerror">LaTeXError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#latexhandler">LaTeXHandler</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#abstract-base-class">Abstract Base Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#latexresource">LaTeXResource</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#documents-and-environments">Documents and Environments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#latexdocument">LaTeXDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#latexenvironment">LaTeXEnvironment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#center">Center</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#figure">Figure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mathsenvironment">MathsEnvironment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SEPTikZ.html">SEPTikZ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPTikZ.html#abstract-base-classes">Abstract Base Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SEPTikZ.html#tikzwriteable">TikZWriteable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPTikZ.html#tikzstyled">TikZStyled</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SEPTikZ.html#styles-and-tikz-objects">Styles and TikZ Objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SEPTikZ.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPTikZ.html#tikzstyle">TikZStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPTikZ.html#tikzpath">TikZPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPTikZ.html#tikzpicture">TikZPicture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPTikZ.html#tikzscope">TikZScope</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPIO.html">SEPIO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPIO.html#console-arguments">Console Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPDecorators.html">SEPDecorators</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/test.html">Test</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SEPModules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">TeX</a> &raquo;</li>
+        
+      <li>SEPTeX</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/modules/TeX/SEPTeX.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-SEPModules.TeX.SEPTeX">
+<span id="septex"></span><h1>SEPTeX<a class="headerlink" href="#module-SEPModules.TeX.SEPTeX" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Marcel Simader</p>
+</dd>
+<dt class="field-even">Date</dt>
+<dd class="field-even"><p>29.06.2021</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version v0.1.2.dev1.</span></p>
+</div>
+<div class="section" id="implementation-details">
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="latexerror">
+<h3>LaTeXError<a class="headerlink" href="#latexerror" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXError">
+<em class="property"><span class="pre">final</span> <span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTeX.</span></span><span class="sig-name descname"><span class="pre">LaTeXError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception class for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">SEPTeX</span></code> module.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="latexhandler">
+<h3>LaTeXHandler<a class="headerlink" href="#latexhandler" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXHandler">
+<em class="property"><span class="pre">final</span> <span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTeX.</span></span><span class="sig-name descname"><span class="pre">LaTeXHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indent_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_wrap_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXHandler" title="SEPModules.TeX.SEPTeX.LaTeXHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">LaTeXHandler</span></code></a> aids as container for lines of text to be written to a document. This class can automatically
+apply a specific level of indentation and pseudo soft-wrap lines that are too long.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The algorithm for the soft-wrap will insert <code class="docutils literal notranslate"><span class="pre">\n</span></code> newline characters in available spaces of each “line entry” of
+this instance, which does not cause the line to be split into multiple entries but still places a new line in the
+final document.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indent_level</strong> (<em>int</em>) – the number of tab character to place at the beginning of each line</p></li>
+<li><p><strong>line_wrap_length</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – keyword-only argument, when set to an int this value dictates how long a line can be before
+a pseudo soft-wrap is applied during the <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.write" title="SEPModules.TeX.SEPTeX.LaTeXHandler.write"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write()</span></code></a> operations of this instance</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXHandler.data">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[str]</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.data" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a tuple of strings where each string is exactly one line in the document</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXHandler.offset">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">offset</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.offset" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the current cursor offset of the handler</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXHandler.indent_level">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">indent_level</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.indent_level" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>what the default amount of indentation for this handler should be</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXHandler.line_wrap_length">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">line_wrap_length</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[int]</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.line_wrap_length" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the number of characters before a line is split into two using a soft-wrap, <strong>this means that in the handler,
+the line will still only have one entry but contain the newline character</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXHandler.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write string <code class="docutils literal notranslate"><span class="pre">s</span></code> to the handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>AnyStr</em>) – the string to write, can be any string of any length including line breaks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXHandler.newline">
+<span class="sig-name descname"><span class="pre">newline</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an empty line.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXHandler.readline">
+<span class="sig-name descname"><span class="pre">readline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.readline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read <code class="docutils literal notranslate"><span class="pre">size</span></code> lines from this document, starting at <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.offset" title="SEPModules.TeX.SEPTeX.LaTeXHandler.offset"><code class="xref py py-attr docutils literal notranslate"><span class="pre">offset</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em>) – how many lines to read</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the lines to be read as tuple</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if size is negative</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="abstract-base-class">
+<h2>Abstract Base Class<a class="headerlink" href="#abstract-base-class" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="latexresource">
+<h3>LaTeXResource<a class="headerlink" href="#latexresource" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXResource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTeX.</span></span><span class="sig-name descname"><span class="pre">LaTeXResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">can_reopen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for marking a class as having an open and closed state, along with text data of some sort. This
+class requires <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code> to be implemented to provide the contents of the handlers to any other caller.</p>
+<p>In addition to the open and closed states, one can configure the resource to allow multiple openings. The default
+behaviour is to throw an exception if the resource is opened a second time. The opening and closing is implemented as
+context manager, with <code class="xref py py-meth docutils literal notranslate"><span class="pre">__enter__()</span></code> triggering an opening and <code class="xref py py-meth docutils literal notranslate"><span class="pre">__exit__()</span></code> triggering a closing. The
+private helper methods <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXResource.__require_closed__" title="SEPModules.TeX.SEPTeX.LaTeXResource.__require_closed__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__require_closed__()</span></code></a>, <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXResource.__require_open__" title="SEPModules.TeX.SEPTeX.LaTeXResource.__require_open__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__require_open__()</span></code></a>, and <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXResource.__require_virgin__" title="SEPModules.TeX.SEPTeX.LaTeXResource.__require_virgin__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__require_virgin__()</span></code></a>
+are provided to check these states.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXResource.__require_closed__">
+<em class="property"><span class="pre">final</span> </em><span class="sig-name descname"><span class="pre">__require_closed__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXResource.__require_closed__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires a resource to be closed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame_depth</strong> (<em>int</em>) – how many stack frames to go backwards in order to retrieve the name of the function which
+represents the public API call which caused the error</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the resource is open when this function is called</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXResource.__require_open__">
+<em class="property"><span class="pre">final</span> </em><span class="sig-name descname"><span class="pre">__require_open__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXResource.__require_open__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires a resource to be opened.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame_depth</strong> (<em>int</em>) – how many stack frames to go backwards in order to retrieve the name of the function which
+represents the public API call which caused the error</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the resource is closed when this function is called</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXResource.__require_virgin__">
+<em class="property"><span class="pre">final</span> </em><span class="sig-name descname"><span class="pre">__require_virgin__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXResource.__require_virgin__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires a resource to have never been opened.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame_depth</strong> (<em>int</em>) – how many stack frames to go backwards in order to retrieve the name of the function which
+represents the public API call which caused the error</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the resource has been opened once before when this function is called</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="documents-and-environments">
+<h2>Documents and Environments<a class="headerlink" href="#documents-and-environments" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="latexdocument">
+<h3>LaTeXDocument<a class="headerlink" href="#latexdocument" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXDocument">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTeX.</span></span><span class="sig-name descname"><span class="pre">LaTeXDocument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">document_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'article'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">document_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a4paper,</span> <span class="pre">12pt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_packages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('amsmath')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtitle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_page_numbers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_wrap_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXDocument" title="SEPModules.TeX.SEPTeX.LaTeXDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">LaTeXDocument</span></code></a> represents a LaTeX document that can be written to in a similar fashion as a text file. To
+do so, one must use the context manager of this object or retrieve the file path to write to it directly. The context
+manager will return three objects: the created document itself, the handler for writing to the preamble, and the
+handler for writing to the body of the document.</p>
+<p>Example usage with the context manager:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">LaTeXDocument</span><span class="p">(</span><span class="s2">&quot;abc.tex&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">latex_document</span><span class="p">,</span> <span class="n">pre</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
+        <span class="n">latex_document</span><span class="o">.</span><span class="n">use_package</span><span class="p">(</span><span class="s2">&quot;abc123&quot;</span><span class="p">)</span>
+        <span class="n">body</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;This is some \LaTeX.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For extensions to the functionality of this class, see <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment" title="SEPModules.TeX.SEPTeX.LaTeXEnvironment"><code class="xref py py-class docutils literal notranslate"><span class="pre">LaTeXEnvironment</span></code></a> as base class.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The data stored in and added to this <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXDocument" title="SEPModules.TeX.SEPTeX.LaTeXDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">LaTeXDocument</span></code></a> instance is only saved once the context manager
+is closed!</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>Union</em><em>[</em><em>AnyStr</em><em>, </em><em>PathLike</em><em>]</em>) – the path to the main <code class="docutils literal notranslate"><span class="pre">.tex</span></code> file</p></li>
+<li><p><strong>document_class</strong> (<em>AnyStr</em>) – the name of the document class to include at the start of the document</p></li>
+<li><p><strong>document_options</strong> (<em>AnyStr</em>) – the options to pass to the chosen document class</p></li>
+<li><p><strong>default_packages</strong> (<em>Tuple</em><em>[</em><em>AnyStr</em><em>]</em>) – the packages to include right at the beginning of initialization</p></li>
+<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>AnyStr</em><em>]</em>) – the title of the document</p></li>
+<li><p><strong>subtitle</strong> (<em>Optional</em><em>[</em><em>AnyStr</em><em>]</em>) – the subtitle of the document, is ignored unless <code class="docutils literal notranslate"><span class="pre">title</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>author</strong> (<em>Optional</em><em>[</em><em>AnyStr</em><em>]</em>) – the author of the document</p></li>
+<li><p><strong>line_wrap_length</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – keyword-only argument, if set to an int this value will dictate how long a line can be
+before a pseudo soft-wrap is applied (see <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXHandler" title="SEPModules.TeX.SEPTeX.LaTeXHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">LaTeXHandler</span></code></a> for details)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXDocument.preamble">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">preamble</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.TeX.SEPTeX.LaTeXHandler</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXDocument.preamble" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the document has not been opened</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXDocument.body">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">body</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.TeX.SEPTeX.LaTeXHandler</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXDocument.body" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the document has not been opened</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXDocument.line_wrap_lengths">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">line_wrap_lengths</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[Optional[int],</span> <span class="pre">Optional[int]]</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXDocument.line_wrap_lengths" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the line wrap lengths of preamble and body, see <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXHandler.line_wrap_length" title="SEPModules.TeX.SEPTeX.LaTeXHandler.line_wrap_length"><code class="xref py py-attr docutils literal notranslate"><span class="pre">LaTeXHandler.line_wrap_length</span></code></a> for details</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXDocument.use_package">
+<span class="sig-name descname"><span class="pre">use_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXDocument.use_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Include a usepackage statement in this document. This function checks the list of already included packages to
+avoid duplicates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>package</strong> (<em>Union</em><em>[</em><em>AnyStr</em><em>, </em><em>Tuple</em><em>]</em>) – the name or names of the package to include</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXDocument.page_break">
+<span class="sig-name descname"><span class="pre">page_break</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXDocument.page_break" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts a page break.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXDocument.to_pdf">
+<span class="sig-name descname"><span class="pre">to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_aux_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pdflatex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXDocument.to_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compile the LaTeX document at <code class="xref py py-attr docutils literal notranslate"><span class="pre">path</span></code> to a PDF file. The document must be closed before attempting to perform
+this operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>out_file_path</strong> (<em>Union</em><em>[</em><em>os.PathLike</em><em>, </em><em>AnyStr</em><em>]</em>) – which path to output the file to</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em>) – whether or not to overwrite a file that already exists</p></li>
+<li><p><strong>delete_aux_files</strong> (<em>bool</em>) – delete the generated auxiliary files after compilation of the document is complete</p></li>
+<li><p><strong>engine</strong> (<em>Literal</em><em>[</em><em>pdftex</em><em>, </em><em>pdflatex</em><em>]</em>) – which engine to use for conversion between the TeX and PDF files (specifically which string to use to
+call said engine), currently only <code class="docutils literal notranslate"><span class="pre">pdflatex</span></code> is supported</p></li>
+<li><p><strong>custom_options</strong> (<em>AnyStr</em>) – options to directly pass to the engine which are not included as argument to this function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the document was still opened while calling this function or if there was an error while
+executing the engine command in the subshell</p></li>
+<li><p><strong>FileExistsError</strong> – if the file is already exists and <code class="docutils literal notranslate"><span class="pre">overwrite</span></code> is not set to True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="latexenvironment">
+<h3>LaTeXEnvironment<a class="headerlink" href="#latexenvironment" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXEnvironment">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTeX.</span></span><span class="sig-name descname"><span class="pre">LaTeXEnvironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">environment_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_packages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for an environment in a LaTeX document (see <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXDocument" title="SEPModules.TeX.SEPTeX.LaTeXDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">LaTeXDocument</span></code></a>). This class usually acts as base
+class for extensions that add simpler ways to write to an environment.</p>
+<p>Example usage with two nested context managers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">LaTeXEnvironment</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">env_center</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">LaTeXEnvironment</span><span class="p">(</span><span class="n">env_center</span><span class="p">,</span> <span class="s2">&quot;equation&quot;</span><span class="p">,</span> <span class="n">required_packages</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;amsmath&quot;</span><span class="p">,))</span> <span class="k">as</span> <span class="n">env_eq</span><span class="p">:</span>
+                <span class="n">env_eq</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\forall a, b \in \mathbb</span><span class="si">{R}</span><span class="s2">, \exists c \in \mathbb</span><span class="si">{R}</span><span class="s2"> \colon a^2 + b^2 = c^2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When inheriting from this class, one should usually only overwrite the following methods: <code class="xref py py-meth docutils literal notranslate"><span class="pre">__init__()</span></code>,
+<a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment.write" title="SEPModules.TeX.SEPTeX.LaTeXEnvironment.write"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write()</span></code></a>, and <a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment.newline" title="SEPModules.TeX.SEPTeX.LaTeXEnvironment.newline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">newline()</span></code></a>. Overwriting other methods is allowed if needed, unless marked as final.</p>
+<p>It is highly recommended to use either a super call to this class or at least the private methods <code class="xref py py-meth docutils literal notranslate"><span class="pre">_write()</span></code>
+and <code class="xref py py-meth docutils literal notranslate"><span class="pre">_newline()</span></code> to handle internal write calls to the LaTeXHandler instance, since these check additional
+requirements.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_env</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXDocument" title="SEPModules.TeX.SEPTeX.LaTeXDocument"><em>LaTeXDocument</em></a><em>, </em><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment" title="SEPModules.TeX.SEPTeX.LaTeXEnvironment"><em>LaTeXEnvironment</em></a><em>]</em>) – the parent environment or document to this environment</p></li>
+<li><p><strong>environment_name</strong> (<em>AnyStr</em>) – the name of the environment, this value is put for the <code class="docutils literal notranslate"><span class="pre">\begin</span></code> and <code class="docutils literal notranslate"><span class="pre">\end</span></code> commands</p></li>
+<li><p><strong>options</strong> (<em>AnyStr</em>) – the options to pass to the environment, this value is put after the <code class="docutils literal notranslate"><span class="pre">\begin</span></code> command</p></li>
+<li><p><strong>required_packages</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – the packages which are required to use this environment</p></li>
+<li><p><strong>indent_level</strong> (<em>int</em>) – the number of tab characters to indent this environment relative to the parent environment</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXEnvironment.document">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">document</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.TeX.SEPTeX.LaTeXDocument</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment.document" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the root document of this environment stack</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if one of the parent environments is neither of type LaTeXDocument nor LaTeXEnvironment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXEnvironment.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorthand for writing to the handler of this instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the document has not been opened</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.LaTeXEnvironment.newline">
+<span class="sig-name descname"><span class="pre">newline</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment.newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorthand for writing a newline the handler of this instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the document has not been opened</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="center">
+<h3>Center<a class="headerlink" href="#center" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.Center">
+<em class="property"><span class="pre">final</span> <span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTeX.</span></span><span class="sig-name descname"><span class="pre">Center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.Center" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.Center" title="SEPModules.TeX.SEPTeX.Center"><code class="xref py py-class docutils literal notranslate"><span class="pre">Center</span></code></a> represents the standard LaTeX <code class="docutils literal notranslate"><span class="pre">center</span></code> environment. It has no options or required packages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_env</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXDocument" title="SEPModules.TeX.SEPTeX.LaTeXDocument"><em>LaTeXDocument</em></a><em>, </em><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment" title="SEPModules.TeX.SEPTeX.LaTeXEnvironment"><em>LaTeXEnvironment</em></a><em>]</em>) – the parent environment or document to this environment</p></li>
+<li><p><strong>indent_level</strong> (<em>int</em>) – the number of tab characters to indent this environment relative to the parent environment</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="figure">
+<h3>Figure<a class="headerlink" href="#figure" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.Figure">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTeX.</span></span><span class="sig-name descname"><span class="pre">Figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'h!'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.Figure" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.Figure" title="SEPModules.TeX.SEPTeX.Figure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a> represents the standard LaTeX <code class="docutils literal notranslate"><span class="pre">figure</span></code> environment. It can be initialized with a caption, a label,
+and options. The options default to <code class="docutils literal notranslate"><span class="pre">h!</span></code> to force placement at the location of the definition of the figure.</p>
+<p>When referencing this figure use the <a class="reference internal" href="#SEPModules.TeX.SEPTeX.Figure.label" title="SEPModules.TeX.SEPTeX.Figure.label"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label</span></code></a> property as follows, as it adds the <code class="docutils literal notranslate"><span class="pre">fig:</span></code> prefix
+automatically when left out and makes referencing easier:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">LaTeXDocument</span><span class="p">(</span><span class="s2">&quot;ham.tex&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">f1</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="s2">&quot;Caption.&quot;</span><span class="p">,</span> <span class="s2">&quot;a-label&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">assert</span> <span class="n">f1</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="s2">&quot;fig:a-label&quot;</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">f2</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="s2">&quot;Spam Ham Caption.&quot;</span><span class="p">,</span> <span class="s2">&quot;fig:label-label&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">assert</span> <span class="n">f2</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="s2">&quot;fig:label-label&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_env</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXDocument" title="SEPModules.TeX.SEPTeX.LaTeXDocument"><em>LaTeXDocument</em></a><em>, </em><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment" title="SEPModules.TeX.SEPTeX.LaTeXEnvironment"><em>LaTeXEnvironment</em></a><em>]</em>) – the parent environment or document to this environment</p></li>
+<li><p><strong>caption</strong> (<em>Optional</em><em>[</em><em>AnyStr</em><em>]</em>) – the caption of the figure, may be <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>label</strong> (<em>Optional</em><em>[</em><em>AnyStr</em><em>]</em>) – the label of the figure, can include <code class="docutils literal notranslate"><span class="pre">fig:</span></code> as prefix but if this is absent the prefix will be added
+automatically by the <a class="reference internal" href="#SEPModules.TeX.SEPTeX.Figure.label" title="SEPModules.TeX.SEPTeX.Figure.label"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label</span></code></a> property, may be <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>options</strong> (<em>AnyStr</em>) – the options to pass to the environment, this value is put after the <code class="docutils literal notranslate"><span class="pre">egin</span></code> command</p></li>
+<li><p><strong>indent_level</strong> (<em>int</em>) – the number of tab characters to indent this environment relative to the parent environment</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.Figure.caption">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">caption</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[AnyStr]</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.Figure.caption" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the caption of this figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.Figure.label">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[AnyStr]</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTeX.Figure.label" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the label referencing this figure, automatically adds <code class="docutils literal notranslate"><span class="pre">fig:</span></code> prefix if missing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.Figure.write_figure_table">
+<span class="sig-name descname"><span class="pre">write_figure_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.Figure.write_figure_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a table of the figures in this document at this location.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mathsenvironment">
+<h3>MathsEnvironment<a class="headerlink" href="#mathsenvironment" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.MathsEnvironment">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTeX.</span></span><span class="sig-name descname"><span class="pre">MathsEnvironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">star</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.MathsEnvironment" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.MathsEnvironment" title="SEPModules.TeX.SEPTeX.MathsEnvironment"><code class="xref py py-class docutils literal notranslate"><span class="pre">MathsEnvironment</span></code></a> represents a base implementation of any (<code class="docutils literal notranslate"><span class="pre">amsmath</span></code>) math environment. It can be passed
+the star flag upon creation, which will be inserted at the start of the environment name. When writing to this instance,
+text will automatically be formatted using <code class="xref py py-func docutils literal notranslate"><span class="pre">tex_maths_string()</span></code> and the <a class="reference internal" href="#SEPModules.TeX.SEPTeX.MathsEnvironment.newline" title="SEPModules.TeX.SEPTeX.MathsEnvironment.newline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">newline()</span></code></a> method will write a
+double backslash <code class="docutils literal notranslate"><span class="pre">\\</span></code> instead of the newline character <code class="docutils literal notranslate"><span class="pre">\n</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_env</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXDocument" title="SEPModules.TeX.SEPTeX.LaTeXDocument"><em>LaTeXDocument</em></a><em>, </em><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXEnvironment" title="SEPModules.TeX.SEPTeX.LaTeXEnvironment"><em>LaTeXEnvironment</em></a><em>]</em>) – the parent environment or document to this environment</p></li>
+<li><p><strong>env_name</strong> (<em>str</em>) – the parent environment or document to this environment</p></li>
+<li><p><strong>star</strong> (<em>bool</em>) – whether or not to prefix the environment name with a star like so: <code class="docutils literal notranslate"><span class="pre">*env_name</span></code> or <code class="docutils literal notranslate"><span class="pre">env_name</span></code></p></li>
+<li><p><strong>indent_level</strong> (<em>int</em>) – the number of tab characters to indent this environment relative to the parent environment</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.MathsEnvironment.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.MathsEnvironment.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorthand for writing to the handler of this instance. Automatically calls <code class="xref py py-func docutils literal notranslate"><span class="pre">tex_maths_string()</span></code> on every
+object <code class="docutils literal notranslate"><span class="pre">s</span></code> passed to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the document has not been opened</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTeX.MathsEnvironment.newline">
+<span class="sig-name descname"><span class="pre">newline</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTeX.MathsEnvironment.newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorthand for writing a newline to the handler of this instance. Instead of <code class="docutils literal notranslate"><span class="pre">\n</span></code> this method places <code class="docutils literal notranslate"><span class="pre">\\</span></code> to
+indicate a line break.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.TeX.SEPTeX.LaTeXError" title="SEPModules.TeX.SEPTeX.LaTeXError"><strong>LaTeXError</strong></a> – if the document has not been opened</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="SEPTikZ.html" class="btn btn-neutral float-right" title="SEPTikZ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="TeX" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcel Simader.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -11,14 +11,13 @@
 
 from __future__ import annotations
 
-from enum import Enum
+import math
+from math import ceil
 from numbers import Real
-from typing import Any, Collection, Tuple, Callable, Union, Final, Literal, Dict, Optional, TypeVar, AnyStr
+from typing import Any, Collection, Tuple, Callable, Union, Final, Literal, Dict, Optional, TypeVar
 
 from colorama import Cursor, init as cl_init
 from colorama.ansi import AnsiFore, AnsiStyle, code_to_chars
-import math
-from math import ceil
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ GLOBALS ~~~~~~~~~~~~~~~
@@ -28,7 +27,8 @@ __PRINT_COLORS__ = True
 
 def _get_print_color() -> bool:
 	return __PRINT_COLORS__
-def _set_print_color(val : bool):
+
+def _set_print_color(val: bool):
 	global __PRINT_COLORS__
 	if type(val) is not bool:
 		raise TypeError("Expected type of 'print_colors' to be 'bool' but received '{}'".format(val.__class__.__name__))
@@ -40,15 +40,16 @@ print_colors = property(_get_print_color, _set_print_color,
 # initialize colorama and set up constants
 cl_init()
 
-POS : Final = lambda x=0, y=0: Cursor.POS(x, y)
-REL_POS : Final = lambda x=0, y=0: (Cursor.FORWARD(x) if x >= 0 else Cursor.BACK(-x)) + (Cursor.DOWN(y) if y >= 0 else Cursor.UP(-y))
-SAVE_POS : Final = "\033[s"
-LOAD_POS : Final =  "\033[u"
+POS: Final = lambda x=0, y=0: Cursor.POS(x, y)
+REL_POS: Final = lambda x=0, y=0: (Cursor.FORWARD(x) if x >= 0 else Cursor.BACK(-x)) + (
+		Cursor.DOWN(y) if y >= 0 else Cursor.UP(-y))
+SAVE_POS: Final = "\033[s"
+LOAD_POS: Final = "\033[u"
 
-UP : Final = Cursor.UP
-DOWN : Final = Cursor.DOWN
-FORWARD : Final =  Cursor.FORWARD
-BACK : Final = Cursor.BACK
+UP: Final = Cursor.UP
+DOWN: Final = Cursor.DOWN
+FORWARD: Final = Cursor.FORWARD
+BACK: Final = Cursor.BACK
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
@@ -56,15 +57,15 @@ BACK : Final = Cursor.BACK
 
 class Style:
 	r"""
-	A helper class to represent styles and colors and which actions can be performed on them. New :py:class:`Style` objects
+	A helper class to represent style and colors and which actions can be performed on them. New :py:class:`Style` objects
 	may be instantiated using ``int`` ANSI style codes, or the :py:mod:`colorama.ansi` classes of `Colorama`. Furthermore,
-	styles can be combined into composite styles by the bitwise ``&`` and ``|`` and the ``+`` operator. Inplace operations
+	style can be combined into composite style by the bitwise ``&`` and ``|`` and the ``+`` operator. Inplace operations
 	are **not** supported as the instances of this class are immutable by design.
 	"""
 
-	def __init__(self, *styles : Union[int, AnsiStyle, AnsiFore]):
+	def __init__(self, *styles: Union[int, AnsiStyle, AnsiFore]):
 		if any([isinstance(x, tuple) for x in styles]):
-			raise TypeError("styles parameter contained a nested tuple, but must be a flat tuple")
+			raise TypeError("style parameter contained a nested tuple, but must be a flat tuple")
 		self._styles = styles
 
 	@property
@@ -73,15 +74,15 @@ class Style:
 		return self._styles
 
 	def __len__(self) -> int:
-		r""" :return: the amount of different styles contained in this instance """
+		r""" :return: the amount of different style contained in this instance """
 		return len(self._styles)
 
-	def __and__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+	def __and__(self, other: STYLE_CONCAT) -> STYLE_CONCAT:
 		r"""
-		Combines two styles or strings into one.
+		Combines two style or strings into one.
 
 		:param other: a different style to combine with this one
-		:return: a new style combining both given styles, if a string is given as ``other`` the return value will be the
+		:return: a new style combining both given style, if a string is given as ``other`` the return value will be the
 			application of the :py:meth:`__str__` function to the style concatenated with the other operand
 		"""
 		if isinstance(other, Style):
@@ -91,29 +92,30 @@ class Style:
 		elif isinstance(other, bytes):
 			return bytes(str(self), "UTF-8") + other
 		else:
-			raise TypeError(f"other is of type {other.__class__.__name__}, but expected type 'Style', 'str', or 'bytes'")
+			raise TypeError(
+					f"other is of type {other.__class__.__name__}, but expected type 'Style', 'str', or 'bytes'")
 
-	def __or__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+	def __or__(self, other: STYLE_CONCAT) -> STYLE_CONCAT:
 		r""" See :py:meth:`__and__` for details. """
 		return self.__and__(other)
 
-	def __add__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+	def __add__(self, other: STYLE_CONCAT) -> STYLE_CONCAT:
 		r""" See :py:meth:`__and__` for details. """
 		return self.__and__(other)
 
-	def __rand__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+	def __rand__(self, other: STYLE_CONCAT) -> STYLE_CONCAT:
 		r""" See :py:meth:`__and__` for details. """
 		return self.__and__(other)
 
-	def __ror__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+	def __ror__(self, other: STYLE_CONCAT) -> STYLE_CONCAT:
 		r""" See :py:meth:`__and__` for details. """
 		return self.__and__(other)
 
-	def __radd__(self, other : STYLE_CONCAT) -> STYLE_CONCAT:
+	def __radd__(self, other: STYLE_CONCAT) -> STYLE_CONCAT:
 		r""" See :py:meth:`__and__` for details. """
 		return self.__and__(other)
 
-	def __eq__(self, other : Style) -> bool:
+	def __eq__(self, other: Style) -> bool:
 		if not isinstance(other, Style):
 			raise TypeError(f"other is of type {other.__class__.__name__}, but expected type 'Style'")
 		return self._styles == other._styles
@@ -124,12 +126,12 @@ class Style:
 	def __str__(self) -> str:
 		return str().join(code_to_chars(x) for x in self._styles)
 
-STYLE_CONCAT : Final = TypeVar("STYLE_CONCAT", Style, str, bytes)
+STYLE_CONCAT: Final = TypeVar("STYLE_CONCAT", Style, str, bytes)
 """ Generic type variable for the :py:class:`Style` class. """
 
-SUPPRESS : Final = Style()
+SUPPRESS: Final = Style()
 r""" 
-Default styles to import into a project.
+Default style to import into a project.
 
 ..	deprecated:: 0.1.2
 
@@ -139,45 +141,44 @@ Default styles to import into a project.
 """
 ERROR = LIGHT_ERROR = WARNING = NUMBER = NAME = SUPPRESS
 
-RED            : Final = Style(AnsiFore.RED)
-YELLOW         : Final = Style(AnsiFore.YELLOW)
-GREEN          : Final = Style(AnsiFore.GREEN)
-BLUE           : Final = Style(AnsiFore.BLUE)
-CYAN           : Final = Style(AnsiFore.CYAN)
-MAGENTA        : Final = Style(AnsiFore.MAGENTA)
+RED: Final = Style(AnsiFore.RED)
+YELLOW: Final = Style(AnsiFore.YELLOW)
+GREEN: Final = Style(AnsiFore.GREEN)
+BLUE: Final = Style(AnsiFore.BLUE)
+CYAN: Final = Style(AnsiFore.CYAN)
+MAGENTA: Final = Style(AnsiFore.MAGENTA)
 
-LIGHT_RED      : Final = Style(91)
-LIGHT_YELLOW   : Final = Style(93)
-LIGHT_GREEN    : Final = Style(92)
-LIGHT_BLUE     : Final = Style(94)
-LIGHT_CYAN     : Final = Style(96)
-LIGHT_MAGENTA  : Final = Style(95)
+LIGHT_RED: Final = Style(91)
+LIGHT_YELLOW: Final = Style(93)
+LIGHT_GREEN: Final = Style(92)
+LIGHT_BLUE: Final = Style(94)
+LIGHT_CYAN: Final = Style(96)
+LIGHT_MAGENTA: Final = Style(95)
 
-BLACK          : Final = Style(AnsiFore.BLACK)
-DARK_GRAY      : Final = Style(90)
-GRAY           : Final = Style(37)
-WHITE          : Final = Style(97)
+BLACK: Final = Style(AnsiFore.BLACK)
+DARK_GRAY: Final = Style(90)
+GRAY: Final = Style(37)
+WHITE: Final = Style(97)
 
-ITALICS        : Final = Style(3)
-UNDERLINE      : Final = Style(4)
-BOLD_UNDERLINE : Final = Style(21)
-STRIKETHROUGH  : Final = Style(9)
-BOXED          : Final = Style(51)
+ITALICS: Final = Style(3)
+UNDERLINE: Final = Style(4)
+BOLD_UNDERLINE: Final = Style(21)
+STRIKETHROUGH: Final = Style(9)
+BOXED: Final = Style(51)
 
-BRIGHT         : Final = Style(AnsiStyle.BRIGHT)
-DIM            : Final = Style(AnsiStyle.DIM)
-NORMAL         : Final = Style(AnsiStyle.NORMAL)
+BRIGHT: Final = Style(AnsiStyle.BRIGHT)
+DIM: Final = Style(AnsiStyle.DIM)
+NORMAL: Final = Style(AnsiStyle.NORMAL)
 
-
-RESET_ALL : Final = Style(AnsiStyle.RESET_ALL)
+RESET_ALL: Final = Style(AnsiStyle.RESET_ALL)
 
 class FillCharacters:
 	"""
 	Auto-generated (by font/console_glyph_gen.py) and hand-made fill character sets for the :py:func:`console_graph` function.
 	"""
 
-	MINIMAL : Final = ({(" ", " "): 0, ("#", "#"): 1},
-			   		   ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
+	MINIMAL: Final = ({(" ", " "): 0, ("#", "#"): 1},
+					  ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
 	"""
 	::
 	
@@ -187,9 +188,9 @@ class FillCharacters:
 	
 	"""
 
-	SIMPLE : Final = ({(" ", " "): 0, ("_", "‾"): 0.05, (".", "˙"): 0.1, (":", ":"): 0.3,
-			   ("+", "+"): 0.5, ("I", "I"): 0.7, ("#", "#"): 1},
-			  		  ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
+	SIMPLE: Final = ({(" ", " "): 0, ("_", "‾"): 0.05, (".", "˙"): 0.1, (":", ":"): 0.3,
+					  ("+", "+"): 0.5, ("I", "I"): 0.7, ("#", "#"): 1},
+					 ("|", "|", "|", "-", "|", "|", "`", "+", "#", "|", "|", "|", "|"))
 	"""
 	::
 	
@@ -199,9 +200,9 @@ class FillCharacters:
 	
 	"""
 
-	CONSOLAS_MANUAL : Final = ({(" ", " "): 0, ("_", "‾"): 0.02, ("˷", "͂"): 0.1, (",", "˟"): 0.25, ("ᵦ", "ᴵ"): 0.3,
-						("ı", "ᵝ"): 0.4, (":", "˸"): 0.55, ("I", "!"): 0.70, ("⌠", "⌡"): 0.85, ("ʬ", "ʬ"): 1},
-					   		   ('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
+	CONSOLAS_MANUAL: Final = ({(" ", " "): 0, ("_", "‾"): 0.02, ("˷", "͂"): 0.1, (",", "˟"): 0.25, ("ᵦ", "ᴵ"): 0.3,
+							   ("ı", "ᵝ"): 0.4, (":", "˸"): 0.55, ("I", "!"): 0.70, ("⌠", "⌡"): 0.85, ("ʬ", "ʬ"): 1},
+							  ('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
 	"""
 	::
 	
@@ -211,17 +212,18 @@ class FillCharacters:
 	
 	"""
 
-	CONSOLAS : Final = ({('̱', '̅'): 0.07, ('̫', '͆'): 0.13, ('ꞈ', '҇'): 0.14, ('¸', 'ᵔ'): 0.17, ('.', '҅'): 0.18, ('̡', '˺'): 0.21,
-	 ('₌', '⁼'): 0.27, ('ᴗ', '™'): 0.29, ('ᵥ', 'ᵓ'): 0.34, ('ᵣ', 'ᵓ'): 0.35, (',', 'ˤ'): 0.36, ('₊', 'ᶝ'): 0.39,
-	 ('₄', 'ꜟ'): 0.43, ('₅', 'ᶾ'): 0.44, ('₀', 'ᶾ'): 0.45, ('˪', 'ᶮ'): 0.48, ('ᵢ', 'ᶮ'): 0.49, ('□', 'º'): 0.52,
-	 ('ː', 'º'): 0.53, ('v', 'ᴃ'): 0.55, ('m', 'о'): 0.57, ('ϖ', '⃝'): 0.6, ('⃝', '⑥'): 0.61, ('<', '⑥'): 0.62,
-	 ('ɕ', '҉'): 0.65, ('҉', '¤'): 0.66, ('ȼ', 'ⱥ'): 0.68, ('ƈ', 'ⱬ'): 0.69, ('ʭ', 'ⱬ'): 0.7, ('#', 'Ԉ'): 0.72,
-	 ('Ϙ', 'Ԉ'): 0.73, ('Ԍ', 'ѣ'): 0.74, ('ῑ', 'ӽ'): 0.76, ('й', 'ụ'): 0.77, ('h', 'ʞ'): 0.78, ('ø', 'ᶏ'): 0.79,
-	 ('ΰ', 'ʗ'): 0.8, ('Ľ', 'Ʀ'): 0.81, ('₾', 'ⱦ'): 0.82, ('ẘ', 'ṋ'): 0.83, ('ŉ', 'ợ'): 0.86, ('ỉ', 'Қ'): 0.87,
-	 ('Ⱥ', 'Ṳ'): 0.88, ('ѽ', 'Ṳ'): 0.89, ('ǡ', 'Ӆ'): 0.9, ('ƒ', 'Ƒ'): 0.91, ('ẗ', 'Ԛ'): 0.92, ('Ğ', 'Ṃ'): 0.93,
-	 ('ĥ', 'Ṃ'): 0.94, ('$', 'Ϛ'): 0.96, ('Ů', 'ᾷ'): 0.97, ('ẳ', 'Ẕ'): 0.98, ('ḟ', 'Ẕ'): 0.99, (' ', ' '): 0.0,
-	 ('ʬ', 'ʬ'): 1.0},
-						('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
+	CONSOLAS: Final = (
+			{('̱', '̅'): 0.07, ('̫', '͆'): 0.13, ('ꞈ', '҇'): 0.14, ('¸', 'ᵔ'): 0.17, ('.', '҅'): 0.18, ('̡', '˺'): 0.21,
+			 ('₌', '⁼'): 0.27, ('ᴗ', '™'): 0.29, ('ᵥ', 'ᵓ'): 0.34, ('ᵣ', 'ᵓ'): 0.35, (',', 'ˤ'): 0.36, ('₊', 'ᶝ'): 0.39,
+			 ('₄', 'ꜟ'): 0.43, ('₅', 'ᶾ'): 0.44, ('₀', 'ᶾ'): 0.45, ('˪', 'ᶮ'): 0.48, ('ᵢ', 'ᶮ'): 0.49, ('□', 'º'): 0.52,
+			 ('ː', 'º'): 0.53, ('v', 'ᴃ'): 0.55, ('m', 'о'): 0.57, ('ϖ', '⃝'): 0.6, ('⃝', '⑥'): 0.61, ('<', '⑥'): 0.62,
+			 ('ɕ', '҉'): 0.65, ('҉', '¤'): 0.66, ('ȼ', 'ⱥ'): 0.68, ('ƈ', 'ⱬ'): 0.69, ('ʭ', 'ⱬ'): 0.7, ('#', 'Ԉ'): 0.72,
+			 ('Ϙ', 'Ԉ'): 0.73, ('Ԍ', 'ѣ'): 0.74, ('ῑ', 'ӽ'): 0.76, ('й', 'ụ'): 0.77, ('h', 'ʞ'): 0.78, ('ø', 'ᶏ'): 0.79,
+			 ('ΰ', 'ʗ'): 0.8, ('Ľ', 'Ʀ'): 0.81, ('₾', 'ⱦ'): 0.82, ('ẘ', 'ṋ'): 0.83, ('ŉ', 'ợ'): 0.86, ('ỉ', 'Қ'): 0.87,
+			 ('Ⱥ', 'Ṳ'): 0.88, ('ѽ', 'Ṳ'): 0.89, ('ǡ', 'Ӆ'): 0.9, ('ƒ', 'Ƒ'): 0.91, ('ẗ', 'Ԛ'): 0.92, ('Ğ', 'Ṃ'): 0.93,
+			 ('ĥ', 'Ṃ'): 0.94, ('$', 'Ϛ'): 0.96, ('Ů', 'ᾷ'): 0.97, ('ẳ', 'Ẕ'): 0.98, ('ḟ', 'Ẕ'): 0.99, (' ', ' '): 0.0,
+			 ('ʬ', 'ʬ'): 1.0},
+			('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
 	"""
 	Auto generated console_graph fill character set by console_glyph_gen.py from 'font/ConsolasMono-Regular.ttf'::
 	
@@ -232,14 +234,15 @@ class FillCharacters:
 	
 	"""
 
-	CASCADIA_MONO : Final = ({('.', '⠒'): 0.15, ('⠄', '⠒'): 0.16, ('◞', '◠'): 0.27, ('◛', '▬'): 0.31, ('₄', '▬'): 0.32, ('₁', '═'): 0.33,
-	 ('⠆', '⠢'): 0.38, ('◻', '⬧'): 0.47, ('▸', '◂'): 0.49, ('≡', '≡'): 0.5, ('<', '×'): 0.52, ('▲', '▲'): 0.53,
-	 ('+', '◓'): 0.54, ('■', '◓'): 0.55, ('я', 'π'): 0.56, ('≣', 'π'): 0.57, ('¤', '⬠'): 0.59, ('†', '⡰'): 0.61,
-	 ('℮', '⬛'): 0.62, ('♠', '♣'): 0.63, ('♦', '❧'): 0.66, ('ґ', 'ҷ'): 0.69, ('ơ', 'ơ'): 0.71, ('©', 't'): 0.73,
-	 ('ī', '¡'): 0.75, ('ā', '¡'): 0.76, ('ϗ', 'ų'): 0.77, ('h', 'ų'): 0.78, ('ï', 'χ'): 0.79, ('ß', 'g'): 0.81,
-	 ('ả', '¢'): 0.89, ('┆', '¢'): 0.9, ('ǿ', 'ợ'): 0.92, ('/', '┮'): 0.94, ('À', '▆'): 0.96, ('Ö', 'ț'): 0.97,
-	 ('Å', '╔'): 0.99, (' ', ' '): 0.0, ('◈', '◈'): 1.0},
-							('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
+	CASCADIA_MONO: Final = (
+			{('.', '⠒'): 0.15, ('⠄', '⠒'): 0.16, ('◞', '◠'): 0.27, ('◛', '▬'): 0.31, ('₄', '▬'): 0.32, ('₁', '═'): 0.33,
+			 ('⠆', '⠢'): 0.38, ('◻', '⬧'): 0.47, ('▸', '◂'): 0.49, ('≡', '≡'): 0.5, ('<', '×'): 0.52, ('▲', '▲'): 0.53,
+			 ('+', '◓'): 0.54, ('■', '◓'): 0.55, ('я', 'π'): 0.56, ('≣', 'π'): 0.57, ('¤', '⬠'): 0.59, ('†', '⡰'): 0.61,
+			 ('℮', '⬛'): 0.62, ('♠', '♣'): 0.63, ('♦', '❧'): 0.66, ('ґ', 'ҷ'): 0.69, ('ơ', 'ơ'): 0.71, ('©', 't'): 0.73,
+			 ('ī', '¡'): 0.75, ('ā', '¡'): 0.76, ('ϗ', 'ų'): 0.77, ('h', 'ų'): 0.78, ('ï', 'χ'): 0.79, ('ß', 'g'): 0.81,
+			 ('ả', '¢'): 0.89, ('┆', '¢'): 0.9, ('ǿ', 'ợ'): 0.92, ('/', '┮'): 0.94, ('À', '▆'): 0.96, ('Ö', 'ț'): 0.97,
+			 ('Å', '╔'): 0.99, (' ', ' '): 0.0, ('◈', '◈'): 1.0},
+			('│', '├', '┝', '╌', '┤', '┥', '░', '▒', '▓', '┐', '┘', '┌', '└'))
 	"""
 	Auto generated console_graph fill character set by console_glyph_gen.py from 'font/CascadiaMono-Regular.ttf'::
 	
@@ -254,7 +257,7 @@ class FillCharacters:
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def color_string(s : Any, style : Style, boolean : bool=False) -> str:
+def color_string(s: Any, style: Style, boolean: bool = False) -> str:
 	"""
 	Add color ANSI escape sequences to a string. Longer name version of :py:func:`cl_s`.
 
@@ -262,7 +265,7 @@ def color_string(s : Any, style : Style, boolean : bool=False) -> str:
 	"""
 	return cl_s(s, style, boolean=boolean)
 
-def cl_s(s : Any, style : Style, *, boolean : bool=False) -> str:
+def cl_s(s: Any, style: Style, *, boolean: bool = False) -> str:
 	"""
 	Add color ANSI escape sequences to a string. Shorter name version of :py:func:`color_string`.
 
@@ -290,7 +293,7 @@ def cl_s(s : Any, style : Style, *, boolean : bool=False) -> str:
 
 	return "{}{}{}".format(str(style), str(s), str(RESET_ALL))
 
-def get_time_str(secs : Real, force_unit : Optional[Literal["ns","µs","ms","s","m","h"]]=None):
+def get_time_str(secs: Real, force_unit: Optional[Literal["ns", "µs", "ms", "s", "m", "h"]] = None):
 	"""
 	Helper function to format durations.
 
@@ -340,7 +343,7 @@ def get_time_str(secs : Real, force_unit : Optional[Literal["ns","µs","ms","s",
 	else:
 		return "{:n}m {:.3f}s".format(int(secs / 60), secs % 60)
 
-def get_appropriate_time_unit(secs : Real) -> Literal["ns","µs","ms","s","m","h"]:
+def get_appropriate_time_unit(secs: Real) -> Literal["ns", "µs", "ms", "s", "m", "h"]:
 	"""
 	Turns a second value into a string of the appropriate unit (compatible with :py:func:`get_time_str`).
 
@@ -360,30 +363,30 @@ def get_appropriate_time_unit(secs : Real) -> Literal["ns","µs","ms","s","m","h
 	else:
 		return "h"
 
-def console_graph(data : Collection,
-				  max_height : int=13,
-				  max_width : int=128,
-				  offset : Tuple[int, int]=(0, 5),
-				  center : Tuple[int, int, int, int]=(2, 2, 2, 2),
-				  show_scale : bool=True,
-				  scale_spacing : int=1,
-				  rounding : int=2,
-				  scale_in_front : bool=False,
+def console_graph(data: Collection,
+				  max_height: int = 13,
+				  max_width: int = 128,
+				  offset: Tuple[int, int] = (0, 5),
+				  center: Tuple[int, int, int, int] = (2, 2, 2, 2),
+				  show_scale: bool = True,
+				  scale_spacing: int = 1,
+				  rounding: int = 2,
+				  scale_in_front: bool = False,
 				  fill_characters=FillCharacters.SIMPLE,
-				  color_function : Callable[[int, int, int, int], Tuple[str, ...]]=None,
-				  bg_color : Tuple[str, ...]=NORMAL,
-				  use_full_width : bool=True,
-				  append_zero_value : bool=False,
-				  zero_value : Any=0,
-				  unit_format_function : Callable[[float],
-												  Union[
-													  Tuple[Union[int, float, str]],
-													  Tuple[Union[int, float, str], str],
-													  Tuple[Union[int, float, str], str, str]
-												  ]]=lambda x: (x,),
-				  use_middle_for_unit_position : bool=False,
-				  relative_cursor_position : bool=False,
-				  debug : bool=False) -> str:
+				  color_function: Callable[[int, int, int, int], Tuple[str, ...]] = None,
+				  bg_color: Tuple[str, ...] = NORMAL,
+				  use_full_width: bool = True,
+				  append_zero_value: bool = False,
+				  zero_value: Any = 0,
+				  unit_format_function: Callable[[float],
+												 Union[
+													 Tuple[Union[int, float, str]],
+													 Tuple[Union[int, float, str], str],
+													 Tuple[Union[int, float, str], str, str]
+												 ]] = lambda x: (x,),
+				  use_middle_for_unit_position: bool = False,
+				  relative_cursor_position: bool = False,
+				  debug: bool = False) -> str:
 	"""
 	Creates a graph that can be printed to the console or a log file.
 
@@ -420,7 +423,7 @@ def console_graph(data : Collection,
 			3. relative position from the x-axis in percent
 			4. distance from curve in characters.
 
-		The returned color may be a tuple of styles and colors.
+		The returned color may be a tuple of style and colors.
 	:param bg_color: the color tuple to apply to all background characters (spaces will just appear invisible)
 	:param use_full_width: whether or not to fill the rest of the data collection with `zero_value` if the graph does not
 		fill the entire space provided by `max_height`. Ensures that the graph does not get printed too narrow
@@ -452,9 +455,11 @@ def console_graph(data : Collection,
 
 	:return: a string containing the graph to the specified parameters
 	"""
+	raise DeprecationWarning("This function is being rewritten and is not usable in its current state")
 	# ++++sort fillCharacters by descending value and grab 0 values for quicker access++++
 	_sorted_characters = sorted(fill_characters[0].items(), key=lambda item: item[1], reverse=True)
-	zero_chars = _sorted_characters[-1][0]  # get last entry key tuple after sorting, so should be key tuple where val is 0
+	zero_chars = _sorted_characters[-1][
+		0]  # get last entry key tuple after sorting, so should be key tuple where val is 0
 
 	# ++++set debug values++++
 	spacer_char = " "  # default value for spacer char
@@ -462,7 +467,7 @@ def console_graph(data : Collection,
 		spacer_char = "'"
 		bg_color = BLUE  # set zero char/background color to blue
 		zero_chars = (
-		fill_characters[1][7], fill_characters[1][8])  # set zero chars to something that can always be seen
+				fill_characters[1][7], fill_characters[1][8])  # set zero chars to something that can always be seen
 
 	# join background color for faster computations later
 	bg_color = str().join(bg_color)
@@ -490,7 +495,9 @@ def console_graph(data : Collection,
 				else:
 					return str(func_result[0])
 			else:
-				raise TypeError("unitFormat needs to return either 3, 2 or 1 value(s) of tuple format '(value [, prefix [, suffix]])'")
+				raise TypeError(
+						"unitFormat needs to return either 3, 2 or 1 value(s) of tuple format '(value [, prefix [, suffix]])'")
+
 		return __unit_format_wrapper__
 
 	unit_format_function = __decorate_unit_format__(unit_format_function)
@@ -524,10 +531,10 @@ def console_graph(data : Collection,
 				# set all color vals based on colorFunction, tuple for faster indexing
 				# str join is used to concatenate all tuples of form (COLOR1, COLOR2, STYLE1, etc...) from colorFunction output
 				self.color = tuple(str().join(
-											  color_function(_sign * (char_value / ratio),
-											  				 (self.nextCell.height - self.lastCell.height) / 3,
-											  				 (_sign * char_value) / (len(self.color) * ratio),
-											  				 int(_sign * _adjusted_val - char_value)))
+						color_function(_sign * (char_value / ratio),
+									   (self.nextCell.height - self.lastCell.height) / 3,
+									   (_sign * char_value) / (len(self.color) * ratio),
+									   int(_sign * _adjusted_val - char_value)))
 								   for char_value in range(0, int(_sign * _adjusted_val) + 1))
 
 			# apply the char algorithm to fill each column effectively with the fill character set
@@ -556,7 +563,8 @@ def console_graph(data : Collection,
 				# else move on to next char
 				while charValue <= unsigned_value_loop:
 					# invert index for color val  (total height - current height)
-					temp_char_list.append(str(self.color[int(signed_value - unsigned_value_loop)]) + char[val_sign] + str(RESET_ALL))
+					temp_char_list.append(
+							str(self.color[int(signed_value - unsigned_value_loop)]) + char[val_sign] + str(RESET_ALL))
 
 					# move down one line/row
 					unsigned_value_loop = unsigned_value_loop - 1
@@ -691,7 +699,7 @@ def console_graph(data : Collection,
 		scale_cell.data.extend([("{num} {sym} " if scale_in_front else " {sym} {num}").format(
 				sym=_side_scale_sym(char_val),
 				num=cl_s(scale_just(unit_format_dict[char_val])(longest_unit_format, spacer_char), BRIGHT))
-			for char_val in unit_range])
+				for char_val in unit_range])
 
 		# add 2 extra rows side scale fill characters to match top scale
 		scale_cell.data.extend([spacer_char * width_side_scale] * 2)
@@ -746,18 +754,19 @@ def console_graph(data : Collection,
 					   for row in range(graph_struct_height - 1, -1, -1)]) \
 		   + empty_line * center[3]
 
-def console_progress_bar(position : Real,
-						 max_position : Real,
-						 length : Real,
-						 center : Tuple[int, int, int, int]=(3, 0, 0, 0),
-						 progress_characters : Dict[float, str]={1: "█", 0.875: "▉", 0.75: "▊", 0.625: "▋", 0.5: "▌", 0.375: "▍", 0.25: "▎", 0.125: "▏"},
-						 end_characters : Tuple[str, str]=("<", ">"),
-						 show_text : bool=True,
-						 text_rounding : int=2,
-						 auto_round : bool=True,
-						 rate_of_change : Optional[str]=None,
-						 relative_cursor_position : bool=False,
-						 debug : bool=False) -> str:
+def console_progress_bar(position: Real,
+						 max_position: Real,
+						 length: Real,
+						 center: Tuple[int, int, int, int] = (3, 0, 0, 0),
+						 progress_characters: Dict[float, str] = {1  : "█", 0.875: "▉", 0.75: "▊", 0.625: "▋",
+																  0.5: "▌", 0.375: "▍", 0.25: "▎", 0.125: "▏"},
+						 end_characters: Tuple[str, str] = ("<", ">"),
+						 show_text: bool = True,
+						 text_rounding: int = 2,
+						 auto_round: bool = True,
+						 rate_of_change: Optional[str] = None,
+						 relative_cursor_position: bool = False,
+						 debug: bool = False) -> str:
 	"""
 	Creates a progress-bar string that is printable to the console or a log file.
 
@@ -787,7 +796,7 @@ def console_progress_bar(position : Real,
 
 	:raises ValueError: if position is bigger than max_position
 	"""
-
+	raise DeprecationWarning("This function is being rewritten and is not usable in its current state")
 	text_width = 0
 	if show_text:
 		# ' ( / )' + 2x 'digits . rounding'
@@ -809,7 +818,9 @@ def console_progress_bar(position : Real,
 
 	# we check against bar length because that value is potentially rounded and less finicky with floats
 	if char_pos > bar_length:
-		raise ValueError("position cannot be bigger than max_position (got {}, but expected no more than {})".format(position, max_position))
+		raise ValueError(
+				"position cannot be bigger than max_position (got {}, but expected no more than {})".format(position,
+																											max_position))
 
 	char_list = list()
 
@@ -840,12 +851,12 @@ def console_progress_bar(position : Real,
 		text_format_str = " ({part} / {part}, {roc})".format(part=text_format_str_part, roc=rate_of_change)
 
 	return "{top}{left}{e_left}{bar}{e_right}{text}{right}{newline}{bottom}".format(
-			left	=space * center[0],
-			right	=space * center[1],
-			top		=((space * length) + newline) * center[2],
-			bottom	=((space * length) + newline) * center[3],
-			newline =newline,
-			e_left	=end_characters[0],
-			e_right	=end_characters[1],
-			bar		=str().join(char_list),
-			text	=text_format_str.format(position, max_position).rjust(text_width) if show_text else str())
+			left=space * center[0],
+			right=space * center[1],
+			top=((space * length) + newline) * center[2],
+			bottom=((space * length) + newline) * center[3],
+			newline=newline,
+			e_left=end_characters[0],
+			e_right=end_characters[1],
+			bar=str().join(char_list),
+			text=text_format_str.format(position, max_position).rjust(text_width) if show_text else str())

@@ -16,7 +16,7 @@ import os
 from enum import Enum, EnumMeta
 from inspect import stack, getframeinfo
 from time import strftime, time
-from typing import Container, final, Optional, TypeVar, Any, AnyStr, Collection, Callable
+from typing import Container, final, Optional, TypeVar, Any, AnyStr, Collection, Callable, Final
 
 from SEPModules.SEPPrinting import cl_s, LIGHT_BLUE, BRIGHT, LIGHT_RED, RED, YELLOW, GREEN, GRAY, Style
 
@@ -149,14 +149,16 @@ class Logger:
 	>>> debug = default_logger.debug # alias to the debug function
 	>>> fatal_error = lambda *msg: default_logger.log(*msg, level=FATAL_ERROR) # alias to an error output of the log function
 
-	Now we can simply use the aliases to access the logger:
+	Now we can simply use the aliases to access the logger: ::
 
-	>>> log("this is an error", level=ERROR)
-	[Error] [<Timestamp>] this is an error
-	>>> debug(("test", "tuple"), 123)
-	[Debug] [<Timestamp>] [<input>::<function>:<lineno>] ('test', 'tuple') 123
-	>>> fatal_error("halting problem is not decidable!")
-	[Fatal Error] [<Timestamp>] halting problem is not decidable!
+		log("this is an error", level=ERROR)
+		[Error] [<Timestamp>] this is an error
+
+		debug(("_test", "tuple"), 123)
+		[Debug] [<Timestamp>] [<input>::<function>:<lineno>] ('_test', 'tuple') 123
+
+		fatal_error("halting problem is not decidable!")
+		[Fatal Error] [<Timestamp>] halting problem is not decidable!
 
 	:param level_class: which :py:class:`Levels` subclass to use as enum for the verbosity levels of this instance
 	:param min_level: the minimum level an entry must have to be printed or written to the log
@@ -270,29 +272,39 @@ class Logger:
 		:param include_function_name: whether to include the name of the function scope of the call or not
 		:param end: the ending character of the log entry, similar to the end keyword argument of the ``print`` builtin
 		"""
-		# get stack info
-		stacks = stack()[1:(stack_depth + 1)]
-		callers = (getframeinfo(st[0]) for st in stacks)
-		caller_texts = list()
+		try:
+			# get stack info
+			stacks = stack()[1:(stack_depth + 1)]
+			callers = (getframeinfo(st[0]) for st in stacks)
+			caller_texts = list()
 
-		# process text of stack info
-		for caller in callers:
-			try:
-				file_path = os.path.relpath(caller.filename)
-			except ValueError:
-				# if Windows then different drive letters will cause an error -> absolute path instead
-				file_path = caller.filename
+			# process text of stack info
+			for caller in callers:
+				try:
+					file_path = os.path.relpath(caller.filename)
+				except ValueError:
+					# if Windows then different drive letters will cause an error -> absolute path instead
+					file_path = caller.filename
 
-			# prepend for reverse order
-			caller_texts.insert(0, f"{file_path}{f'::{caller.function}' if include_function_name else ''}:{caller.lineno}")
+				# prepend for reverse order
+				caller_texts.insert(0, f"{file_path}{f'::{caller.function}' if include_function_name else ''}:{caller.lineno}")
 
-		# newline + (spacing * prefix + open square bracket)
-		offset_join_text = "\n" + (" " * (len(self._level_class.get_debug().prefix) + 1))
+			# newline + (spacing * prefix + open square bracket)
+			offset_join_text = "\n" + (" " * (len(self._level_class.get_debug().prefix) + 1))
 
-		# log
-		self.log(f"[{offset_join_text.join(caller_texts)}] {self.__process_any_input__(*msg)}",
-				 level=self._level_class.get_debug(),
-				 end=end)
+			# log
+			self.log(f"[{offset_join_text.join(caller_texts)}] {self.__process_any_input__(*msg)}",
+					 level=self._level_class.get_debug(),
+					 end=end)
+		finally:
+			# delete stack info for safety reasons
+			del stacks, callers
 
-		# delete stack info for safety reasons
-		del stacks, callers
+	# TODO: logger decorators
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ DEFAULT LOGGER INSTANCE ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+DEFAULT_LOGGER : Final = Logger(ignore_level_restrictions=True)
+debug : Final = DEFAULT_LOGGER.debug

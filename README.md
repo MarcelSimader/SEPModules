@@ -7,27 +7,31 @@ Python package providing basic modules and functionality for various common task
 
 ---
 
-The package includes the following base modules:
-- ### SEPMaths
-  For mathematical operations, helper functions, and classes.
-
-- ### SEPAlgebra
-  Provides classes and functions for performing computations on algebraic structures.
-
-- ### SEPIO
-  Aids in IO tasks such as reading console line arguments and parameters.
-
-- ### SEPLogger
-  Provides logging functionality interfacing with the color printing features of SEPPrinting.
-
-- ### SEPDecorators
-  Contains miscellaneous function decorators.
+The package is of the following structure:
+- ### maths
+  
+  - ### SEPMaths
+    For mathematical operations, helper functions, and classes.
+  
+  - ### SEPAlgebra
+    Provides classes and functions for performing computations on algebraic structures.
 
 - ### SEPPrinting
   Provides easy and quick implementations of console UI elements like graphs, progress bars, and colored console printing.
 
-- ### SEPTeX
-  Provides a Python wrapper API for constructing LaTeX documents in code.
+- ### TeX
+
+  - ### SEPTeX
+    Provides a Python wrapper API for constructing LaTeX documents in code.
+
+- ### SEPLogger
+  Provides logging functionality interfacing with the color printing features of SEPPrinting.
+  
+- ### SEPIO
+  Aids in IO tasks such as reading console line arguments and parameters.
+
+- ### SEPDecorators
+  Contains miscellaneous function decorators.
 
 ---
 
@@ -83,7 +87,8 @@ print(f"Verbosity was succesfully set to {verbosity}!")
 ### SEPAlgebra
 
 ```python
-from SEPModules import SEPAlgebra
+
+from maths import SEPAlgebra
 ```
 
 ```python
