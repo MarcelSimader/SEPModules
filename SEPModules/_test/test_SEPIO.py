@@ -3,6 +3,7 @@ import unittest
 from SEPModules.SEPIO import ConsoleArguments
 
 #TODO: _test __load_arguments__ and requires
+
 # noinspection PyTypeChecker
 class TestConsoleArgumentsMethods(unittest.TestCase):
 	

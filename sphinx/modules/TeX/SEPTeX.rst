@@ -18,14 +18,14 @@ LaTeXHandler
 ..	autoclass:: SEPModules.TeX.SEPTeX.LaTeXHandler
 	:members:
 
-Abstract Base Class
+Abstract Base Classes
 ----------------------------------
 
 LaTeXResource
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ..	autoclass:: SEPModules.TeX.SEPTeX.LaTeXResource
-	:special-members: __require_closed__, __require_open__, __require_virgin__
+	:special-members: __require_closed__, __require_open__, __require_virgin__, __require_used__
 
 Documents and Environments
 ----------------------------------

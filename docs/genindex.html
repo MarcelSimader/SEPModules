@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; SEPModules 0.1.2 documentation</title>
+  <title>Index &mdash; SEPModules 0.2.0 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
             
           
@@ -127,7 +127,7 @@
 <li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTeX.html#latexhandler">LaTeXHandler</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="modules/TeX/SEPTeX.html#abstract-base-class">Abstract Base Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/TeX/SEPTeX.html#abstract-base-classes">Abstract Base Classes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTeX.html#latexresource">LaTeXResource</a></li>
 </ul>
 </li>
@@ -145,14 +145,19 @@
 <li class="toctree-l3"><a class="reference internal" href="modules/TeX/SEPTikZ.html#abstract-base-classes">Abstract Base Classes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzwriteable">TikZWriteable</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzstyled">TikZStyled</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikznoded">TikZNoded</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="modules/TeX/SEPTikZ.html#styles-and-tikz-objects">Styles and TikZ Objects</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzarrow">TikZArrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzstyle">TikZStyle</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzpath">TikZPath</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzpicture">TikZPicture</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzscope">TikZScope</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikznode">TikZNode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzpath">TikZPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzdirectionalpath">TikZDirectionalPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/TeX/SEPTikZ.html#tikzcircle">TikZCircle</a></li>
 </ul>
 </li>
 </ul>
@@ -283,10 +288,10 @@
 </li>
       <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.__iter__">__iter__() (SEPModules.SEPIO.ConsoleArguments method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.AlgebraicStructure.__le__">__le__() (SEPModules.maths.SEPAlgebra.AlgebraicStructure method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.__load_arguments__">__load_arguments__() (SEPModules.SEPIO.ConsoleArguments method)</a>
 </li>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.AlgebraicStructure.__lt__">__lt__() (SEPModules.maths.SEPAlgebra.AlgebraicStructure method)</a>
@@ -296,6 +301,8 @@
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXResource.__require_closed__">__require_closed__() (SEPModules.TeX.SEPTeX.LaTeXResource method)</a>
 </li>
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXResource.__require_open__">__require_open__() (SEPModules.TeX.SEPTeX.LaTeXResource method)</a>
+</li>
+      <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXResource.__require_used__">__require_used__() (SEPModules.TeX.SEPTeX.LaTeXResource method)</a>
 </li>
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXResource.__require_virgin__">__require_virgin__() (SEPModules.TeX.SEPTeX.LaTeXResource method)</a>
 </li>
@@ -311,13 +318,15 @@
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.add_alpha">add_alpha() (SEPModules.TeX.SEPTikZ.TikZColor method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.AlgebraicStructure">AlgebraicStructure (class in SEPModules.maths.SEPAlgebra)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.ALMOST_BLACK">ALMOST_BLACK (in module SEPModules.TeX.SEPTikZ)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.ALMOST_WHITE">ALMOST_WHITE (in module SEPModules.TeX.SEPTikZ)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZDirectionalPath.arrow_type">arrow_type (SEPModules.TeX.SEPTikZ.TikZDirectionalPath property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -349,14 +358,14 @@
 </li>
       <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.color_string">color_string() (in module SEPModules.SEPPrinting)</a>
 </li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.COLOR_VALUE">COLOR_VALUE (SEPModules.TeX.SEPTikZ.TikZColor attribute)</a>
+</li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZStyle.colors">colors (SEPModules.TeX.SEPTikZ.TikZStyle property)</a>
 
       <ul>
         <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZStyled.colors">(SEPModules.TeX.SEPTikZ.TikZStyled property)</a>
 </li>
       </ul></li>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.ColorValue">ColorValue (SEPModules.TeX.SEPTikZ.TikZColor attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.console_graph">console_graph() (in module SEPModules.SEPPrinting)</a>
@@ -365,13 +374,17 @@
 </li>
       <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments">ConsoleArguments (class in SEPModules.SEPIO)</a>
 </li>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPath.Coordinate">Coordinate (SEPModules.TeX.SEPTikZ.TikZPath attribute)</a>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZCircle.coordinate">coordinate (SEPModules.TeX.SEPTikZ.TikZCircle property)</a>
+
+      <ul>
+        <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZNode.coordinate">(SEPModules.TeX.SEPTikZ.TikZNode property)</a>
 </li>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPath.COORDINATE_FORMAT">COORDINATE_FORMAT (SEPModules.TeX.SEPTikZ.TikZPath attribute)</a>
-</li>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPath.COORDINATE_JOINER">COORDINATE_JOINER (SEPModules.TeX.SEPTikZ.TikZPath attribute)</a>
+      </ul></li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPath.coordinates">coordinates (SEPModules.TeX.SEPTikZ.TikZPath property)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPath.coordinates_string">coordinates_string (SEPModules.TeX.SEPTikZ.TikZPath property)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPath.cycle">cycle (SEPModules.TeX.SEPTikZ.TikZPath property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -387,19 +400,27 @@
 </li>
       <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.debug">debug() (SEPModules.SEPLogger.Logger method)</a>
 </li>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.default_print_function">default_print_function() (SEPModules.SEPLogger.Logger method)</a>
+</li>
       <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.DefaultLevels">DefaultLevels (class in SEPModules.SEPLogger)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPicture.define_color">define_color() (SEPModules.TeX.SEPTikZ.TikZPicture method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPicture.define_color">define_color() (SEPModules.TeX.SEPTikZ.TikZPicture method)</a>
-</li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPicture.defined_colors">defined_colors (SEPModules.TeX.SEPTikZ.TikZPicture property)</a>
 </li>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.definition">definition() (SEPModules.TeX.SEPTikZ.TikZColor method)</a>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPicture.defined_nodes">defined_nodes (SEPModules.TeX.SEPTikZ.TikZPicture property)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.definition">definition (SEPModules.TeX.SEPTikZ.TikZColor property)</a>
+</li>
+      <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXDocument.definitions">definitions (SEPModules.TeX.SEPTeX.LaTeXDocument property)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZStyle.DICT_ENTRY">DICT_ENTRY (SEPModules.TeX.SEPTikZ.TikZStyle attribute)</a>
 </li>
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXEnvironment.document">document (SEPModules.TeX.SEPTeX.LaTeXEnvironment property)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZNode.draw_command">draw_command (SEPModules.TeX.SEPTikZ.TikZNode property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -443,7 +464,7 @@
 </li>
       <li><a href="modules/maths/SEPMaths.html#SEPModules.maths.SEPMaths.find_rational_approximation">find_rational_approximation() (in module SEPModules.maths.SEPMaths)</a>
 </li>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.full_name">full_name() (SEPModules.TeX.SEPTikZ.TikZColor method)</a>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.full_name">full_name (SEPModules.TeX.SEPTikZ.TikZColor property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -455,10 +476,12 @@
 </li>
       <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Levels.get_debug">get_debug() (SEPModules.SEPLogger.Levels class method)</a>
 </li>
-      <li><a href="modules/maths/SEPMaths.html#SEPModules.maths.SEPMaths.get_possible_rationals">get_possible_rationals() (in module SEPModules.maths.SEPMaths)</a>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Levels.get_errors">get_errors() (SEPModules.SEPLogger.Levels class method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/maths/SEPMaths.html#SEPModules.maths.SEPMaths.get_possible_rationals">get_possible_rationals() (in module SEPModules.maths.SEPMaths)</a>
+</li>
       <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.get_time_str">get_time_str() (in module SEPModules.SEPPrinting)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.GREEN">GREEN (in module SEPModules.TeX.SEPTikZ)</a>
@@ -544,7 +567,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.Figure.label">label (SEPModules.TeX.SEPTeX.Figure property)</a>
+
+      <ul>
+        <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZNode.label">(SEPModules.TeX.SEPTikZ.TikZNode property)</a>
 </li>
+      </ul></li>
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXDocument">LaTeXDocument (class in SEPModules.TeX.SEPTeX)</a>
 </li>
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXEnvironment">LaTeXEnvironment (class in SEPModules.TeX.SEPTeX)</a>
@@ -568,6 +595,8 @@
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXDocument.line_wrap_lengths">line_wrap_lengths (SEPModules.TeX.SEPTeX.LaTeXDocument property)</a>
 </li>
       <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.log">log() (SEPModules.SEPLogger.Logger method)</a>
+</li>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.log_call">log_call() (SEPModules.SEPLogger.Logger method)</a>
 </li>
       <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger">Logger (class in SEPModules.SEPLogger)</a>
 </li>
@@ -609,7 +638,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.name">name (SEPModules.TeX.SEPTikZ.TikZColor property)</a>
+
+      <ul>
+        <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZNode.name">(SEPModules.TeX.SEPTikZ.TikZNode property)</a>
 </li>
+      </ul></li>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.AlgebraicStructure.neutral_elements">neutral_elements() (SEPModules.maths.SEPAlgebra.AlgebraicStructure method)</a>
 
       <ul>
@@ -618,9 +651,11 @@
         <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.Ring.neutral_elements">(SEPModules.maths.SEPAlgebra.Ring method)</a>
 </li>
       </ul></li>
-      <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXEnvironment.newline">newline() (SEPModules.TeX.SEPTeX.LaTeXEnvironment method)</a>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.newline">newline() (SEPModules.SEPLogger.Logger method)</a>
 
       <ul>
+        <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXEnvironment.newline">(SEPModules.TeX.SEPTeX.LaTeXEnvironment method)</a>
+</li>
         <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXHandler.newline">(SEPModules.TeX.SEPTeX.LaTeXHandler method)</a>
 </li>
         <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.MathsEnvironment.newline">(SEPModules.TeX.SEPTeX.MathsEnvironment method)</a>
@@ -628,6 +663,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZNoded.nodes">nodes (SEPModules.TeX.SEPTikZ.TikZNoded property)</a>
+</li>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.NoElement">NoElement (in module SEPModules.maths.SEPAlgebra)</a>
 </li>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.NoElementType">NoElementType (in module SEPModules.maths.SEPAlgebra)</a>
@@ -640,8 +677,6 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXHandler.offset">offset (SEPModules.TeX.SEPTeX.LaTeXHandler property)</a>
-</li>
       <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.OK">OK (in module SEPModules.SEPLogger)</a>
 </li>
   </ul></td>
@@ -674,19 +709,29 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.R">R (SEPModules.SEPLogger.Logger attribute)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZCircle.radius">radius (SEPModules.TeX.SEPTikZ.TikZCircle property)</a>
+</li>
       <li><a href="modules/maths/SEPMaths.html#SEPModules.maths.SEPMaths.Rational">Rational (class in SEPModules.maths.SEPMaths)</a>
 </li>
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXHandler.readline">readline() (SEPModules.TeX.SEPTeX.LaTeXHandler method)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.RED">RED (in module SEPModules.TeX.SEPTikZ)</a>
 </li>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.remove_alpha">remove_alpha() (SEPModules.TeX.SEPTikZ.TikZColor method)</a>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZWriteable.register_required_package">register_required_package() (SEPModules.TeX.SEPTikZ.TikZWriteable method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZWriteable.register_required_tikz_library">register_required_tikz_library() (SEPModules.TeX.SEPTikZ.TikZWriteable method)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.remove_alpha">remove_alpha() (SEPModules.TeX.SEPTikZ.TikZColor method)</a>
+</li>
       <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.required">required (SEPModules.SEPIO.ConsoleArguments property)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZWriteable.required_packages">required_packages (SEPModules.TeX.SEPTikZ.TikZWriteable property)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZWriteable.required_tikz_libraries">required_tikz_libraries (SEPModules.TeX.SEPTikZ.TikZWriteable property)</a>
 </li>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.Ring">Ring (class in SEPModules.maths.SEPAlgebra)</a>
 </li>
@@ -754,15 +799,11 @@
 </li>
       <li><a href="modules/maths/SEPMaths.html#SEPModules.maths.SEPMaths.sign">sign() (in module SEPModules.maths.SEPMaths)</a>
 </li>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZStyle.STR_NUM">STR_NUM (SEPModules.TeX.SEPTikZ.TikZStyle attribute)</a>
-</li>
       <li><a href="modules/SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.Style">Style (class in SEPModules.SEPPrinting)</a>
 </li>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPath.style">style (SEPModules.TeX.SEPTikZ.TikZPath property)</a>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZStyle.style">style (SEPModules.TeX.SEPTikZ.TikZStyle property)</a>
 
       <ul>
-        <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZStyle.style">(SEPModules.TeX.SEPTikZ.TikZStyle property)</a>
-</li>
         <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZStyled.style">(SEPModules.TeX.SEPTikZ.TikZStyled property)</a>
 </li>
       </ul></li>
@@ -772,20 +813,28 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor.T">T (SEPModules.TeX.SEPTikZ.TikZColor attribute)</a>
-</li>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.AlgebraicStructure.test_for_closure">test_for_closure (SEPModules.maths.SEPAlgebra.AlgebraicStructure property)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZArrow">TikZArrow (class in SEPModules.TeX.SEPTikZ)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZCircle">TikZCircle (class in SEPModules.TeX.SEPTikZ)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZColor">TikZColor (class in SEPModules.TeX.SEPTikZ)</a>
 </li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZDirectionalPath">TikZDirectionalPath (class in SEPModules.TeX.SEPTikZ)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZNode">TikZNode (class in SEPModules.TeX.SEPTikZ)</a>
+</li>
+      <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZNoded">TikZNoded (class in SEPModules.TeX.SEPTikZ)</a>
+</li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPath">TikZPath (class in SEPModules.TeX.SEPTikZ)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZPicture">TikZPicture (class in SEPModules.TeX.SEPTikZ)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZScope">TikZScope (class in SEPModules.TeX.SEPTikZ)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZStyle">TikZStyle (class in SEPModules.TeX.SEPTikZ)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.TikZStyled">TikZStyled (class in SEPModules.TeX.SEPTikZ)</a>
@@ -807,6 +856,10 @@
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXDocument.use_package">use_package() (SEPModules.TeX.SEPTeX.LaTeXDocument method)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXDocument.use_tikz_library">use_tikz_library() (SEPModules.TeX.SEPTeX.LaTeXDocument method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="V">V</h2>
@@ -823,6 +876,8 @@
       <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.WARNING">WARNING (in module SEPModules.SEPLogger)</a>
 </li>
       <li><a href="modules/TeX/SEPTikZ.html#SEPModules.TeX.SEPTikZ.WHITE">WHITE (in module SEPModules.TeX.SEPTikZ)</a>
+</li>
+      <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXHandler.wrap_lines">wrap_lines() (SEPModules.TeX.SEPTeX.LaTeXHandler method)</a>
 </li>
       <li><a href="modules/TeX/SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXEnvironment.write">write() (SEPModules.TeX.SEPTeX.LaTeXEnvironment method)</a>
 

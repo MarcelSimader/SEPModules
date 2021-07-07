@@ -22,7 +22,7 @@ __WRAPPER_NAME__: Final = "wrapped_"
 """ The name to use for wrapped functions. """
 
 R : Final = TypeVar("R")
-""" The type variable to use for functions. """
+""" The type variable to use for function returns. """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~

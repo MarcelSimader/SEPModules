@@ -388,6 +388,12 @@ def console_graph(data: Collection,
 				  relative_cursor_position: bool = False,
 				  debug: bool = False) -> str:
 	"""
+	..	deprecated:: 0.1.2
+
+		This function is currently being rewritten, and will be available again in a later update.
+	"""
+
+	"""
 	Creates a graph that can be printed to the console or a log file.
 
 	:param data: a collection of real numbers representing the graph's height at each index, which is used as
@@ -767,6 +773,11 @@ def console_progress_bar(position: Real,
 						 rate_of_change: Optional[str] = None,
 						 relative_cursor_position: bool = False,
 						 debug: bool = False) -> str:
+	"""
+	..	deprecated:: 0.1.2
+
+		This function is currently being rewritten, and will be available again in a later update.
+	"""
 	"""
 	Creates a progress-bar string that is printable to the console or a log file.
 

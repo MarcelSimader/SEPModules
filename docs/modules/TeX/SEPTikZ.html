@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>SEPTikZ &mdash; SEPModules 0.1.2 documentation</title>
+  <title>SEPTikZ &mdash; SEPModules 0.2.0 documentation</title>
   
 
   
@@ -36,6 +36,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -67,7 +68,7 @@
             
             
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
             
           
@@ -129,7 +130,7 @@
 <li class="toctree-l4"><a class="reference internal" href="SEPTeX.html#latexhandler">LaTeXHandler</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="SEPTeX.html#abstract-base-class">Abstract Base Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPTeX.html#abstract-base-classes">Abstract Base Classes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="SEPTeX.html#latexresource">LaTeXResource</a></li>
 </ul>
 </li>
@@ -147,14 +148,19 @@
 <li class="toctree-l3"><a class="reference internal" href="#abstract-base-classes">Abstract Base Classes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tikzwriteable">TikZWriteable</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tikzstyled">TikZStyled</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tikznoded">TikZNoded</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#styles-and-tikz-objects">Styles and TikZ Objects</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tikzcolor">TikZColor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tikzarrow">TikZArrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tikzstyle">TikZStyle</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tikzpath">TikZPath</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tikzpicture">TikZPicture</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tikzscope">TikZScope</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tikznode">TikZNode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tikzpath">TikZPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tikzdirectionalpath">TikZDirectionalPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tikzcircle">TikZCircle</a></li>
 </ul>
 </li>
 </ul>
@@ -263,22 +269,51 @@
 <h3>TikZWriteable<a class="headerlink" href="#tikzwriteable" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZWriteable">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZWriteable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">required_packages</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZWriteable" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZWriteable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_packages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_tikz_libraries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZWriteable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for all TikZ objects which can be written to a <a class="reference internal" href="SEPTeX.html#SEPModules.TeX.SEPTeX.LaTeXHandler" title="SEPModules.TeX.SEPTeX.LaTeXHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">LaTeXHandler</span></code></a>. This class requires all
 subclasses to implement the <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code> method, because this method will be called when writing this instance
 to a handler.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>required_packages</strong> (<em>AnyStr</em>) – variable length argument, the names of the packages which are required to use the subclass
-of this class</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>required_packages</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the packages which are required to use a subclass of this class</p></li>
+<li><p><strong>required_tikz_libraries</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the TikZ libraries which are required to use a subclass
+of this class</p></li>
+</ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZWriteable.register_required_package">
+<span class="sig-name descname"><span class="pre">register_required_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">package</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZWriteable.register_required_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a required package or packages with this instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZWriteable.register_required_tikz_library">
+<span class="sig-name descname"><span class="pre">register_required_tikz_library</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">library</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZWriteable.register_required_tikz_library" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a required TikZ library or libraries with this instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZWriteable.required_packages">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required_packages</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZWriteable.required_packages" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the packages required to use this class in a document</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZWriteable.required_tikz_libraries">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required_tikz_libraries</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZWriteable.required_tikz_libraries" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the TikZ libraries required to use this class in a document</p>
 </dd>
 </dl>
 </dd></dl>
@@ -290,7 +325,7 @@ of this class</p>
 <h3>TikZStyled<a class="headerlink" href="#tikzstyled" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZStyled">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZStyled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">required_packages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZStyled" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZStyled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_packages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_tikz_libraries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZStyled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class adding additional style attributes to <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZWriteable" title="SEPModules.TeX.SEPTikZ.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a>. This class separately enforces
 a property for the style and for the colors used by an instance. This is done so the colors may be registered by the
 document.</p>
@@ -301,7 +336,8 @@ document.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>required_packages</strong> (<em>AnyStr</em>) – variable length argument, the names of the packages which are required to use the subclass
+<li><p><strong>required_packages</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the packages which are required to use a subclass of this class</p></li>
+<li><p><strong>required_tikz_libraries</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the TikZ libraries which are required to use a subclass
 of this class</p></li>
 <li><p><strong>style</strong> (<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="SEPModules.TeX.SEPTikZ.TikZStyle"><em>TikZStyle</em></a>) – the style to be attached to the instance of this class</p></li>
 </ul>
@@ -317,6 +353,37 @@ of this class</p></li>
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZStyled.style">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">style</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.TeX.SEPTikZ.TikZStyle</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZStyled.style" title="Permalink to this definition">¶</a></dt>
 <dd><p>The style used by this instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tikznoded">
+<h3>TikZNoded<a class="headerlink" href="#tikznoded" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZNoded">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZNoded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_packages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_tikz_libraries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZNoded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for marking a subclass as using <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZNode" title="SEPModules.TeX.SEPTikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> objects. This class must be inherited from
+in order for the <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="SEPModules.TeX.SEPTikZ.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> class to be able to register and define the nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>required_packages</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the packages which are required to use a subclass of this class</p></li>
+<li><p><strong>required_tikz_libraries</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the TikZ libraries which are required to use a subclass
+of this class</p></li>
+<li><p><strong>nodes</strong> (<em>Collection</em><em>[</em><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZNode" title="SEPModules.TeX.SEPTikZ.TikZNode"><em>TikZNode</em></a><em>]</em>) – the nodes to be attached to the instance of this class</p></li>
+<li><p><strong>style</strong> (<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="SEPModules.TeX.SEPTikZ.TikZStyle"><em>TikZStyle</em></a>) – the style to be attached to the instance of this class</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZNoded.nodes">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">nodes</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[SEPModules.TeX.SEPTikZ.TikZNode]</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZNoded.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Retrn</dt>
+<dd class="field-odd"><p>the nodes used by this instance</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -382,14 +449,25 @@ used version.</p>
 </dl>
 <p>Colors of length 3 represent <code class="docutils literal notranslate"><span class="pre">RED</span></code>, <code class="docutils literal notranslate"><span class="pre">GREEN</span></code> and <code class="docutils literal notranslate"><span class="pre">BLUE</span></code>, while colors with length 4 add an addition <code class="docutils literal notranslate"><span class="pre">ALPHA</span></code>
 channel at the end.</p>
-<p>Various arithmetic operations are implemented for this class. The syntax # TODO finish this</p>
+<p>Comparisons of two colors will compare the names of each color.</p>
+<p>Various arithmetic operations are implemented for this class. The following syntax is used for all binary arithmetic
+operations (the same also applies for the right-handed arithmetic operations, but in reverse):</p>
+<div class="math notranslate nohighlight">
+\[\circ \in \left\{ +, -, *, /, //, \%, ** \right\}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{color} \circ \lambda &amp;:\Longleftrightarrow
+\left( \text{r} \circ \lambda, \text{g} \circ \lambda, \text{b} \circ \lambda[, \text{a} \circ \lambda] \right) \\
+\text{color} \circ (x, y, z[, w]) &amp;:\Longleftrightarrow
+\left( \text{r} \circ x, \text{g} \circ y, \text{b} \circ z[, \text{a} \circ w]\right) \\
+\text{color1} \circ \text{color2} &amp;:\Longleftrightarrow
+\text{color1} \circ \left(\text{r}, \text{g}, \text{b}[, \text{a}]\right)_{\text{color2}}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>AnyStr</em>) – the name to register this color instance under</p></li>
-<li><p><strong>value</strong> (<em>ColorValue</em>) – the <code class="docutils literal notranslate"><span class="pre">RGB[A]</span></code> value of this color</p></li>
-<li><p><strong>mode</strong> (<em>Literal</em><em>[</em><em>(</em><em>'rgb'</em><em>, </em><em>'RGB'</em><em>)</em><em>]</em>) – the mode of representing the color</p></li>
-<li><p><strong>generate_unique_name</strong> (<em>bool</em>) – keyword-only argument that indicates whether or not the class should automatically
+<li><p><strong>name</strong> – the name to register this color instance under</p></li>
+<li><p><strong>value</strong> – the <code class="docutils literal notranslate"><span class="pre">RGB[A]</span></code> value of this color</p></li>
+<li><p><strong>mode</strong> – the mode of representing the color</p></li>
+<li><p><strong>generate_unique_name</strong> – keyword-only argument that indicates whether or not the class should automatically
 try to make colors unique by adding parts of the hash to the end of the name, this exists mainly to make arithmetic
 operations on colors easier to handle</p></li>
 </ul>
@@ -403,16 +481,9 @@ constraints given by <code class="docutils literal notranslate"><span class="pre
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZColor.T">
-<span class="sig-name descname"><span class="pre">T</span></span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZColor.T" title="Permalink to this definition">¶</a></dt>
-<dd><p>The type variable used for channels of the color value. Must be int or float.</p>
-<p>alias of TypeVar(‘T’, int, float)</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZColor.ColorValue">
-<span class="sig-name descname"><span class="pre">ColorValue</span></span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZColor.ColorValue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shorthand for a tuple of either 3 or 4 <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZColor.T" title="SEPModules.TeX.SEPTikZ.TikZColor.T"><code class="xref py py-attr docutils literal notranslate"><span class="pre">T</span></code></a>.</p>
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZColor.COLOR_VALUE">
+<span class="sig-name descname"><span class="pre">COLOR_VALUE</span></span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZColor.COLOR_VALUE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorthand for a tuple of either 3 or 4 <code class="xref py py-attr docutils literal notranslate"><span class="pre">T</span></code>.</p>
 <p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPModules.TeX.SEPTikZ.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPModules.TeX.SEPTikZ.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPModules.TeX.SEPTikZ.T</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPModules.TeX.SEPTikZ.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPModules.TeX.SEPTikZ.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPModules.TeX.SEPTikZ.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPModules.TeX.SEPTikZ.T</span></code>]]</p>
 </dd></dl>
 
@@ -432,14 +503,14 @@ constraints given by <code class="docutils literal notranslate"><span class="pre
 <dd><p>Adds an alpha channel at opacity <code class="docutils literal notranslate"><span class="pre">value</span></code> to this color.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>value</strong> (<em>T</em>) – the value of the new alpha channel</p>
+<dd class="field-odd"><p><strong>value</strong> (<em>SEPModules.TeX.SEPTikZ.T</em>) – the value of the new alpha channel</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the new color with 4 channels, if the color already has 4 channels this function will return the
 original color</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZColor" title="SEPModules.TeX.SEPTikZ.TikZColor">TikZColor</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZColor" title="SEPModules.TeX.SEPTikZ.TikZColor">SEPModules.TeX.SEPTikZ.TikZColor</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -459,28 +530,22 @@ original color</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZColor.full_name">
-<span class="sig-name descname"><span class="pre">full_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZColor.full_name" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">full_name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZColor.full_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a string containing the <code class="docutils literal notranslate"><span class="pre">xcolor</span></code> name to be used in a LaTeX document, alias for <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code></p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZColor.definition">
-<span class="sig-name descname"><span class="pre">definition</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZColor.definition" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">definition</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZColor.definition" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a string containing the <code class="docutils literal notranslate"><span class="pre">xcolor</span></code> definition of this color for the preamble of a LaTeX document</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -488,11 +553,20 @@ original color</p>
 </dd></dl>
 
 </div>
+<div class="section" id="tikzarrow">
+<h3>TikZArrow<a class="headerlink" href="#tikzarrow" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZArrow">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZArrow" title="SEPModules.TeX.SEPTikZ.TikZArrow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZArrow</span></code></a> is an enumeration of TikZ arrow head types.</p>
+</dd></dl>
+
+</div>
 <div class="section" id="tikzstyle">
 <h3>TikZStyle<a class="headerlink" href="#tikzstyle" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZStyle">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">custom_entries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dashed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dotted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">custom_entries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bend_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bend_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dashed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dotted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="SEPModules.TeX.SEPTikZ.TikZStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZStyle</span></code></a> holds information about what styles to apply to a TikZ object. This class implements a container,
 and the <code class="xref py py-meth docutils literal notranslate"><span class="pre">__getitem__()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">__getattribute__()</span></code> methods. A style can be accessed using the following
 ways:</p>
@@ -532,13 +606,6 @@ ways:</p>
 <dd><p>The types of a dictionary entry of the styles dictionary.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZStyle.STR_NUM">
-<span class="sig-name descname"><span class="pre">STR_NUM</span></span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZStyle.STR_NUM" title="Permalink to this definition">¶</a></dt>
-<dd><p>The type of a value which accepts either a string, int, or float value.</p>
-<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">AnyStr</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZStyle.normalize_key">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">normalize_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZStyle.normalize_key" title="Permalink to this definition">¶</a></dt>
@@ -570,63 +637,23 @@ ways:</p>
 </dd></dl>
 
 </div>
-<div class="section" id="tikzpath">
-<h3>TikZPath<a class="headerlink" href="#tikzpath" title="Permalink to this headline">¶</a></h3>
-<dl class="py class">
-<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">coordinates</span></em>, <em class="sig-param"><span class="pre">coord_unit=''</span></em>, <em class="sig-param"><span class="pre">cycle=False</span></em>, <em class="sig-param"><span class="pre">style=&lt;SEPModules.TeX.SEPTikZ.TikZStyle</span> <span class="pre">object&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPath" title="SEPModules.TeX.SEPTikZ.TikZPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPath</span></code></a> represents a collection of coordinates drawn using the <code class="docutils literal notranslate"><span class="pre">\draw</span></code> command of TikZ.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coordinates</strong> (<em>Collection</em><em>[</em><em>Coordinate</em><em>]</em>) – a collection of coordinates for the path</p></li>
-<li><p><strong>coord_unit</strong> (<em>AnyStr</em>) – a unit which will be placed after every coordinate value when the final string is constructed</p></li>
-<li><p><strong>cycle</strong> (<em>bool</em>) – whether or not to end the final path string with <code class="docutils literal notranslate"><span class="pre">--</span> <span class="pre">cycle</span></code>, which will join the ending to the beginning</p></li>
-<li><p><strong>style</strong> (<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="SEPModules.TeX.SEPTikZ.TikZStyle"><em>TikZStyle</em></a>) – the style to apply to this path</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath.Coordinate">
-<span class="sig-name descname"><span class="pre">Coordinate</span></span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath.Coordinate" title="Permalink to this definition">¶</a></dt>
-<dd><p>The type of a coordinate of the path.</p>
-<p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">numbers.Number</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">numbers.Number</span></code>]</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath.COORDINATE_FORMAT">
-<span class="sig-name descname"><span class="pre">COORDINATE_FORMAT</span></span><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">'({:.2f}{},</span> <span class="pre">{:.2f}{})'</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath.COORDINATE_FORMAT" title="Permalink to this definition">¶</a></dt>
-<dd><p>The format of a single coordinate.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath.COORDINATE_JOINER">
-<span class="sig-name descname"><span class="pre">COORDINATE_JOINER</span></span><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">'</span> <span class="pre">--</span> <span class="pre">'</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath.COORDINATE_JOINER" title="Permalink to this definition">¶</a></dt>
-<dd><p>The symbol to use between the coordinates in the <code class="docutils literal notranslate"><span class="pre">\draw</span></code> command.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath.coordinates_string">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinates_string</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath.coordinates_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts all of the coordinates of this instance to a string. If there are no coordinates then the empty string
-will be returned.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath.style">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">style</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.TeX.SEPTikZ.TikZStyle</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath.style" title="Permalink to this definition">¶</a></dt>
-<dd><p>The style used by this instance.</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
 <div class="section" id="tikzpicture">
 <h3>TikZPicture<a class="headerlink" href="#tikzpicture" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPicture">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZPicture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parent_env</span></em>, <em class="sig-param"><span class="pre">style=&lt;SEPModules.TeX.SEPTikZ.TikZStyle</span> <span class="pre">object&gt;</span></em>, <em class="sig-param"><span class="pre">defined_colors=()</span></em>, <em class="sig-param"><span class="pre">indent_level=1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="SEPModules.TeX.SEPTikZ.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> represents the standard TikZ <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment.</p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZPicture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=True)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defined_colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="SEPModules.TeX.SEPTikZ.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> represents the standard TikZ <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment. This class aids in registering colors,
+and writing special TikZ objects to the document.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When a <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZNoded" title="SEPModules.TeX.SEPTikZ.TikZNoded"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNoded</span></code></a> object registers its used nodes implicitly with this class, the nodes will be reused
+if a node with matching name is found. Furthermore, the saved list of node objects cannot be passed on or inherited
+to other <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="SEPModules.TeX.SEPTikZ.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> or <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZScope" title="SEPModules.TeX.SEPTikZ.TikZScope"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZScope</span></code></a> environments. This is done so each “namespace” stays free
+of node pollution.</p>
+<p>This is similar to how <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZColor" title="SEPModules.TeX.SEPTikZ.TikZColor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZColor</span></code></a> objects behave with this class, with the key difference being that
+colors <strong>can</strong> be passed on to other <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="SEPModules.TeX.SEPTikZ.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> environments, and are implicitly passed on to child
+<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZScope" title="SEPModules.TeX.SEPTikZ.TikZScope"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZScope</span></code></a> environments.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -650,13 +677,23 @@ at construction</p>
 </dl>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPicture.defined_nodes">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">defined_nodes</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[SEPModules.TeX.SEPTikZ.TikZNode]</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPicture.defined_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the nodes which have been written to this environment</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPicture.define_color">
-<span class="sig-name descname"><span class="pre">define_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPicture.define_color" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">define_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPicture.define_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register one or multiple colors with this instance. This will define the color at the beginning of the environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>color</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZColor" title="SEPModules.TeX.SEPTikZ.TikZColor"><em>SEPModules.TeX.SEPTikZ.TikZColor</em></a><em>, </em><em>Iterable</em><em>[</em><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZColor" title="SEPModules.TeX.SEPTikZ.TikZColor"><em>SEPModules.TeX.SEPTikZ.TikZColor</em></a><em>]</em><em>]</em>) – the color or colors to define</p>
+<dd class="field-odd"><p><strong>color</strong> (<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZColor" title="SEPModules.TeX.SEPTikZ.TikZColor"><em>SEPModules.TeX.SEPTikZ.TikZColor</em></a>) – the color or colors to define</p>
 </dd>
 </dl>
 </dd></dl>
@@ -664,9 +701,23 @@ at construction</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPicture.write">
 <span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPicture.write" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write <code class="docutils literal notranslate"><span class="pre">s</span></code> to the handler of this instance. If <code class="docutils literal notranslate"><span class="pre">s</span></code> is a string this method will simply write it, if <code class="docutils literal notranslate"><span class="pre">s</span></code> is
-a <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZWriteable" title="SEPModules.TeX.SEPTikZ.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> object this method will first register the required packages, then the required
-colors, call the <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method of the object, and finally add <code class="docutils literal notranslate"><span class="pre">;</span></code> to the end if it is missing</p>
+<dd><p>Write <code class="docutils literal notranslate"><span class="pre">s</span></code> to the handler of this instance.</p>
+<dl class="simple">
+<dt>The following conditions apply to special obejct types:</dt><dd><ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is a string this method will simply write it.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is a <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZWriteable" title="SEPModules.TeX.SEPTikZ.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> object this method will first register the required packages, then
+the required TikZ libraries, then call the <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method of the object, and finally add <code class="docutils literal notranslate"><span class="pre">;</span></code> to the
+end if it is missing.</p>
+<ul>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is additionally a <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZStyled" title="SEPModules.TeX.SEPTikZ.TikZStyled"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZStyled</span></code></a> object this method will register the required colors
+if they have not been passed to this instance, or written with the same name before.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is additionally a <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZNoded" title="SEPModules.TeX.SEPTikZ.TikZNoded"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNoded</span></code></a> object this method will write the required node objects
+if they have not been written with the same name before.</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>s</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZWriteable" title="SEPModules.TeX.SEPTikZ.TikZWriteable"><em>SEPModules.TeX.SEPTikZ.TikZWriteable</em></a><em>, </em><em>AnyStr</em><em>]</em>) – the object to write to the handler</p>
@@ -681,7 +732,7 @@ colors, call the <code class="docutils literal notranslate"><span class="pre">__
 <h3>TikZScope<a class="headerlink" href="#tikzscope" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZScope">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parent_env</span></em>, <em class="sig-param"><span class="pre">style=&lt;SEPModules.TeX.SEPTikZ.TikZStyle</span> <span class="pre">object&gt;</span></em>, <em class="sig-param"><span class="pre">indent_level=1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZScope" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=True)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZScope" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZScope" title="SEPModules.TeX.SEPTikZ.TikZScope"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZScope</span></code></a> represents the standard TikZ <code class="docutils literal notranslate"><span class="pre">scope</span></code> environment. It can only be instantiated with a parent
 environment inheriting from <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="SEPModules.TeX.SEPTikZ.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a>.</p>
 <dl class="field-list simple">
@@ -696,6 +747,183 @@ environment inheriting from <a class="reference internal" href="#SEPModules.TeX.
 <dd class="field-even"><p><strong>TypeError</strong> – if the passed <code class="docutils literal notranslate"><span class="pre">parent_env</span></code> is not an instance of a <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="SEPModules.TeX.SEPTikZ.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> class</p>
 </dd>
 </dl>
+</dd></dl>
+
+</div>
+<div class="section" id="tikznode">
+<h3>TikZNode<a class="headerlink" href="#tikznode" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZNode">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=True)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZNode" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZNode" title="SEPModules.TeX.SEPTikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> represents a standard TikZ node. It holds information about its coordinate, name, label and style.
+A node must first be registered with a <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="SEPModules.TeX.SEPTikZ.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> instance by writing it, which happens implicitly if not
+stated explicitly.</p>
+<p>Comparisons of node objects will compare the names of each node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinate</strong> (<em>Point</em>) – the coordinate at which this node should be placed</p></li>
+<li><p><strong>label</strong> (<em>AnyStr</em>) – the label which will be displayed on the document for this node</p></li>
+<li><p><strong>name</strong> (<em>AnyStr</em>) – the name which will be used to reference this node</p></li>
+<li><p><strong>style</strong> (<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="SEPModules.TeX.SEPTikZ.TikZStyle"><em>TikZStyle</em></a>) – the style to apply to this node</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZNode.coordinate">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinate</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.TeX.SEPTikZ.Point</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZNode.coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the coordinate of this node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZNode.label">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZNode.label" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the label of this node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZNode.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZNode.name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the name of this node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZNode.draw_command">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">draw_command</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZNode.draw_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command to draw the node in the document on its own. This is the standard when the node is written directly
+to a <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPicture" title="SEPModules.TeX.SEPTikZ.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> instance. This method is equivalent to <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the draw command for this node</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tikzpath">
+<h3>TikZPath<a class="headerlink" href="#tikzpath" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=True)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPath" title="SEPModules.TeX.SEPTikZ.TikZPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPath</span></code></a> represents a collection of coordinates and nodes drawn using the <code class="docutils literal notranslate"><span class="pre">\draw</span></code> command of TikZ.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>Collection</em><em>[</em><em>Union</em><em>[</em><em>Point</em><em>, </em><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZNode" title="SEPModules.TeX.SEPTikZ.TikZNode"><em>TikZNode</em></a><em>]</em><em>]</em>) – a collection of <code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code> or <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZNode" title="SEPModules.TeX.SEPTikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> objects for the path</p></li>
+<li><p><strong>cycle</strong> (<em>bool</em>) – whether or not to end the final path string with <code class="docutils literal notranslate"><span class="pre">cycle</span></code>, which will join the ending to the beginning</p></li>
+<li><p><strong>style</strong> (<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="SEPModules.TeX.SEPTikZ.TikZStyle"><em>TikZStyle</em></a>) – the style to apply to this path</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath.coordinates_string">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinates_string</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath.coordinates_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts all of the coordinates of this instance to a string. If there are no coordinates then the empty string
+will be returned.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath.coordinates">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinates</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[Union[SEPModules.TeX.SEPTikZ.Point,</span> <span class="pre">SEPModules.TeX.SEPTikZ.TikZNode]]</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath.coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the coordinates and nodes along this path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZPath.cycle">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cycle</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZPath.cycle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not to join the end of this path to its beginning</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tikzdirectionalpath">
+<h3>TikZDirectionalPath<a class="headerlink" href="#tikzdirectionalpath" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZDirectionalPath">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZDirectionalPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">coordinates</span></em>, <em class="sig-param"><span class="pre">cycle=False</span></em>, <em class="sig-param"><span class="pre">style=TikZStyle(draw=True)</span></em>, <em class="sig-param"><span class="pre">arrow_type=&lt;TikZArrow.LINE:</span> <span class="pre">'-'&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZDirectionalPath" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZDirectionalPath" title="SEPModules.TeX.SEPTikZ.TikZDirectionalPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZDirectionalPath</span></code></a> represents a path similarly to <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZPath" title="SEPModules.TeX.SEPTikZ.TikZPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPath</span></code></a> but with additional information
+on the arrow type used to join up the coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>Collection</em><em>[</em><em>Union</em><em>[</em><em>Point</em><em>, </em><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZNode" title="SEPModules.TeX.SEPTikZ.TikZNode"><em>TikZNode</em></a><em>]</em><em>]</em>) – a collection of <code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code> or <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZNode" title="SEPModules.TeX.SEPTikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> objects for the path</p></li>
+<li><p><strong>cycle</strong> (<em>bool</em>) – whether or not to end the final path string with <code class="docutils literal notranslate"><span class="pre">cycle</span></code>, which will join the ending to the beginning</p></li>
+<li><p><strong>style</strong> (<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="SEPModules.TeX.SEPTikZ.TikZStyle"><em>TikZStyle</em></a>) – the style to apply to this path</p></li>
+<li><p><strong>arrow_type</strong> (<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZArrow" title="SEPModules.TeX.SEPTikZ.TikZArrow"><em>TikZArrow</em></a>) – the <a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZArrow" title="SEPModules.TeX.SEPTikZ.TikZArrow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZArrow</span></code></a> to use for the arrow tip of the edge</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZDirectionalPath.arrow_type">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">arrow_type</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.TeX.SEPTikZ.TikZArrow</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZDirectionalPath.arrow_type" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>which arrow head type to use at the end of this path</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tikzcircle">
+<h3>TikZCircle<a class="headerlink" href="#tikzcircle" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZCircle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.TeX.SEPTikZ.</span></span><span class="sig-name descname"><span class="pre">TikZCircle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZCircle" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZCircle" title="SEPModules.TeX.SEPTikZ.TikZCircle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZCircle</span></code></a> represents a standard TikZ circle, with a center coordinate, radius and style.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinate</strong> (<em>Point</em>) – the center coordinate of the circle</p></li>
+<li><p><strong>radius</strong> (<em>TIKZ_VALUE</em>) – the radius of the circle</p></li>
+<li><p><strong>style</strong> (<a class="reference internal" href="#SEPModules.TeX.SEPTikZ.TikZStyle" title="SEPModules.TeX.SEPTikZ.TikZStyle"><em>TikZStyle</em></a>) – the style of the circle</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZCircle.coordinate">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinate</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.TeX.SEPTikZ.Point</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZCircle.coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the center coordinate of this circle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.TeX.SEPTikZ.TikZCircle.radius">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="pre">:</span> <span class="pre">Union[AnyStr,</span> <span class="pre">int,</span> <span class="pre">float]</span></em><a class="headerlink" href="#SEPModules.TeX.SEPTikZ.TikZCircle.radius" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the radius of this circle</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>

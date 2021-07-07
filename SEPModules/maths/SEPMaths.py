@@ -15,9 +15,16 @@ import sys
 from itertools import product
 from math import copysign, gcd, floor, ceil
 from numbers import Real, Number
-from typing import Tuple, Callable, Union, Set, Optional, Iterable, TypeVar
+from typing import Tuple, Callable, Union, Set, Optional, Iterable, TypeVar, Final
 
 from SEPModules.SEPPrinting import cl_s, WARNING
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ GLOBALS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+T : Final = TypeVar("T")
+""" Type variable for the :py:mod:`SEPMaths` module. """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
@@ -96,7 +103,6 @@ class Rational(Number):
 				f"Values 'a' and 'b' must be of type 'int' (received {a.__class__.__name__}, {b.__class__.__name__}). "
 				f"Alternatively 'a' can be of type 'float' or 'Rational' when 'b' is set to 1 or left blank.")
 
-		# TODO: write tests for input type Rational
 		if isinstance(a, (Rational, float)) and b == 1:  # handle Rational or float input
 			if isinstance(a, float):
 				a = find_rational_approximation(a)
@@ -325,7 +331,6 @@ def get_possible_rationals(_set: Iterable[int]) -> Set[Rational]:
 	# all rationals (a, b) over Cartesian product length 2 of _set
 	return {Rational(*a) for a in product(_set, repeat=2) if a[1] != 0}
 
-T = TypeVar("T")
 def sign(x: Real, zero: T = 0) -> Union[int, T]:
 	"""
 	Returns the sign of x, where sign(0) = `zero`.
