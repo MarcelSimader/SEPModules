@@ -19,7 +19,7 @@ from fractions import Fraction
 from inspect import getframeinfo, stack
 from numbers import Number
 from os import PathLike
-from subprocess import STDOUT, call
+from subprocess import run, PIPE, STDOUT
 from typing import Union, AnyStr, Tuple, List, Final, Collection, final, Literal, Any, Set, Optional, NoReturn
 
 from SEPModules.maths.SEPAlgebra import AlgebraicStructure
@@ -71,12 +71,12 @@ def tex_maths_string(s: Any) -> str:
 	text_f = r"\text{{{}}}"
 
 	formats = {
-			Rational             : lambda o: f"{'-' if o < 0 else ''}\\frac{{{abs(o.a)}}}{{{o.b}}}",
-			Fraction             : lambda o: f"{'-' if o < 0 else ''}\\frac{{{abs(o.numerator)}}}{{{o.denominator}}}",
-			Set                  : lambda o: braces(", ".join([tex_maths_string(el) for el in s])),
-			(Tuple, List,)       : lambda o: brackets(
+			Rational          : lambda o: f"{'-' if o < 0 else ''}\\frac{{{abs(o.a)}}}{{{o.b}}}",
+			Fraction          : lambda o: f"{'-' if o < 0 else ''}\\frac{{{abs(o.numerator)}}}{{{o.denominator}}}",
+			Set               : lambda o: braces(", ".join([tex_maths_string(el) for el in s])),
+			(Tuple, List,)    : lambda o: brackets(
 					", ".join([text_f.format(el) if isinstance(el, str) else tex_maths_string(el) for el in s])),
-			AlgebraicStructure   : lambda o: parentheses(
+			AlgebraicStructure: lambda o: parentheses(
 					f"{tex_maths_string(o.elements)}, {', '.join([text_f.format(op.__name__) for op in o.binary_operators])}")
 			}
 
@@ -113,8 +113,8 @@ class LaTeXResource(abc.ABC):
 	In addition to the open and closed states, one can configure the resource to allow multiple openings. The default
 	behaviour is to throw an exception if the resource is opened a second time. The opening and closing is implemented as
 	context manager, with :py:meth:`__enter__` triggering an opening and :py:meth:`__exit__` triggering a closing. The
-	private helper methods :py:meth:`__require_closed__`, :py:meth:`__require_open__`, and :py:meth:`__require_virgin__`
-	are provided to check these states.
+	private helper methods :py:meth:`__require_closed__`, :py:meth:`__require_open__`, :py:meth:`__require_virgin__`, and
+	:py:meth:`__require_used__` are provided to check these states.
 	"""
 
 	@staticmethod
@@ -165,7 +165,7 @@ class LaTeXResource(abc.ABC):
 
 		:raise LaTeXError: if the resource is open when this function is called
 		"""
-		if self.open:
+		if self._open:
 			self.__require_state__("be closed", frame_depth)
 
 	@final
@@ -178,7 +178,7 @@ class LaTeXResource(abc.ABC):
 
 		:raise LaTeXError: if the resource is closed when this function is called
 		"""
-		if not self.open:
+		if not self._open:
 			self.__require_state__("be open", frame_depth)
 
 	@final
@@ -194,6 +194,20 @@ class LaTeXResource(abc.ABC):
 		if self._open_counter > 0:
 			self.__require_state__("not have been opened at any point", frame_depth)
 
+	@final
+	def __require_used__(self, frame_depth: int = 1):
+		"""
+		Requires a resource to have been opened *and* closed at least once in the past.
+
+		:param frame_depth: how many stack frames to go backwards in order to retrieve the name of the function which
+			represents the public API call which caused the error
+
+		:raise LaTeXError: if the resource has not been opened and closed at least once in the past when this function is
+			called
+		"""
+		if self._open_counter <= 0 or self._open:
+			self.__require_state__("have been opened and closed at least once", frame_depth)
+
 	@abc.abstractmethod
 	def __str__(self) -> str:
 		raise NotImplementedError("Subclasses of LaTeXResource must implement this method")
@@ -202,13 +216,14 @@ class LaTeXResource(abc.ABC):
 class LaTeXHandler:
 	r"""
 	:py:class:`LaTeXHandler` aids as container for lines of text to be written to a document. This class can automatically
-	apply a specific level of indentation and pseudo soft-wrap lines that are too long.
+	apply a specific level of indentation and hard-wrap lines that are too long.
 
 	..	note::
 
-		The algorithm for the soft-wrap will insert ``\n`` newline characters in available spaces of each "line entry" of
-		this instance, which does not cause the line to be split into multiple entries but still places a new line in the
-		final document.
+		The algorithm for the hard-wrap will only be applied once either the :py:meth:`__str__` method is called automatically
+		or if the :py:meth:`wrap_lines` is called manually. The results of these calls will be stored in the instance.
+		Furthermore, the algorithm will split up lines that are too long at available spaces. If no space is found, the
+		line simply must exceed the given bounds.
 
 	:param indent_level: the number of tab character to place at the beginning of each line
 	:param line_wrap_length: keyword-only argument, when set to an int this value dictates how long a line can be before
@@ -216,20 +231,14 @@ class LaTeXHandler:
 	"""
 
 	def __init__(self, indent_level: int = 0, *, line_wrap_length: Optional[int] = None):
-		self._data: List[str] = list()
-		self._offset: int = 0
+		self._data: List[Tuple[int, str]] = list()
 		self._indent_level = indent_level
 		self._line_wrap_length = line_wrap_length
 
 	@property
-	def data(self) -> Tuple[str]:
+	def data(self) -> Tuple[Tuple[int, str]]:
 		""" :return: a tuple of strings where each string is exactly one line in the document """
 		return tuple(self._data)
-
-	@property
-	def offset(self) -> int:
-		""" :return: the current cursor offset of the handler """
-		return self._offset
 
 	@property
 	def indent_level(self) -> int:
@@ -244,35 +253,70 @@ class LaTeXHandler:
 		"""
 		return self._line_wrap_length
 
-	def write(self, s: AnyStr) -> None:
+	def wrap_lines(self, *, tab_width: int = 4, hanging_indent: bool = True) -> None:
+		"""
+		Wraps the lines of this instance according to :py:attr:`line_wrap_length`.
+
+		:param tab_width: how wide (in characters) to consider a tab character (``\t``)
+		:param hanging_indent: whether or not to indent wrapped lines by one extra tab
+		"""
+		if self._line_wrap_length is None:
+			return
+
+		i = 0
+		hanging_indent_list = list()
+		for tabs, temp_s in self._data:
+			# set up vars
+			cur_pos, comment = 0, False
+			curr_line_wrap_length = self._line_wrap_length - tabs * tab_width
+
+			# search if we are past the limit
+			if len(temp_s) >= curr_line_wrap_length:
+				space_pos = temp_s.find(" ", curr_line_wrap_length)
+				comment |= "%" in temp_s[:curr_line_wrap_length]
+				# check if line can be wrapped at all
+
+				if space_pos != -1:
+					# determine comment newline
+					newline = "%" if comment else ""
+
+					# +1 to break *after* space
+					# split entry and remove leading whitespace from right
+					cur_pos += space_pos + 1
+					left = self._data[i][1][:cur_pos]
+					right = newline + self._data[i][1][cur_pos:].lstrip()
+
+					# insert left and right
+					self._data[i] = (tabs, left)
+					self._data.insert(i + 1, (tabs, right))
+					cur_pos += len(newline) + 1
+
+					# mark as indented
+					if hanging_indent:
+						hanging_indent_list.append(i + 1)
+			i += 1
+
+		for i in hanging_indent_list:
+			self._data[i] = (self._data[i][0] + 1, self._data[i][1])
+
+	def write(self, s: Union[AnyStr, LaTeXHandler]) -> None:
 		"""
 		Write string ``s`` to the handler.
 
+		If ``s`` is a string or bytes object, this function will perform some processing. If ``s`` is a :py:class:`LaTeXHandler`
+		this function will extend the data of this instance with the given handler, and *add the required number of tabs
+		of this instance to the tabs already accumulated in the data tuple of the given handler!*
+
 		:param s: the string to write, can be any string of any length including line breaks
 		"""
+		# ++++ if handler, write and RETURN ++++
+		if isinstance(s, LaTeXHandler):
+			self._data.extend([(tabs + self._indent_level, data) for tabs, data in s._data])
+			return
+
+		# ++++ if any other type, write normal way ++++
 		# preprocess
-		s_split = [str(("\t" * self._indent_level) + sub.replace("\n", "")) for sub in s.split("\n")]
-
-		# wrap long lines
-		if self._line_wrap_length is not None:
-			for i, temp_s in enumerate(s_split):
-				# search as long as we are past the limit
-				cur_pos = 0
-				comment = False
-				while len(temp_s) >= self._line_wrap_length:
-					space_pos = temp_s.find(" ", self._line_wrap_length)
-					comment |= "%" in temp_s[:self._line_wrap_length]
-					# check if line can be wrapped at all
-					if space_pos != -1:
-						newline = "\n%" if comment else "\n"
-						cur_pos += space_pos
-						s_split[i] = s_split[i][:cur_pos] + newline + s_split[i][cur_pos:]
-						cur_pos += len(newline) + 1
-						temp_s = temp_s[space_pos + 1:]
-					else:
-						# give up, no way to wrap
-						break
-
+		s_split = [(self._indent_level, sub.replace("\n", "")) for sub in s.split("\n")]
 		# add to data
 		self._data.extend(s_split)
 
@@ -280,24 +324,32 @@ class LaTeXHandler:
 		""" Write an empty line. """
 		self.write("")
 
-	def readline(self, size: int = 1) -> Tuple[str]:
+	def readline(self, offset: int = 0, size: int = 1) -> Tuple[Tuple[int, str]]:
 		"""
-		Read ``size`` lines from this document, starting at :py:attr:`offset`.
+		Read ``size`` lines from this document, starting at ``offset``.
 
-		:param size: how many lines to read
-		:return: the lines to be read as tuple
+		:param offset: which line, starting at 0, should be the first to be read
+		:param size: how many lines to read, if the number of lines to read past the offset is larger than the number of
+			available lines this function will return the remaining lines
+		:return: the lines to be read as tuple of tuples, where each tuple entry contains the number of tabs to be added
+			to the line and the line contents themselves
 		:raise ValueError: if size is negative
 		"""
-		if size < 0:
-			raise ValueError(f"size parameter must be bigger than or equal to 0, received {size}")
-		return tuple(self._data[self._offset: min(self._offset + size, len(self._data))])
+		if size < 0 or offset < 0:
+			raise ValueError(f"size and offset parameters must be bigger than or equal to 0, received {size}")
+		if offset > len(self):
+			raise ValueError(f"offset cannot be bigger than number of lines in handler instance")
+		offset_from = offset
+		offset_to = min(offset + size, len(self))
+		return tuple(self._data[offset_from:offset_to])
 
-	def __len__(self):
+	def __len__(self) -> int:
 		""" :return: the number of lines stored in the :py:attr:`data` attribute """
 		return len(self._data)
 
 	def __str__(self) -> str:
-		return "\n".join(self._data)
+		self.wrap_lines()
+		return "\n".join([("\t" * tabs) + data for tabs, data in self._data])
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ DOCUMENT AND ENVIRONMENTS ~~~~~~~~~~~~~~~
@@ -313,7 +365,7 @@ class LaTeXDocument(LaTeXResource):
 	Example usage with the context manager: ::
 
 		with LaTeXDocument("abc.tex") as (latex_document, pre, body):
-			latex_document.use_package("abc123")
+			latex_document.use_package("abc123", "cde456")
 			body.write(r"This is some \LaTeX.")
 
 	For extensions to the functionality of this class, see :py:class:`LaTeXEnvironment` as base class.
@@ -365,16 +417,19 @@ class LaTeXDocument(LaTeXResource):
 				 path: Union[AnyStr, PathLike],
 				 document_class: AnyStr = "article",
 				 document_options: AnyStr = "a4paper, 12pt",
-				 default_packages: Tuple[AnyStr] = ("amsmath",),
+				 default_packages: Collection[AnyStr] = ("amsmath",),
 				 title: Optional[AnyStr] = None,
 				 subtitle: Optional[AnyStr] = None,
 				 author: Optional[AnyStr] = None,
 				 *,
+				 show_date: bool = False,
 				 show_page_numbers: bool = False,
 				 line_wrap_length: Optional[int] = None):
 		super(LaTeXDocument, self).__init__()
 
 		self._path = path
+		if not self._path.endswith(".tex"):
+			self._path += ".tex"
 		self._document_class = document_class
 		self._document_options = document_options
 
@@ -382,22 +437,26 @@ class LaTeXDocument(LaTeXResource):
 		self._subtitle = subtitle
 		self._author = author
 		self._has_title = self._title is not None or self._author is not None
+		self._show_date = show_date
 		self._show_page_numbers = show_page_numbers
 
-		self._package_list: List[AnyStr] = list()
+		self._definition_list: List[Tuple[AnyStr, AnyStr]] = list()
 
 		# set up handlers
-		self._packages = LaTeXHandler(indent_level=0)
+		self._definitions = LaTeXHandler(indent_level=0)
 		self._preamble = LaTeXHandler(indent_level=0, line_wrap_length=line_wrap_length)
 		self._body = LaTeXHandler(indent_level=1, line_wrap_length=line_wrap_length)
 
 		# default packages
-		for package_name in default_packages:
-			self.use_package(package_name)
+		self.use_package(*default_packages)
 
 	@property
 	def path(self) -> PathLike:
 		return os.path.abspath(self._path)
+
+	@property
+	def successfully_saved(self) -> bool:
+		return self._open_counter > 0 and not self._open and os.path.isfile(self.path)
 
 	@property
 	def preamble(self) -> LaTeXHandler:
@@ -420,8 +479,12 @@ class LaTeXDocument(LaTeXResource):
 		return self._document_options
 
 	@property
-	def packages(self) -> Tuple[AnyStr]:
-		return tuple(self._package_list)
+	def definitions(self) -> Tuple[Tuple[AnyStr, AnyStr]]:
+		"""
+		:return: a tuple of tuples of the definitions already placed in this instance, one entry consists of a definition
+			key (e.g. "usepackage"), and a definition value (e.g. "amsmath")
+		"""
+		return tuple(self._definition_list)
 
 	@property
 	def line_wrap_lengths(self) -> Tuple[Optional[int], Optional[int]]:
@@ -441,25 +504,51 @@ class LaTeXDocument(LaTeXResource):
 		return self._author
 
 	@property
+	def show_date(self) -> bool:
+		return self._show_date
+
+	@property
 	def show_page_numbers(self) -> bool:
 		return self._show_page_numbers
 
 	def __fspath__(self) -> bytes:
 		return str(self.path).encode("utf_8")
 
-	def use_package(self, package: Union[AnyStr, Tuple[AnyStr]]) -> None:
+	def __inclusion_statement__(self, *s: AnyStr, definition_text: AnyStr) -> None:
 		"""
-		Include a usepackage statement in this document. This function checks the list of already included packages to
+		Include a definition statement in this document. This function checks the list of already included definitions to
+		avoid duplicates.
+
+		:param s: the name or names of the definitions to include
+		:param definition_text: the text to use for the definition statement
+		"""
+		if not isinstance(s, Tuple):
+			s = (s,)
+		for p in s:
+			if (definition_text, p) not in self._definition_list:
+				self._definition_list.append((definition_text, p))
+				self._definitions.write(f"\\{definition_text}{{{p}}}")
+
+	def use_package(self, *package: AnyStr) -> None:
+		"""
+		Include a ``usepackage`` statement in this document. This function checks the list of already included packages to
 		avoid duplicates.
 
 		:param package: the name or names of the package to include
 		"""
-		if not isinstance(package, Tuple):
-			package = (package,)
-		for p in package:
-			if p not in self._package_list:
-				self._package_list.append(p)
-				self._packages.write(f"\\usepackage{{{p}}}")
+		self.__inclusion_statement__(*package, definition_text="usepackage")
+
+	def use_tikz_library(self, *library: AnyStr) -> None:
+		"""
+		Include a ``usetikzlibrary`` statement in this document. This function checks the list of already included libraries
+		to avoid duplicates.
+
+		..	note:: This auto-includes the TikZ package, if it is not included already.
+
+		:param library: the name or names of the TikZ library to include
+		"""
+		self.use_package("tikz")
+		self.__inclusion_statement__(*library, definition_text="usetikzlibrary")
 
 	def page_break(self) -> None:
 		""" Inserts a page break. """
@@ -482,6 +571,8 @@ class LaTeXDocument(LaTeXResource):
 											 r"}" if self._subtitle is None else f"\\\\[0.4em]\\smaller{{{self._subtitle}}}}}"))
 			if self._author is not None:
 				self._preamble.write(f"\\author{{{self._author}}}")
+			if not self._show_date:
+				self._preamble.write(r"\date{}")
 
 		# page numbers
 		if not self._show_page_numbers:
@@ -493,6 +584,14 @@ class LaTeXDocument(LaTeXResource):
 		return self, self._preamble, self._body
 
 	def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
+		# super call!
+		_exit = super(LaTeXDocument, self).__exit__
+
+		# if error, do not write document
+		if exc_val is not None:
+			return _exit(exc_type, exc_val, exc_tb)
+
+		# no error, try to write file
 		file = None
 		try:
 			# write to actual file
@@ -503,8 +602,7 @@ class LaTeXDocument(LaTeXResource):
 		finally:
 			if file is not None:
 				file.close()
-			# super call!
-			return super(LaTeXDocument, self).__exit__(exc_type, exc_val, exc_tb)
+			return _exit(exc_type, exc_val, exc_tb)
 
 	def to_pdf(self,
 			   out_file_path: Union[PathLike, AnyStr],
@@ -520,14 +618,14 @@ class LaTeXDocument(LaTeXResource):
 		:param overwrite: whether or not to overwrite a file that already exists
 		:param delete_aux_files: delete the generated auxiliary files after compilation of the document is complete
 		:param engine: which engine to use for conversion between the TeX and PDF files (specifically which string to use to
-			call said engine), currently only ``pdflatex`` is supported
+			call said engine), currently only ``pdftex``/``pdflatex`` is supported
 		:param custom_options: options to directly pass to the engine which are not included as argument to this function
 
 		:raise LaTeXError: if the document was still opened while calling this function or if there was an error while
 			executing the engine command in the subshell
 		:raise FileExistsError: if the file is already exists and ``overwrite`` is not set to True
 		"""
-		self.__require_closed__()
+		self.__require_used__()
 
 		if not overwrite and os.path.isfile(out_file_path):
 			raise FileExistsError(
@@ -537,25 +635,33 @@ class LaTeXDocument(LaTeXResource):
 		out_file_path = os.path.abspath(out_file_path)
 		if out_file_path.lower().endswith(".pdf"):
 			out_file_path = out_file_path[:-4]
-
 		out_dir = os.path.dirname(out_file_path)
-		out_aux_dir = os.path.join(out_dir, '.aux')
 		out_file = os.path.basename(out_file_path)
+		out_aux_dir = os.path.join(out_dir, '.aux')
+
+		os.makedirs(out_aux_dir, exist_ok=True)
 
 		error_msg = f"Error while converting to PDF using {engine}"
 		try:
 			if engine == "pdflatex" or engine == "pdftex":
-				return_value = call(
-						f"pdflatex -output-directory '{out_dir}' -job-name '{out_file}' {os.path.basename(self.path)} "
-						f"-quiet -aux-directory '{out_aux_dir}' {custom_options}",
+				ret = run(
+						("pdflatex",
+						 os.path.basename(self.path),
+						 "-include-directory", os.path.dirname(self.path),
+						 "-job-name", out_file,
+						 "-output-directory", out_dir,
+						 "-aux-directory", out_aux_dir,
+						 "-quiet", "-halt-on-error", custom_options),
+						cwd=os.path.dirname(self.path),
 						shell=True,
-						stderr=STDOUT)
+						)
 			# TODO: support more engines
 			else:
-				raise NotImplementedError(f"Currently only 'pdflatex' is supported, but received request for {engine}")
+				raise NotImplementedError(
+					f"Currently only 'pdflatex' and 'pdftex' are supported, but received request for {engine}")
 
-			if return_value < 0:
-				raise LaTeXError(f"{error_msg}, return code: {return_value}", self)
+			if ret.returncode != 0:
+				raise LaTeXError(f"{error_msg}, return code: {ret.returncode}", self)
 		except OSError as e:
 			raise LaTeXError(error_msg, self) from e
 		finally:
@@ -568,7 +674,7 @@ class LaTeXDocument(LaTeXResource):
 		return self.LaTeXTemplate.format(
 				self._document_options,
 				self._document_class,
-				str(self._packages),
+				str(self._definitions),
 				str(self._preamble),
 				str(self._body)
 				)
@@ -576,12 +682,12 @@ class LaTeXDocument(LaTeXResource):
 	def __repr__(self) -> str:
 		try:
 			# windows might throw an error for paths across drives
-			path = os.path.relpath(self._path)
+			path = os.path.relpath(self.path)
 		except OSError:
 			path = self._path
 		return f"LaTeXDocument(" \
 			   f"path={path}, " \
-			   f"packages={self._package_list}, " \
+			   f"definitions={self._definition_list}, " \
 			   f"open={self._open})"
 
 class LaTeXEnvironment(LaTeXResource):
@@ -628,8 +734,7 @@ class LaTeXEnvironment(LaTeXResource):
 		self._options = options if options == "" else f"[{options}]"
 
 		# packages
-		for package in required_packages:
-			self.document.use_package(package)
+		self.document.use_package(*required_packages)
 
 		# write handler and alias
 		self._handler = LaTeXHandler(indent_level)
@@ -685,8 +790,8 @@ class LaTeXEnvironment(LaTeXResource):
 		return self.END_TEMPLATE.format(self._environment_name)
 
 	def __enter__(self) -> LaTeXEnvironment:
+		self.parent_env.__require_open__()
 		super(LaTeXEnvironment, self).__enter__()
-		self.document.__require_open__()
 
 		# write begin to parent env
 		self.parent_handler.write(self.begin_text)
@@ -694,9 +799,10 @@ class LaTeXEnvironment(LaTeXResource):
 		return self
 
 	def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
+		self.parent_env.__require_open__()
 		try:
 			# write handler data to parent env
-			self.parent_handler.write(str(self._handler))
+			self.parent_handler.write(self._handler)
 			# write end to parent env
 			self.parent_handler.write(self.end_text)
 			self.parent_handler.newline()
@@ -767,14 +873,14 @@ class Figure(LaTeXEnvironment):
 	and options. The options default to ``h!`` to force placement at the location of the definition of the figure.
 
 	When referencing this figure use the :py:attr:`label` property as follows, as it adds the ``fig:`` prefix
-	automatically when left out and makes referencing easier:
+	automatically when left out and makes referencing easier: ::
 
-	>>> with LaTeXDocument("ham.tex") as (doc, _, _):
-	... 	f1 = Figure(doc, "Caption.", "a-label")
-	... 	assert f1.label == "fig:a-label"
-	...
-	... 	f2 = Figure(doc, "Spam Ham Caption.", "fig:label-label")
-	... 	assert f2.label == "fig:label-label"
+		with LaTeXDocument("ham.tex") as (doc, _, _):
+			f1 = Figure(doc, "Caption.", "a-label")
+			assert f1.label == "fig:a-label"
+
+			f2 = Figure(doc, "Spam Ham Caption.", "fig:label-label")
+			assert f2.label == "fig:label-label"
 
 	:param parent_env: the parent environment or document to this environment
 	:param caption: the caption of the figure, may be ``None``
@@ -786,8 +892,8 @@ class Figure(LaTeXEnvironment):
 
 	def __init__(self,
 				 parent_env: Union[LaTeXDocument, LaTeXEnvironment],
-				 caption: Optional[AnyStr] = "",
-				 label: Optional[AnyStr] = "",
+				 caption: Optional[AnyStr] = None,
+				 label: Optional[AnyStr] = None,
 				 options: AnyStr = "h!",
 				 indent_level: int = 1):
 		super(Figure, self).__init__(parent_env,
