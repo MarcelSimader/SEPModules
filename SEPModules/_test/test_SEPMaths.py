@@ -4,7 +4,7 @@ from itertools import combinations
 import random
 from math import fmod
 
-from maths.SEPMaths import is_group, is_abelian_group, Rational, find_rational_approximation, get_possible_rationals
+from SEPMaths import is_group, is_abelian_group, Rational, find_rational_approximation, get_possible_rationals
 from SEPModules.SEPDecorators import timed
 
 # noinspection PyTypeChecker

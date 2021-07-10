@@ -14,7 +14,6 @@ SEPModules
 
    modules/maths/index
    modules/SEPPrinting/index
-   modules/TeX/index
    modules/SEPLogger
    modules/SEPIO
    modules/SEPDecorators
