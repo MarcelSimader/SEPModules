@@ -14,7 +14,7 @@ from __future__ import annotations
 import math
 from math import ceil
 from numbers import Real
-from typing import Any, Collection, Tuple, Callable, Union, Final, Literal, Dict, Optional, TypeVar
+from typing import Any, Collection, Tuple, Callable, Union, Final, Literal, Dict, Optional, TypeVar, AnyStr
 
 from colorama import Cursor, init as cl_init
 from colorama.ansi import AnsiFore, AnsiStyle, code_to_chars
@@ -257,6 +257,10 @@ class FillCharacters:
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ COLOR STRING ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 def color_string(s: Any, style: Style, boolean: bool = False) -> str:
 	"""
 	Add color ANSI escape sequences to a string. Longer name version of :py:func:`cl_s`.
@@ -292,6 +296,10 @@ def cl_s(s: Any, style: Style, *, boolean: bool = False) -> str:
 		style = NORMAL
 
 	return "{}{}{}".format(str(style), str(s), str(RESET_ALL))
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ TIME STRING ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def get_time_str(secs: Real, force_unit: Optional[Literal["ns", "µs", "ms", "s", "m", "h"]] = None):
 	"""
@@ -362,6 +370,40 @@ def get_appropriate_time_unit(secs: Real) -> Literal["ns", "µs", "ms", "s", "m"
 		return "m"
 	else:
 		return "h"
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ MISC HELP FUNCTIONS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+T : Final = TypeVar("T")
+""" The generic type variable for either typing ``Any`` or ``Optional[Any]`` for :py:func:`repr_string`. """
+
+def repr_string(obj: Any,
+				*properties: property[T],
+				value_function: Callable[[T], str] = repr,
+				include_none: bool = False,
+				include_empty_string: bool = False,
+				joiner: AnyStr = ", ") -> str:
+	"""
+	Provides a ``__repr__`` string for any class of type ``obj``.
+
+	:param obj: the object to create this repr string from
+	:param properties: the values which should be displayed in this repr string
+	:param value_function: which function to apply to each element of ``values``
+	:param include_none: whether or not to include ``None`` values or to omit them
+	:param include_empty_string: whether or not to include empty string ``str()`` values or to omit them
+	:param joiner: which string to use to join the values together (see :py:meth:`str.join`)
+	:return: a repr string for ``cls``
+	"""
+	strings = list()
+	for prop, val in map(lambda _p: (_p, _p.fget(obj)), properties):
+		if (include_none or val is not None) and (include_empty_string or val != ""):
+			strings.append(f"{prop.fget.__name__}={value_function(val)}")
+	return f"{obj.__class__.__name__}({joiner.join(strings)})"
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ DEPRECATED ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def console_graph(data: Collection,
 				  max_height: int = 13,

@@ -1,7 +1,7 @@
 import unittest
 
 from maths.SEPAlgebra import  NoElement, AlgebraicStructure, Monoid, Semigroup, Group, AbelianGroup, Ring, Field
-from maths.SEPMaths import get_possible_rationals, Rational
+from SEPMaths import get_possible_rationals, Rational
 
 
 # noinspection PyTypeChecker

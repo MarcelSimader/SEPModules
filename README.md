@@ -19,14 +19,6 @@ The package is of the following structure:
 - ### SEPPrinting
   Provides easy and quick implementations of console UI elements like graphs, progress bars, and colored console printing.
 
-- ### TeX
-
-  - ### SEPTeX
-    Provides a Python wrapper API for constructing LaTeX documents in code.
-
-  - ### SEPTikZ
-    Works together with SEPTeX to provide an additional Python wrapper API for construction various TikZ objects in code.
-
 - ### SEPLogger
   Provides logging functionality interfacing with the color printing features of SEPPrinting.
   
