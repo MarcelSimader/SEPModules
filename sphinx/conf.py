@@ -25,7 +25,7 @@ copyright = "2021, Marcel Simader"
 author = "Marcel Simader"
 
 # The full version, including alpha/beta/rc tags
-release = "1.2.0"
+release = "1.2.1"
 version = release
 
 

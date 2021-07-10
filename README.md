@@ -10,9 +10,6 @@ Python package providing basic modules and functionality for various common task
 The package is of the following structure:
 - ### maths
   
-  - ### SEPMaths
-    For mathematical operations, helper functions, and classes.
-  
   - ### SEPAlgebra
     Provides classes and functions for performing computations on algebraic structures.
 
