@@ -2,7 +2,9 @@
 maths
 ##########################
 
-.. toctree::
-   :maxdepth: 4
+..  toctree::
+    :maxdepth: 4
 
-   SEPAlgebra
+    SEPLogic
+    SEPQBF
+    SEPAlgebra

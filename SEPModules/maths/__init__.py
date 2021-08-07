@@ -8,7 +8,10 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 from SEPModules.maths.SEPAlgebra import \
-	AlgebraicStructure, Semigroup, Monoid, Group, AbelianGroup, Ring, Field, \
+	AlgebraicStructure, Semigroup, Semigroup, Group, AbelianGroup, Ring, Field, \
  \
 	NoElement, NoElementType
 
+from SEPModules.maths.SEPLogic import Proposition, AtomicProposition, Top, Bottom
+
+from SEPModules.maths.SEPQBF import PQBF

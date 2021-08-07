@@ -82,7 +82,7 @@ if "h" in console_args or "help" in console_args:
 	sys.exit(0)
 
 #check if exactly <font-path> argument is supplied
-if console_args.size[console_args.SET_PARS] != 1:
+if console_args.size_dict[console_args.SET_PARS] != 1:
 	if _enable_color:
 		sys.stderr.write("\033[38;2;225;60;110mToo many or too few arguments supplied. See -h or --help.\n\033[0m")
 	else:

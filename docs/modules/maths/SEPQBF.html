@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SEPQBF &mdash; SEPModules 2.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SEPAlgebra" href="SEPAlgebra.html" />
+    <link rel="prev" title="SEPLogic" href="SEPLogic.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SEPModules
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">maths</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SEPLogic.html">SEPLogic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#exceptions">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#connective-bases">Connective Bases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#logical-connective-enum">Logical Connective Enum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#connective-format-protocols">Connective Format Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#proposition-protocols">Proposition Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#propositions">Propositions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SEPLogic.html#proposition">Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPLogic.html#atomic-proposition">Atomic Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPLogic.html#truth-constants">Truth constants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SEPQBF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pqbf">PQBF</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#group">Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#abelian-group">Abelian Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#ring">Ring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#field">Field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPPrinting.html">SEPPrinting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting.html#color-printing">Color Printing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting.html#ansi-control-sequences">ANSI Control Sequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting.html#printing-utilities">Printing Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPIO.html">SEPIO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPIO.html#console-arguments">Console Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPDecorators.html">SEPDecorators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPDecorators.html#decorator-utils">Decorator Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPDecorators.html#decorators">Decorators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPUtils.html">SEPUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#immutable">Immutable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#singleton">Singleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#stack-frame-info">Stack Frame Info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/test.html">Test</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SEPModules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">maths</a> &raquo;</li>
+        
+      <li>SEPQBF</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/modules/maths/SEPQBF.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The features of this module and its documentation are still in development.</p>
+</div>
+<div class="section" id="module-SEPModules.maths.SEPQBF">
+<span id="sepqbf"></span><h1>SEPQBF<a class="headerlink" href="#module-SEPModules.maths.SEPQBF" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Marcel Simader</p>
+</dd>
+<dt class="field-even">Date</dt>
+<dd class="field-even"><p>18.07.2021</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.4.0.</span></p>
+</div>
+<div class="section" id="pqbf">
+<h2>PQBF<a class="headerlink" href="#pqbf" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPQBF.PQBF">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPQBF.</span></span><span class="sig-name descname"><span class="pre">PQBF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPQBF.PQBF" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPQBF.PQBF" title="SEPModules.maths.SEPQBF.PQBF"><code class="xref py py-class docutils literal notranslate"><span class="pre">PQBF</span></code></a> represents a quantified boolean formula in “prenex” form. The class contains a prefix, which consists
+of the quantifiers, and a matrix which consists of the formula itself.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="SEPAlgebra.html" class="btn btn-neutral float-right" title="SEPAlgebra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SEPLogic.html" class="btn btn-neutral float-left" title="SEPLogic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcel Simader.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

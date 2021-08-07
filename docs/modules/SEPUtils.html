@@ -1,0 +1,417 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SEPUtils &mdash; SEPModules 2.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Test" href="../examples/test.html" />
+    <link rel="prev" title="SEPDecorators" href="SEPDecorators.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SEPModules
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="maths/index.html">maths</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maths/SEPLogic.html">SEPLogic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#exceptions">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#connective-bases">Connective Bases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#logical-connective-enum">Logical Connective Enum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#connective-format-protocols">Connective Format Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#proposition-protocols">Proposition Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#propositions">Propositions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPLogic.html#proposition">Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPLogic.html#atomic-proposition">Atomic Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPLogic.html#truth-constants">Truth constants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="maths/SEPQBF.html">SEPQBF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPQBF.html#pqbf">PQBF</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="maths/SEPAlgebra.html">SEPAlgebra</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#monoid">Monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#group">Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#abelian-group">Abelian Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#ring">Ring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#field">Field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPPrinting.html">SEPPrinting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting.html#color-printing">Color Printing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting.html#ansi-control-sequences">ANSI Control Sequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting.html#printing-utilities">Printing Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPIO.html">SEPIO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPIO.html#console-arguments">Console Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPDecorators.html">SEPDecorators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPDecorators.html#decorator-utils">Decorator Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPDecorators.html#decorators">Decorators</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SEPUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#immutable">Immutable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#singleton">Singleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stack-frame-info">Stack Frame Info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/test.html">Test</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SEPModules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>SEPUtils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/modules/SEPUtils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-SEPModules.SEPUtils">
+<span id="seputils"></span><h1>SEPUtils<a class="headerlink" href="#module-SEPModules.SEPUtils" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Marcel Simader</p>
+</dd>
+<dt class="field-even">Date</dt>
+<dd class="field-even"><p>01.08.2021</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version v2.0.0.</span></p>
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.SEPSyntaxError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPUtils.</span></span><span class="sig-name descname"><span class="pre">SEPSyntaxError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_context</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.SEPSyntaxError" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPUtils.SEPSyntaxError" title="SEPModules.SEPUtils.SEPSyntaxError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SEPSyntaxError</span></code></a> is an error for general syntax errors raised by custom implementations in <code class="xref py py-mod docutils literal notranslate"><span class="pre">SEPModules</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>AnyStr</em>) – the message of the error</p></li>
+<li><p><strong>file_path</strong> (<em>Union</em><em>[</em><em>AnyStr</em><em>, </em><em>os.PathLike</em><em>]</em>) – the path to the file where the error occurred</p></li>
+<li><p><strong>lineno</strong> (<em>int</em>) – the line number at which the error occurred in the file</p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – the offset in characters for the syntax error ‘cursor’</p></li>
+<li><p><strong>code_context</strong> (<em>List</em><em>[</em><em>AnyStr</em><em>]</em>) – the code context of where the error occurred (i.e. the source code)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.SEPSyntaxError.from_traceback">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">from_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.SEPSyntaxError.from_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a <a class="reference internal" href="#SEPModules.SEPUtils.SEPSyntaxError" title="SEPModules.SEPUtils.SEPSyntaxError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SEPSyntaxError</span></code></a> object from a message, traceback, and an optional offset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>AnyStr</em>) – the message of the error</p></li>
+<li><p><strong>tb</strong> (<em>inspect.Traceback</em>) – the traceback to use as basis for the error</p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – the offset in characters for the syntax error ‘cursor’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new <a class="reference internal" href="#SEPModules.SEPUtils.SEPSyntaxError" title="SEPModules.SEPUtils.SEPSyntaxError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SEPSyntaxError</span></code></a> instance</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.SEPUtils.SEPSyntaxError" title="SEPModules.SEPUtils.SEPSyntaxError">SEPModules.SEPUtils.SEPSyntaxError</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="immutable">
+<h2>Immutable<a class="headerlink" href="#immutable" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.ImmutableMeta">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPUtils.</span></span><span class="sig-name descname"><span class="pre">ImmutableMeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.ImmutableMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPUtils.ImmutableMeta" title="SEPModules.SEPUtils.ImmutableMeta"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImmutableMeta</span></code></a> is the meta class behind the mechanism of the <a class="reference internal" href="#SEPModules.SEPUtils.Immutable" title="SEPModules.SEPUtils.Immutable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Immutable</span></code></a> abstract base class.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.Immutable">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPUtils.</span></span><span class="sig-name descname"><span class="pre">Immutable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.Immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPUtils.Immutable" title="SEPModules.SEPUtils.Immutable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Immutable</span></code></a> is an abstract base class for marking the instances of a class to be immutable. This means that
+once an object has been created, no attributes can be deleted from it or set to another value.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="singleton">
+<h2>Singleton<a class="headerlink" href="#singleton" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.SingletonMeta">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPUtils.</span></span><span class="sig-name descname"><span class="pre">SingletonMeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.SingletonMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPUtils.SingletonMeta" title="SEPModules.SEPUtils.SingletonMeta"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingletonMeta</span></code></a> is the meta class behind the mechanics of the <a class="reference internal" href="#SEPModules.SEPUtils.Singleton" title="SEPModules.SEPUtils.Singleton"><code class="xref py py-class docutils literal notranslate"><span class="pre">Singleton</span></code></a> abstract base class.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.Singleton">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPUtils.</span></span><span class="sig-name descname"><span class="pre">Singleton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.Singleton" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPUtils.Singleton" title="SEPModules.SEPUtils.Singleton"><code class="xref py py-class docutils literal notranslate"><span class="pre">Singleton</span></code></a> is an abstract base class that can be inherited from in order to indicate that a class should
+be a singleton class. A singleton class can only be instantiated once, and once that instance has been created it is
+immutable.</p>
+<p>The singleton instance can be retrieved from the class object by calling the <a class="reference internal" href="#SEPModules.SEPUtils.Singleton.get_instance" title="SEPModules.SEPUtils.Singleton.get_instance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_instance()</span></code></a> class method. It
+may be <code class="docutils literal notranslate"><span class="pre">None</span></code> if no instance of the class has been created yet.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.Singleton.get_instance">
+<em class="property"><span class="pre">final</span> <span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.Singleton.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the singleton instance of this singleton class, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if it has not been instantiated yet.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="stack-frame-info">
+<h2>Stack Frame Info<a class="headerlink" href="#stack-frame-info" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.StackFrameInfo">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPUtils.</span></span><span class="sig-name descname"><span class="pre">StackFrameInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_StackFrameInfo__offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.StackFrameInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPUtils.StackFrameInfo" title="SEPModules.SEPUtils.StackFrameInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackFrameInfo</span></code></a> is a convenient way to <em>safely</em> retrieve <code class="docutils literal notranslate"><span class="pre">Traceback</span></code> objects from the stack. It only
+implements three methods (<code class="docutils literal notranslate"><span class="pre">__init__</span></code>, <code class="docutils literal notranslate"><span class="pre">get_tracebacks</span></code>, and <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code>) to retrieve the tracebacks and
+emulate a container type with its syntax. Note that it is <strong>not actually a container type</strong>!</p>
+<p>Its usage is shown in the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">tb</span> <span class="ow">in</span> <span class="n">StackFrameInfo</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">tb</span><span class="o">.</span><span class="n">lineno</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__offset</strong> – how much to offset the start of the stack, this only affects the container syntax, defaults to 2</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.SingleStackFrameInfo">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPUtils.</span></span><span class="sig-name descname"><span class="pre">SingleStackFrameInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_StackFrameInfo__offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.SingleStackFrameInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.SEPUtils.SingleStackFrameInfo" title="SEPModules.SEPUtils.SingleStackFrameInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleStackFrameInfo</span></code></a> is a special case of <a class="reference internal" href="#SEPModules.SEPUtils.StackFrameInfo" title="SEPModules.SEPUtils.StackFrameInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackFrameInfo</span></code></a> which only returns a single traceback
+instead of a tuple. See <a class="reference internal" href="#SEPModules.SEPUtils.StackFrameInfo" title="SEPModules.SEPUtils.StackFrameInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackFrameInfo</span></code></a> for more details.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPModules.SEPUtils.abstract_not_implemented">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.SEPUtils.</span></span><span class="sig-name descname"><span class="pre">abstract_not_implemented</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPUtils.abstract_not_implemented" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a NotImplementedError to raise for when an abstract method is not implemented for a class.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../examples/test.html" class="btn btn-neutral float-right" title="Test" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SEPDecorators.html" class="btn btn-neutral float-left" title="SEPDecorators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcel Simader.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

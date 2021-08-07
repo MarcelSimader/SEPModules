@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>maths &mdash; SEPModules 1.2.0 documentation</title>
+  <title>maths &mdash; SEPModules 2.1.0 documentation</title>
   
 
   
@@ -42,7 +42,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="SEPAlgebra" href="SEPAlgebra.html" />
+    <link rel="next" title="SEPLogic" href="SEPLogic.html" />
     <link rel="prev" title="SEPModules" href="../../index.html" /> 
 </head>
 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.2.0
+                2.1.0
               </div>
             
           
@@ -95,10 +95,28 @@
               <p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">maths</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogic.html">SEPLogic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#exceptions">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#connective-bases">Connective Bases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#logical-connective-enum">Logical Connective Enum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#connective-format-protocols">Connective Format Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#proposition-protocols">Proposition Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#propositions">Propositions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SEPLogic.html#proposition">Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPLogic.html#atomic-proposition">Atomic Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPLogic.html#truth-constants">Truth constants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SEPQBF.html">SEPQBF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPQBF.html#pqbf">PQBF</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
 <li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
 <li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#group">Group</a></li>
 <li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#abelian-group">Abelian Group</a></li>
 <li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#ring">Ring</a></li>
@@ -109,13 +127,10 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../SEPPrinting/index.html">SEPPrinting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../SEPPrinting/SEPPrinting.html#console-graph">Console Graph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SEPPrinting/SEPPrinting.html#progress-bar">Progress Bar</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPPrinting.html">SEPPrinting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting.html#color-printing">Color Printing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting.html#ansi-control-sequences">ANSI Control Sequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting.html#printing-utilities">Printing Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../SEPLogger.html">SEPLogger</a><ul>
@@ -127,7 +142,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../SEPIO.html#console-arguments">Console Arguments</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../SEPDecorators.html">SEPDecorators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPDecorators.html">SEPDecorators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPDecorators.html#decorator-utils">Decorator Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPDecorators.html#decorators">Decorators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPUtils.html">SEPUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#immutable">Immutable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#singleton">Singleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#stack-frame-info">Stack Frame Info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#functions">Functions</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -203,10 +230,28 @@
 <h1>maths<a class="headerlink" href="#maths" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="SEPLogic.html">SEPLogic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogic.html#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogic.html#connective-bases">Connective Bases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogic.html#logical-connective-enum">Logical Connective Enum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogic.html#connective-format-protocols">Connective Format Protocols</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogic.html#proposition-protocols">Proposition Protocols</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPLogic.html#propositions">Propositions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#proposition">Proposition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#atomic-proposition">Atomic Proposition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPLogic.html#truth-constants">Truth constants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPQBF.html">SEPQBF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPQBF.html#pqbf">PQBF</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#group">Group</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#abelian-group">Abelian Group</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#ring">Ring</a></li>
@@ -225,7 +270,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="SEPAlgebra.html" class="btn btn-neutral float-right" title="SEPAlgebra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SEPLogic.html" class="btn btn-neutral float-right" title="SEPLogic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="../../index.html" class="btn btn-neutral float-left" title="SEPModules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

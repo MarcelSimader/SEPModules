@@ -1,3 +1,12 @@
+"""
+:Author: Marcel Simader
+:Date: 17.07.2021
+"""
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ IMPORTS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 import unittest
 
 from itertools import combinations
@@ -6,6 +15,10 @@ from math import fmod
 
 from SEPMaths import is_group, is_abelian_group, Rational, find_rational_approximation, get_possible_rationals
 from SEPModules.SEPDecorators import timed
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ TESTS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # noinspection PyTypeChecker
 def test_performance_is_group(n=4):

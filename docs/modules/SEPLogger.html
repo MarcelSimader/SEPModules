@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>SEPLogger &mdash; SEPModules 1.2.0 documentation</title>
+  <title>SEPLogger &mdash; SEPModules 2.1.0 documentation</title>
   
 
   
@@ -43,7 +43,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="SEPIO" href="SEPIO.html" />
-    <link rel="prev" title="SEPPrinting.FillCharacters" href="SEPPrinting/SEPPrinting.FillCharacters.html" /> 
+    <link rel="prev" title="SEPPrinting" href="SEPPrinting.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.2.0
+                2.1.0
               </div>
             
           
@@ -95,14 +95,28 @@
               <p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="maths/index.html">maths</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="maths/SEPMaths.html">SEPMaths</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="maths/SEPMaths.html#rational">Rational</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maths/SEPLogic.html">SEPLogic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#exceptions">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#connective-bases">Connective Bases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#logical-connective-enum">Logical Connective Enum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#connective-format-protocols">Connective Format Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#proposition-protocols">Proposition Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPLogic.html#propositions">Propositions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPLogic.html#proposition">Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPLogic.html#atomic-proposition">Atomic Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPLogic.html#truth-constants">Truth constants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="maths/SEPQBF.html">SEPQBF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="maths/SEPQBF.html#pqbf">PQBF</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="maths/SEPAlgebra.html">SEPAlgebra</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="maths/SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#monoid">Monoid</a></li>
 <li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#monoid">Monoid</a></li>
 <li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#group">Group</a></li>
 <li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#abelian-group">Abelian Group</a></li>
 <li class="toctree-l4"><a class="reference internal" href="maths/SEPAlgebra.html#ring">Ring</a></li>
@@ -113,13 +127,10 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="SEPPrinting/index.html">SEPPrinting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.html">SEPPrinting Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="SEPPrinting/SEPPrinting.html#console-graph">Console Graph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SEPPrinting/SEPPrinting.html#progress-bar">Progress Bar</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="SEPPrinting/SEPPrinting.FillCharacters.html">SEPPrinting.FillCharacters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPPrinting.html">SEPPrinting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting.html#color-printing">Color Printing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting.html#ansi-control-sequences">ANSI Control Sequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPPrinting.html#printing-utilities">Printing Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">SEPLogger</a><ul>
@@ -131,7 +142,19 @@
 <li class="toctree-l2"><a class="reference internal" href="SEPIO.html#console-arguments">Console Arguments</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="SEPDecorators.html">SEPDecorators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SEPDecorators.html">SEPDecorators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPDecorators.html#decorator-utils">Decorator Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPDecorators.html#decorators">Decorators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SEPUtils.html">SEPUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SEPUtils.html#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPUtils.html#immutable">Immutable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPUtils.html#singleton">Singleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPUtils.html#stack-frame-info">Stack Frame Info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SEPUtils.html#functions">Functions</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -238,46 +261,38 @@
 
 </div>
 <dl class="py class">
-<dt class="sig sig-object py" id="SEPModules.SEPLogger.Levels">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">Levels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Levels" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Level">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">Level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for all <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> level enums. <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> values are comparable using the standard
-compare operators and additionally must be instantiated with a tuple of form <code class="docutils literal notranslate"><span class="pre">(level,</span> <span class="pre">prefix,</span> <span class="pre">style)</span></code> with types
-<code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">AnyStr</span></code>, and <a class="reference internal" href="SEPPrinting/SEPPrinting.html#SEPModules.SEPPrinting.Style" title="SEPModules.SEPPrinting.Style"><code class="xref py py-class docutils literal notranslate"><span class="pre">SEPModules.SEPPrinting.Style</span></code></a> which can be accessed as properties of the instances
-of this class.</p>
-<p>The <a class="reference internal" href="#SEPModules.SEPLogger.Levels.get_debug" title="SEPModules.SEPLogger.Levels.get_debug"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_debug()</span></code></a> function of this class <strong>must</strong> be overwritten and helps to customize the level number,
-prefix, and style of the debug level. Additionally, <a class="reference internal" href="#SEPModules.SEPLogger.Levels.get_errors" title="SEPModules.SEPLogger.Levels.get_errors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_errors()</span></code></a> <strong>must</strong> be overwritten as well. See
-<a class="reference internal" href="#SEPModules.SEPLogger.DefaultLevels" title="SEPModules.SEPLogger.DefaultLevels"><code class="xref py py-class docutils literal notranslate"><span class="pre">DefaultLevels</span></code></a> as example.</p>
+compare operators and additionally must be instantiated with a tuple of form <code class="docutils literal notranslate"><span class="pre">(level,</span> <span class="pre">prefix,</span> <span class="pre">style,</span> <span class="pre">level_type)</span></code>
+with types <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">AnyStr</span></code>, <a class="reference internal" href="SEPPrinting.html#SEPModules.SEPPrinting.AnsiControl" title="SEPModules.SEPPrinting.AnsiControl"><code class="xref py py-class docutils literal notranslate"><span class="pre">SEPModules.SEPPrinting.AnsiControl</span></code></a>, and <code class="xref py py-class docutils literal notranslate"><span class="pre">LevelType</span></code> which can
+be accessed as properties of the instances of this class.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="SEPModules.SEPLogger.Levels.get_errors">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">get_errors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Levels.get_errors" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Level.get_errors">
+<em class="property"><span class="pre">final</span> <span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">get_errors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Level.get_errors" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function provides those levels which represent an error so that the <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> class can discern
 between normal outputs and error outputs.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The level provided by <a class="reference internal" href="#SEPModules.SEPLogger.Levels.get_debug" title="SEPModules.SEPLogger.Levels.get_debug"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_debug()</span></code></a> should <em>never</em> be returned by this method, and thus should never
-count as error!</p>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">Levels</span></code></a> enum entry which represent an error</p>
+<dd class="field-odd"><p>an iterator of <a class="reference internal" href="#SEPModules.SEPLogger.Level" title="SEPModules.SEPLogger.Level"><code class="xref py py-class docutils literal notranslate"><span class="pre">Level</span></code></a> enum entry which represent the error levels</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Collection[<a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels">SEPModules.SEPLogger.Levels</a>]</p>
+<dd class="field-even"><p>Tuple[<a class="reference internal" href="#SEPModules.SEPLogger.Level" title="SEPModules.SEPLogger.Level">SEPModules.SEPLogger.Level</a>, …]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="SEPModules.SEPLogger.Levels.get_debug">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">get_debug</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Levels.get_debug" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function provides the debug enum for use in the <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> class. It must be overwritten to change
-the value of this enum. This function is needed to provide the logger class with a debug level.</p>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Level.get_debug">
+<em class="property"><span class="pre">final</span> <span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">get_debug</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Level.get_debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function provides the debug enum for use in the <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> class. This function is needed to provide
+the logger class with a debug level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">Levels</span></code></a> enum entry which represents the debug level</p>
+<dd class="field-odd"><p>an iterator of <a class="reference internal" href="#SEPModules.SEPLogger.Level" title="SEPModules.SEPLogger.Level"><code class="xref py py-class docutils literal notranslate"><span class="pre">Level</span></code></a> enum entry which represents the debug levels</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Optional[<a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels">SEPModules.SEPLogger.Levels</a>]</p>
+<dd class="field-even"><p>Tuple[<a class="reference internal" href="#SEPModules.SEPLogger.Level" title="SEPModules.SEPLogger.Level">SEPModules.SEPLogger.Level</a>, …]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -285,10 +300,9 @@ the value of this enum. This function is needed to provide the logger class with
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="SEPModules.SEPLogger.DefaultLevels">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">DefaultLevels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.DefaultLevels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">SEPModules.SEPLogger.Levels</span></code></a></p>
-<p>Default set of levels to pass to a <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> instance.</p>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.DefaultLevel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">DefaultLevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.DefaultLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default set of levels to pass to a <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> instance.</p>
 </dd></dl>
 
 </div>
@@ -296,18 +310,20 @@ the value of this enum. This function is needed to provide the logger class with
 <h2>Logger<a class="headerlink" href="#logger" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">Logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">level_class=&lt;enum</span> <span class="pre">'DefaultLevels'&gt;</span></em>, <em class="sig-param"><span class="pre">min_level=&lt;DefaultLevels.VERBOSE:</span> <span class="pre">(0</span></em>, <em class="sig-param"><span class="pre">'[Verbose]</span> <span class="pre">'</span></em>, <em class="sig-param"><span class="pre">Style(37))&gt;</span></em>, <em class="sig-param"><span class="pre">level_mask=None</span></em>, <em class="sig-param"><span class="pre">print_function=None</span></em>, <em class="sig-param"><span class="pre">use_timestamp=False</span></em>, <em class="sig-param"><span class="pre">use_date=False</span></em>, <em class="sig-param"><span class="pre">ignore_level_restrictions=False</span></em>, <em class="sig-param"><span class="pre">use_color=True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.SEPLogger.</span></span><span class="sig-name descname"><span class="pre">Logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DefaultLevel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DefaultLevel.VERBOSE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_level_restrictions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> provides a convenient way to handle printing to the console, or to another stream or file.</p>
-<p>A logger instance holds configurations on how to print data and what additional meta-data to include. The <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">Levels</span></code></a>
+<p>A logger instance holds configurations on how to print data and what additional meta-data to include. The <a class="reference internal" href="#SEPModules.SEPLogger.Level" title="SEPModules.SEPLogger.Level"><code class="xref py py-class docutils literal notranslate"><span class="pre">Level</span></code></a>
 enum can be used to configure different levels of verbosity (e.g. WARNING, ERROR, etc.) with default levels already
-implemented in <a class="reference internal" href="#SEPModules.SEPLogger.DefaultLevels" title="SEPModules.SEPLogger.DefaultLevels"><code class="xref py py-class docutils literal notranslate"><span class="pre">DefaultLevels</span></code></a>, which are also accessible through their aliases <a class="reference internal" href="#SEPModules.SEPLogger.VERBOSE" title="SEPModules.SEPLogger.VERBOSE"><code class="xref py py-data docutils literal notranslate"><span class="pre">VERBOSE</span></code></a>,
-<a class="reference internal" href="#SEPModules.SEPLogger.INFO" title="SEPModules.SEPLogger.INFO"><code class="xref py py-data docutils literal notranslate"><span class="pre">INFO</span></code></a>, <a class="reference internal" href="#SEPModules.SEPLogger.WARNING" title="SEPModules.SEPLogger.WARNING"><code class="xref py py-data docutils literal notranslate"><span class="pre">WARNING</span></code></a>, <a class="reference internal" href="#SEPModules.SEPLogger.ERROR" title="SEPModules.SEPLogger.ERROR"><code class="xref py py-data docutils literal notranslate"><span class="pre">ERROR</span></code></a>, <a class="reference internal" href="#SEPModules.SEPLogger.FATAL_ERROR" title="SEPModules.SEPLogger.FATAL_ERROR"><code class="xref py py-data docutils literal notranslate"><span class="pre">FATAL_ERROR</span></code></a>. Logger also includes a convenience method
-<a class="reference internal" href="#SEPModules.SEPLogger.Logger.debug" title="SEPModules.SEPLogger.Logger.debug"><code class="xref py py-meth docutils literal notranslate"><span class="pre">debug()</span></code></a> which can be used to debug and includes additional meta-data such as the file name and line number.</p>
-<p>For convenience, one might want to set up the logger as a constant in the following fashion:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">default_logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">(</span><span class="n">min_level</span><span class="o">=</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">use_timestamp</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span> <span class="o">=</span> <span class="n">default_logger</span><span class="o">.</span><span class="n">log</span> <span class="c1"># alias to the log function</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">debug</span> <span class="o">=</span> <span class="n">default_logger</span><span class="o">.</span><span class="n">debug</span> <span class="c1"># alias to the debug function</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fatal_error</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">msg</span><span class="p">:</span> <span class="n">default_logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">FATAL_ERROR</span><span class="p">)</span> <span class="c1"># alias to an error output of the log function</span>
+implemented in <code class="xref py py-class docutils literal notranslate"><span class="pre">DefaultLevels</span></code>, which are also accessible through their aliases <a class="reference internal" href="#SEPModules.SEPLogger.VERBOSE" title="SEPModules.SEPLogger.VERBOSE"><code class="xref py py-data docutils literal notranslate"><span class="pre">VERBOSE</span></code></a>,
+<a class="reference internal" href="#SEPModules.SEPLogger.INFO" title="SEPModules.SEPLogger.INFO"><code class="xref py py-data docutils literal notranslate"><span class="pre">INFO</span></code></a>, <a class="reference internal" href="#SEPModules.SEPLogger.WARNING" title="SEPModules.SEPLogger.WARNING"><code class="xref py py-data docutils literal notranslate"><span class="pre">WARNING</span></code></a>, <a class="reference internal" href="#SEPModules.SEPLogger.ERROR" title="SEPModules.SEPLogger.ERROR"><code class="xref py py-data docutils literal notranslate"><span class="pre">ERROR</span></code></a>, <a class="reference internal" href="#SEPModules.SEPLogger.FATAL_ERROR" title="SEPModules.SEPLogger.FATAL_ERROR"><code class="xref py py-data docutils literal notranslate"><span class="pre">FATAL_ERROR</span></code></a>. Logger also includes a convenience
+method <a class="reference internal" href="#SEPModules.SEPLogger.Logger.debug" title="SEPModules.SEPLogger.Logger.debug"><code class="xref py py-meth docutils literal notranslate"><span class="pre">debug()</span></code></a> which can be used to debug and includes additional meta-data such as the file name and line
+number.</p>
+<p>For convenience, one might want to set up the logger as a constant, or use the provided <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_LOGGER</span></code>
+instance in the following fashion:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">SEPModules.SEPLogger</span> <span class="kn">import</span> <span class="n">DEFAULT_LOGGER</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">SEPModules</span> <span class="kn">import</span> <span class="n">log</span> <span class="c1"># alias to the log method is already provided!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">SEPModules</span> <span class="kn">import</span> <span class="n">debug</span> <span class="c1"># and so is an alias to the debug method!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fatal_error</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">msg</span><span class="p">:</span> <span class="n">DEFAULT_LOGGER</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">FATAL_ERROR</span><span class="p">)</span> <span class="c1"># alias to an error output of the log function</span>
 </pre></div>
 </div>
 <p>Now we can simply use the aliases to access the logger:</p>
@@ -324,14 +340,14 @@ fatal_error(&quot;halting problem is not decidable!&quot;)
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>level_class</strong> (<em>EnumMeta</em>) – which <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">Levels</span></code></a> subclass to use as enum for the verbosity levels of this instance</p></li>
-<li><p><strong>min_level</strong> (<em>_LEVELS</em>) – the minimum level an entry must have to be printed or written to the log</p></li>
-<li><p><strong>level_mask</strong> (<em>Optional</em><em>[</em><em>Container</em><em>[</em><em>_LEVELS</em><em>]</em><em>]</em>) – a container of levels to ignore when printing or writing to the log</p></li>
-<li><p><strong>print_function</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>AnyStr</em><em>, </em><em>_LEVELS</em><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – a callable taking in one string (the message itself) and one level (the level of this message),
+<li><p><strong>level_class</strong> (<em>Type</em><em>[</em><em>_Level</em><em>]</em>) – which <a class="reference internal" href="#SEPModules.SEPLogger.Level" title="SEPModules.SEPLogger.Level"><code class="xref py py-class docutils literal notranslate"><span class="pre">Level</span></code></a> subclass to use as enum for the verbosity levels of this instance</p></li>
+<li><p><strong>min_level</strong> (<em>_Level</em>) – the minimum level an entry must have to be printed or written to the log</p></li>
+<li><p><strong>level_mask</strong> (<em>Optional</em><em>[</em><em>Container</em><em>[</em><em>_Level</em><em>]</em><em>]</em>) – a container of levels to ignore when printing or writing to the log</p></li>
+<li><p><strong>print_function</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>AnyStr</em><em>, </em><em>_Level</em><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – a callable taking in one string (the message itself) and one level (the level of this message),
 the print_function is expected to write this message to a buffer or output with optional formatting or changes
 based on the supplied level, and then to flush the buffer to write the change immediately if the level is at error
 threshold</p></li>
-<li><p><strong>use_timestamp</strong> (<em>bool</em>) – whether or not to print a timestamp with each log entry (see <a class="reference internal" href="#SEPModules.SEPLogger.Logger.__provide_timestamp__" title="SEPModules.SEPLogger.Logger.__provide_timestamp__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__provide_timestamp__()</span></code></a>)</p></li>
+<li><p><strong>use_timestamp</strong> (<em>bool</em>) – whether or not to print a timestamp with each log entry (see <a class="reference internal" href="#SEPModules.SEPLogger.Logger._provide_timestamp" title="SEPModules.SEPLogger.Logger._provide_timestamp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">_provide_timestamp()</span></code></a>)</p></li>
 <li><p><strong>use_date</strong> (<em>bool</em>) – whether or not to add the current date to each timestamp</p></li>
 <li><p><strong>ignore_level_restrictions</strong> (<em>bool</em>) – if set to True, this will ignore the values of the <code class="docutils literal notranslate"><span class="pre">min_level</span></code> and <code class="docutils literal notranslate"><span class="pre">level_mask</span></code>
 parameters</p></li>
@@ -340,22 +356,8 @@ parameters</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.default_print_function">
-<span class="sig-name descname"><span class="pre">default_print_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.default_print_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>The default function used for printing. This will print to <code class="docutils literal notranslate"><span class="pre">STDOUT</span></code> for levels below or equal to <a class="reference internal" href="#SEPModules.SEPLogger.WARNING" title="SEPModules.SEPLogger.WARNING"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WARNING</span></code></a>,
-and to <code class="docutils literal notranslate"><span class="pre">STDERR</span></code> for anything above, excluding the debug output.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The level provided by the <a class="reference internal" href="#SEPModules.SEPLogger.Levels.get_debug" title="SEPModules.SEPLogger.Levels.get_debug"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Levels.get_debug()</span></code></a> method will never be considered an error by this function,
-even if it is provided by the <a class="reference internal" href="#SEPModules.SEPLogger.Levels.get_errors" title="SEPModules.SEPLogger.Levels.get_errors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Levels.get_errors()</span></code></a> method.</p>
-</div>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.__provide_timestamp__">
-<span class="sig-name descname"><span class="pre">__provide_timestamp__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.__provide_timestamp__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger._provide_timestamp">
+<span class="sig-name descname"><span class="pre">_provide_timestamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger._provide_timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides the current time as timestamp.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -370,30 +372,82 @@ string</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.default_print_function">
+<span class="sig-name descname"><span class="pre">default_print_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.default_print_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default function used for printing. This will print to <code class="docutils literal notranslate"><span class="pre">STDOUT</span></code> for levels below or equal to <a class="reference internal" href="#SEPModules.SEPLogger.WARNING" title="SEPModules.SEPLogger.WARNING"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WARNING</span></code></a>,
+and to <code class="docutils literal notranslate"><span class="pre">STDERR</span></code> for anything above, excluding the debug output.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The level provided by the <a class="reference internal" href="#SEPModules.SEPLogger.Level.get_debug" title="SEPModules.SEPLogger.Level.get_debug"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Level.get_debug()</span></code></a> method will never be considered an error by this function,
+even if it is provided by the <a class="reference internal" href="#SEPModules.SEPLogger.Level.get_errors" title="SEPModules.SEPLogger.Level.get_errors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Level.get_errors()</span></code></a> method.</p>
+</div>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.min_level">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">min_level</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.SEPLogger._Level</span></em><a class="headerlink" href="#SEPModules.SEPLogger.Logger.min_level" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the minimum level to be logged by this instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.level_mask">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">level_mask</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[Collection[SEPModules.SEPLogger._Level]]</span></em><a class="headerlink" href="#SEPModules.SEPLogger.Logger.level_mask" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the level mask blocking specific levels from being logged</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.level_class">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">level_class</span></span><em class="property"><span class="pre">:</span> <span class="pre">Type[SEPModules.SEPLogger._Level]</span></em><a class="headerlink" href="#SEPModules.SEPLogger.Logger.level_class" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the enum of which all levels used by this instance must be a part of</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.log">
-<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joiner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.log" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DefaultLevel.INFO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joiner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers a log entry with this instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>msg</strong> (<em>Any</em>) – the message to log, can be any number of objects</p></li>
-<li><p><strong>level</strong> (<em>SEPModules.SEPLogger._LEVELS</em>) – which level to mark this entry as (see <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> and <a class="reference internal" href="#SEPModules.SEPLogger.Levels" title="SEPModules.SEPLogger.Levels"><code class="xref py py-class docutils literal notranslate"><span class="pre">Levels</span></code></a>)</p></li>
+<li><p><strong>level</strong> (<em>SEPModules.SEPLogger._Level</em>) – which level to mark this entry as (see <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a> and <a class="reference internal" href="#SEPModules.SEPLogger.Level" title="SEPModules.SEPLogger.Level"><code class="xref py py-class docutils literal notranslate"><span class="pre">Level</span></code></a>)</p></li>
 <li><p><strong>start</strong> (<em>AnyStr</em>) – the starting character of the message of the log entry (inserted after prefix and timestamp)</p></li>
 <li><p><strong>joiner</strong> (<em>AnyStr</em>) – the character used to join multiple input objects together (akin to <code class="docutils literal notranslate"><span class="pre">str.join</span></code>)</p></li>
 <li><p><strong>end</strong> (<em>AnyStr</em>) – the ending character of the log entry, similar to the end keyword argument of the <code class="docutils literal notranslate"><span class="pre">print</span></code> builtin</p></li>
 </ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – if level is not part of the enum specified by <cite>level_class</cite> (see <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a>
+constructor)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.newline">
-<span class="sig-name descname"><span class="pre">newline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.newline" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">newline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DefaultLevel.INFO</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.newline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers an empty line with this instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>level</strong> (<em>SEPModules.SEPLogger._LEVELS</em>) – the level to mark this blank line as, this does not print a style or prefix and simply exists so
+<dd class="field-odd"><p><strong>level</strong> (<em>SEPModules.SEPLogger._Level</em>) – the level to mark this blank line as, this does not print a style or prefix and simply exists so
 that newlines can be printed conditionally based on what the level requirements of this instance are</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – if level is not part of the enum specified by <cite>level_class</cite> (see <a class="reference internal" href="#SEPModules.SEPLogger.Logger" title="SEPModules.SEPLogger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a>
+constructor)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -416,24 +470,59 @@ that newlines can be printed conditionally based on what the level requirements 
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.R">
-<span class="sig-name descname"><span class="pre">R</span></span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.R" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <code class="docutils literal notranslate"><span class="pre">return</span></code> type variable for this class.</p>
-<p>alias of TypeVar(‘R’)</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.Logger.log_call">
+<span class="sig-prename descclassname"><span class="pre">&#64;</span></span><span class="sig-name descname"><span class="pre">log_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DefaultLevel.INFO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_qualified_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_arguments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_self</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joiner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.Logger.log_call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Customizable decorator for logging a function call with a message and a level. This log call will automatically
+include the function name in the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> – the message to log, can be any number of objects</p></li>
+<li><p><strong>level</strong> – which level to mark this entry as (see <code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">Level</span></code>)</p></li>
+<li><p><strong>use_qualified_name</strong> – whether or not to use the fully qualified name of the function in the log output</p></li>
+<li><p><strong>include_arguments</strong> – whether or not to include the arguments passed to the function in the log output</p></li>
+<li><p><strong>exclude_self</strong> – whether or not to exclude the <code class="docutils literal notranslate"><span class="pre">cls</span></code> argument for methods</p></li>
+<li><p><strong>start</strong> – the starting character of the message of the log entry (inserted after prefix and timestamp)</p></li>
+<li><p><strong>joiner</strong> – the character used to join multiple input objects together (akin to <code class="docutils literal notranslate"><span class="pre">str.join</span></code>)</p></li>
+<li><p><strong>end</strong> – the ending character of the log entry, similar to the end keyword argument of the <code class="docutils literal notranslate"><span class="pre">print</span></code> builtin</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the customized decorator function</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.log_call">
-<span class="sig-name descname"><span class="pre">log_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joiner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.log_call" title="Permalink to this definition">¶</a></dt>
-<dd><p>TODO write log_call docs
-:param msg:
-:param level:
-:param start:
-:param joiner:
-:param end:
-:return:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPModules.SEPLogger.Logger.Logger.log_class">
+<span class="sig-prename descclassname"><span class="pre">&#64;</span></span><span class="sig-name descname"><span class="pre">log_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DefaultLevel.INFO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_public</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_private</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_arguments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_self</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joiner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPLogger.Logger.Logger.log_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Customizable decorator for logging a function call with a message and a level. This log call will automatically
+include the function name in the output.  DOCS change this docstring</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> methods cannot be logged, since they maybe be used to generate the log
+output. The <code class="docutils literal notranslate"><span class="pre">__new__</span></code> method is also not logged.</p>
+</div>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> – the message to log, can be any number of objects</p></li>
+<li><p><strong>level</strong> – which level to mark this entry as (see <code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">Level</span></code>)</p></li>
+<li><p><strong>allow_public</strong> – whether or not to allow public methods (all methods with names not starting with any
+underscores), for example <code class="docutils literal notranslate"><span class="pre">message</span></code></p></li>
+<li><p><strong>allow_private</strong> – whether or not to allow “sunder” or “dunder” methods (all methods with names starting with
+underscores), for example <code class="docutils literal notranslate"><span class="pre">_calc_runtime</span></code></p></li>
+<li><p><strong>include_arguments</strong> – whether or not to include the arguments passed to the function in the log output</p></li>
+<li><p><strong>exclude_self</strong> – whether or not to exclude the <code class="docutils literal notranslate"><span class="pre">cls</span></code> argument for methods</p></li>
+<li><p><strong>start</strong> – the starting character of the message of the log entry (inserted after prefix and timestamp)</p></li>
+<li><p><strong>joiner</strong> – the character used to join multiple input objects together (akin to <code class="docutils literal notranslate"><span class="pre">str.join</span></code>)</p></li>
+<li><p><strong>end</strong> – the ending character of the log entry, similar to the end keyword argument of the <code class="docutils literal notranslate"><span class="pre">print</span></code> builtin</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the customized decorator function</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -449,7 +538,7 @@ that newlines can be printed conditionally based on what the level requirements 
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="SEPIO.html" class="btn btn-neutral float-right" title="SEPIO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="SEPPrinting/SEPPrinting.FillCharacters.html" class="btn btn-neutral float-left" title="SEPPrinting.FillCharacters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SEPPrinting.html" class="btn btn-neutral float-left" title="SEPPrinting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
