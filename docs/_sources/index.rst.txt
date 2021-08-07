@@ -13,10 +13,11 @@ SEPModules
    :caption: API Documentation
 
    modules/maths/index
-   modules/SEPPrinting/index
+   modules/SEPPrinting
    modules/SEPLogger
    modules/SEPIO
    modules/SEPDecorators
+   modules/SEPUtils
 
 .. toctree::
    :maxdepth: 2

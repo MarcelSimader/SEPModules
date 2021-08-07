@@ -9,7 +9,11 @@ Python package providing basic modules and functionality for various common task
 
 The package is of the following structure:
 - ### maths
-  
+
+  - ### SEPLogic
+    Provides classes and functions for performing zeroth order logic operations and interfacing with external solvers.
+>  - ### SEPQBF
+>    Provides classes and functions extending ``SEPLogic`` for performing QBF operations.
   - ### SEPAlgebra
     Provides classes and functions for performing computations on algebraic structures.
 
@@ -23,7 +27,10 @@ The package is of the following structure:
   Aids in IO tasks such as reading console line arguments and parameters.
 
 - ### SEPDecorators
-  Contains miscellaneous function decorators.
+  Contains miscellaneous function decorators and decorator utilities.
+
+- ### SEPUtils
+  Contains various utilities and custom python constructions.
 
 ---
 
@@ -109,7 +116,7 @@ print(f"is commutative: {binary_and.is_commutative()}")
 ```python
 # since it is commutative we might want to model it as monoid,
 # which only takes one operator
-binary_and = SEPAlgebra.Monoid({0, 1}, int.__mul__)
+binary_and = SEPAlgebra.Semigroup({0, 1}, int.__mul__)
 ```
 
 ```python

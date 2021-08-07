@@ -15,16 +15,16 @@ Algebraic Structures
     :members:
     :special-members: __eq__, __lt__, __le__, __gt__, __ge__, __bool__
 
-Monoid
-^^^^^^^^^^^^^^
-
-..	autoclass:: SEPModules.maths.SEPAlgebra.Monoid
-    :members:
-
 Semigroup
 ^^^^^^^^^^^^^^
 
 ..	autoclass:: SEPModules.maths.SEPAlgebra.Semigroup
+    :members:
+
+Monoid
+^^^^^^^^^^^^^^
+
+..	autoclass:: SEPModules.maths.SEPAlgebra.Monoid
     :members:
 
 Group

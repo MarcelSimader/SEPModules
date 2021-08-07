@@ -25,7 +25,7 @@ copyright = "2021, Marcel Simader"
 author = "Marcel Simader"
 
 # The full version, including alpha/beta/rc tags
-release = "1.2.1"
+release = "2.1.0"
 version = release
 
 
@@ -62,7 +62,6 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
-
 html_css_files = ["custom.css"]
 
 # ~~~~~~~~~~~~~~~ sphinx.ext.todo CONFIG ~~~~~~~~~~~~~~~
@@ -76,10 +75,10 @@ autodoc_inherit_docstrings = True
 autodoc_class_signature = "separated"
 autodoc_typehints_description_target = "documented"
 autodoc_type_aliases = {
-	"Style": "Style",
 	"Element": "Element",
 	"Operator": "Operator",
-	"NoElementType": "NoElementType"
+	"NoElementType": "NoElementType",
+	"Assignment": "Assignment"
 	}
 
 autodoc_default_options = {

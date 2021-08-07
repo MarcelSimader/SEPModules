@@ -17,15 +17,26 @@ Logger Levels
 
 			These constants are provided as aliases for ``SEPModules.SEPLogger.DefaultLevels.*``.
 
-..	autoclass:: SEPModules.SEPLogger.Levels
+..	autoclass:: SEPModules.SEPLogger.Level
 	:members:
 
-..	autoclass:: SEPModules.SEPLogger.DefaultLevels
-	:show-inheritance:
+..	autoclass:: SEPModules.SEPLogger.DefaultLevel
 
 Logger
 -----------------------
 
 ..	autoclass:: SEPModules.SEPLogger.Logger
-	:special-members: __provide_timestamp__
-	:members:
+
+	.. automethod:: _provide_timestamp
+	.. automethod:: default_print_function
+
+	.. autoproperty:: min_level
+	.. autoproperty:: level_mask
+	.. autoproperty:: level_class
+
+	.. automethod:: log
+	.. automethod:: newline
+	.. automethod:: debug
+
+	.. autodecorator:: SEPModules.SEPLogger.Logger.log_call
+	.. autodecorator:: SEPModules.SEPLogger.Logger.log_class

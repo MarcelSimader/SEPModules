@@ -7,4 +7,4 @@
 # ~~~~~~~~~~~~~~~ IMPORTS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-from SEPModules.SEPLogger import debug
+from SEPModules.SEPLogger import log, debug

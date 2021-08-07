@@ -116,7 +116,7 @@ class Rational(Number):
 		else:
 			self._sign = (sign(a, zero=1), sign(b, zero=1))  # set sign of fraction
 
-		self._a, self._b = Rational.__simplify__(abs(a), abs(b))  # simplify tuple of absolute values
+		self._a, self._b = Rational.__simplify__(abs(a), abs(b))  # expand tuple of absolute values
 
 	def __repr__(self) -> str:
 		return f"Rational(a={self.a}, b={self._b})"
@@ -147,7 +147,7 @@ class Rational(Number):
 		"""
 		other: Rational
 		if self.sign != other.sign:
-			return self.sign  # either (1, -1) or (-1, 1) so we can return self.sign
+			return self.sign  # either (1, -1) or (-1, 1) so we can return cls.sign
 		else:  # either (1, 1) or (-1, -1) so we check
 			# abs(a / b) - abs(c / d)
 			# abs(ad / bd) - abs(cb / db)

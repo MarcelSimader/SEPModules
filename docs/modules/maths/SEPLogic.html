@@ -1,0 +1,1249 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SEPLogic &mdash; SEPModules 2.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SEPQBF" href="SEPQBF.html" />
+    <link rel="prev" title="maths" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SEPModules
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">maths</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SEPLogic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connective-bases">Connective Bases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logical-connective-enum">Logical Connective Enum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connective-format-protocols">Connective Format Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#proposition-protocols">Proposition Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#propositions">Propositions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#proposition">Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#atomic-proposition">Atomic Proposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#truth-constants">Truth constants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SEPQBF.html">SEPQBF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPQBF.html#pqbf">PQBF</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SEPAlgebra.html">SEPAlgebra</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SEPAlgebra.html#algebraic-structures">Algebraic Structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#semigroup">Semigroup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#monoid">Monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#group">Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#abelian-group">Abelian Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#ring">Ring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SEPAlgebra.html#field">Field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPPrinting.html">SEPPrinting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting.html#color-printing">Color Printing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting.html#ansi-control-sequences">ANSI Control Sequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPPrinting.html#printing-utilities">Printing Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPLogger.html">SEPLogger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPLogger.html#logger-levels">Logger Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPLogger.html#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPIO.html">SEPIO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPIO.html#console-arguments">Console Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPDecorators.html">SEPDecorators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPDecorators.html#decorator-utils">Decorator Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPDecorators.html#decorators">Decorators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SEPUtils.html">SEPUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#immutable">Immutable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#singleton">Singleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#stack-frame-info">Stack Frame Info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SEPUtils.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/test.html">Test</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SEPModules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">maths</a> &raquo;</li>
+        
+      <li>SEPLogic</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/modules/maths/SEPLogic.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-SEPModules.maths.SEPLogic">
+<span id="seplogic"></span><h1>SEPLogic<a class="headerlink" href="#module-SEPModules.maths.SEPLogic" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Marcel Simader</p>
+</dd>
+<dt class="field-even">Date</dt>
+<dd class="field-even"><p>13.07.2021</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.0.</span></p>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Assignment">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">Assignment</span></span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Assignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>A type alias for a mapping of <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a> objects to a <code class="docutils literal notranslate"><span class="pre">bool</span></code> truth value.</p>
+<p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code>[<a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">SEPModules.maths.SEPLogic.AtomicProposition</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</p>
+</dd></dl>
+
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.LogicError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">LogicError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proposition</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.LogicError" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicError" title="SEPModules.maths.SEPLogic.LogicError"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogicError</span></code></a> is an exception class for errors in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">SEPLogic</span></code> module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>AnyStr</em>) – the message of the error</p></li>
+<li><p><strong>proposition</strong> (<em>AnyStr</em>) – the string representation of the proposition which is related to the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.LogicSyntaxError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">LogicSyntaxError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proposition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_context</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.LogicSyntaxError" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicSyntaxError" title="SEPModules.maths.SEPLogic.LogicSyntaxError"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogicSyntaxError</span></code></a> is an exception class for syntax errors in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">SEPLogic</span></code> module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>AnyStr</em>) – the message of the error</p></li>
+<li><p><strong>proposition</strong> (<em>AnyStr</em>) – the string representation of the proposition which is related to the error</p></li>
+<li><p><strong>file_path</strong> (<em>Union</em><em>[</em><em>AnyStr</em><em>, </em><em>os.PathLike</em><em>]</em>) – the path to the file where the error occurred</p></li>
+<li><p><strong>lineno</strong> (<em>int</em>) – the line number at which the error occurred in the file</p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – the offset in characters for the syntax error ‘cursor’</p></li>
+<li><p><strong>code_context</strong> (<em>List</em><em>[</em><em>AnyStr</em><em>]</em>) – the code context of where the error occurred (i.e. the source code)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.LogicSyntaxError.from_traceback">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">from_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proposition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.LogicSyntaxError.from_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a <code class="xref py py-class docutils literal notranslate"><span class="pre">SEPSyntaxError</span></code> object from a message, traceback, and an optional offset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>AnyStr</em>) – the message of the error</p></li>
+<li><p><strong>proposition</strong> (<em>AnyStr</em>) – the string representation of the proposition which is related to the error</p></li>
+<li><p><strong>tb</strong> (<em>inspect.Traceback</em>) – the traceback to use as basis for the error</p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – the offset in characters for the syntax error ‘cursor’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new <code class="xref py py-class docutils literal notranslate"><span class="pre">SEPSyntaxError</span></code> instance</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../SEPUtils.html#SEPModules.SEPUtils.SEPSyntaxError" title="SEPModules.SEPUtils.SEPSyntaxError">SEPModules.SEPUtils.SEPSyntaxError</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="connective-bases">
+<h2>Connective Bases<a class="headerlink" href="#connective-bases" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic._Connective">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">_Connective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic._Connective" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective" title="SEPModules.maths.SEPLogic._Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Connective</span></code></a> is the base class for connective enumerations. Each enumeration member must contain the method
+that this connective is associated with. It also stores an arity (see <a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveArity" title="SEPModules.maths.SEPLogic.ConnectiveArity"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectiveArity</span></code></a>), and a “strength”.</p>
+<p>The relational operators <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> of this instance compare the <a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective.strength" title="SEPModules.maths.SEPLogic._Connective.strength"><code class="xref py py-attr docutils literal notranslate"><span class="pre">strength</span></code></a> attribute, and
+the equivalency operators <code class="docutils literal notranslate"><span class="pre">==</span></code> and <code class="docutils literal notranslate"><span class="pre">!=</span></code> compare strict object identity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> – the method corresponding to this connective</p></li>
+<li><p><strong>arity</strong> – the arity of this connective (see <a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveArity" title="SEPModules.maths.SEPLogic.ConnectiveArity"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectiveArity</span></code></a>)</p></li>
+<li><p><strong>strength</strong> – an integer value defining this connective’s relative strength to the other connectives (for instance,
+negation is stronger than material implication)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic._Connective.method">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">method</span></span><em class="property"><span class="pre">:</span> <span class="pre">Callable</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic._Connective.method" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the method implementing the behavior of this connective</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic._Connective.arity">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">arity</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.maths.SEPLogic.ConnectiveArity</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic._Connective.arity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the arity of this connective</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic._Connective.strength">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">strength</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic._Connective.strength" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the relative strength of this connective</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveArity">
+<em class="property"><span class="pre">final</span> <span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">ConnectiveArity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveArity" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveArity" title="SEPModules.maths.SEPLogic.ConnectiveArity"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectiveArity</span></code></a> is an enum representing the arity of a <a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective" title="SEPModules.maths.SEPLogic._Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Connective</span></code></a> object. It contains an
+operand checking function which takes in the number of operands and returns whether this number is valid with the
+operator, and a description string.</p>
+<p>The available members are as follows:</p>
+<ul class="simple">
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">NILARY</span></code>: exactly 0 operands (name is derived from word nil)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">UNARY</span></code>: exactly 1 operand</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">BINARY</span></code>: exactly 2 operands</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">NARY</span></code>: 2 or more operands (n-ary)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>a function which checks with the supplied number of operands whether the operator can be applied or not</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>description</strong> – a short description of this arity for use in error and log output</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveArity.operand_check">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">operand_check</span></span><em class="property"><span class="pre">:</span> <span class="pre">Callable[[int],</span> <span class="pre">bool]</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveArity.operand_check" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a function which checks if the supplied number of operands is valid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveArity.description">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveArity.description" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a short description of this arity for use in log or error output</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveFormat">
+<em class="property"><span class="pre">final</span> <span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">ConnectiveFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enumeration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveFormat" title="SEPModules.maths.SEPLogic.ConnectiveFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectiveFormat</span></code></a> is a class which holds a mapping of <a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective" title="SEPModules.maths.SEPLogic._Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Connective</span></code></a> objects to their respective
+<a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry" title="SEPModules.maths.SEPLogic.ConnectiveFormat.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectiveFormat.Entry</span></code></a> objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>enumeration</strong> (<em>Type</em><em>[</em><em>_ConnectiveEnum</em><em>]</em>) – which <a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective" title="SEPModules.maths.SEPLogic._Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Connective</span></code></a> enumeration to define in this format</p></li>
+<li><p><strong>entries</strong> (<em>Mapping</em><em>[</em><em>_ConnectiveEnum</em><em>, </em><a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry" title="SEPModules.maths.SEPLogic.ConnectiveFormat.Entry"><em>ConnectiveFormat.Entry</em></a><em>]</em>) – a mapping of <a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective" title="SEPModules.maths.SEPLogic._Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Connective</span></code></a> objects to their respective
+<a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry" title="SEPModules.maths.SEPLogic.ConnectiveFormat.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectiveFormat.Entry</span></code></a> objects.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveFormat.Entry">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joiner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry" title="SEPModules.maths.SEPLogic.ConnectiveFormat.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectiveFormat.Entry</span></code></a> holds one entry of the mapping of <a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveFormat" title="SEPModules.maths.SEPLogic.ConnectiveFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectiveFormat</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> (<em>str</em>) – the string to prepend to the operands</p></li>
+<li><p><strong>joiner</strong> (<em>str</em>) – the string to use to join the operands (see <code class="docutils literal notranslate"><span class="pre">str.join</span></code>)</p></li>
+<li><p><strong>suffix</strong> (<em>str</em>) – the string o append to the operands</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveFormat.Entry.prefix">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry.prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The string to prepend to the operands.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveFormat.Entry.joiner">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">joiner</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry.joiner" title="Permalink to this definition">¶</a></dt>
+<dd><p>The string to use to join the operands (see <code class="docutils literal notranslate"><span class="pre">str.join</span></code>).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveFormat.Entry.suffix">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">suffix</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry.suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The string to append to the operands.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveFormat.enumeration">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">enumeration</span></span><em class="property"><span class="pre">:</span> <span class="pre">Type[_ConnectiveEnum]</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.enumeration" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective" title="SEPModules.maths.SEPLogic._Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Connective</span></code></a> enumeration this format defines.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.ConnectiveFormat.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">operands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connective</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats the operands with the given connective based on the format specified by the mapping in this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operands</strong> (<em>str</em>) – an arbitrary number of operands as strings</p></li>
+<li><p><strong>connective</strong> (<em>_ConnectiveEnum</em>) – the connective from the specified <a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveFormat.enumeration" title="SEPModules.maths.SEPLogic.ConnectiveFormat.enumeration"><code class="xref py py-attr docutils literal notranslate"><span class="pre">enumeration</span></code></a> enum class</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the formatted string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="logical-connective-enum">
+<h2>Logical Connective Enum<a class="headerlink" href="#logical-connective-enum" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.LogicalConnective">
+<em class="property"><span class="pre">final</span> <span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">LogicalConnective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.LogicalConnective" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicalConnective" title="SEPModules.maths.SEPLogic.LogicalConnective"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogicalConnective</span></code></a> is an enum deriving from <a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective" title="SEPModules.maths.SEPLogic._Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Connective</span></code></a>. it contains the basic logical
+connectives:</p>
+<ul class="simple">
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">EMPTY</span></code>: no operator, empty (nilary)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">NONE</span></code>: no operator, identity (unary)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">NEG</span></code>: negation (unary)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">EXIST</span></code>: existential quantification (unary)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">UNIV</span></code>: universal quantification (unary)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">AND</span></code>: logical and (n-ary)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">OR</span></code>: logical or (n-ary)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">R_IMPL</span></code>: material “left-implies-right” implication (binary)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">L_IMPL</span></code>: material “right-implies-left” implication (binary)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">IFF</span></code>: material equivalence, biconditional “if-and-only-if” (binary)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsLogicalConnective">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">SupportsLogicalConnective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsLogicalConnective" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple protocol for indicating that the standard logical connective methods are supported by a class.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="connective-format-protocols">
+<h2>Connective Format Protocols<a class="headerlink" href="#connective-format-protocols" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsConnectiveFormat">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">SupportsConnectiveFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsConnectiveFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Protocol to check whether or not a class supports formatting by <a class="reference internal" href="#SEPModules.maths.SEPLogic.ConnectiveFormat" title="SEPModules.maths.SEPLogic.ConnectiveFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectiveFormat</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsToPrettyPrint">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">SupportsToPrettyPrint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsToPrettyPrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for subclasses that can convert themselves to a pretty printed string.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsToPrettyPrint.to_pretty_print">
+<span class="sig-name descname"><span class="pre">to_pretty_print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsToPrettyPrint.to_pretty_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a pretty-printed string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a pretty-printed string representation of this object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsToLimboole">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">SupportsToLimboole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsToLimboole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for subclasses that can convert themselves to the limboole syntax as string.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsToLimboole.to_limboole">
+<span class="sig-name descname"><span class="pre">to_limboole</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsToLimboole.to_limboole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a limboole-compatible string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a limboole-compatible string representation of this object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsToLaTeX">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">SupportsToLaTeX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsToLaTeX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for subclasses that can convert themselves to LaTeX as string.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsToLaTeX.to_latex">
+<span class="sig-name descname"><span class="pre">to_latex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsToLaTeX.to_latex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a LaTeX-compatible string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a LaTeX-compatible string representation of this object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="proposition-protocols">
+<h2>Proposition Protocols<a class="headerlink" href="#proposition-protocols" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsEval">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">SupportsEval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsEval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Protocol to check whether or not an object can be evaluated using an assignment.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsEval.eval">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assignment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsEval.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates this object using assignment <code class="docutils literal notranslate"><span class="pre">assignment</span></code> and returns its truth value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>assignment</strong> (<em>Assignment</em>) – the mapping (assignment) of truth values to <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a> objects</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the truth value of this object under assignment <code class="docutils literal notranslate"><span class="pre">assignment</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsLimbooleEval">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">SupportsLimbooleEval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsLimbooleEval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for an object that can be converted to limboole syntax and then evaluated by limboole.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.SupportsLimbooleEval.limboole_eval">
+<span class="sig-name descname"><span class="pre">limboole_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">option</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.SupportsLimbooleEval.limboole_eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes the value generated by <code class="xref py py-meth docutils literal notranslate"><span class="pre">to_limboole()</span></code> to the <code class="docutils literal notranslate"><span class="pre">STDIN</span></code> of a Python <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> call to the program
+<code class="docutils literal notranslate"><span class="pre">limboole</span></code> with arguments <code class="docutils literal notranslate"><span class="pre">option</span></code>. Additionally, a timeout is specified to abort waiting for the program to
+return.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>option</strong> (<em>str</em>) – an arbitrary amount of strings which will be added to the called limboole command</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – a timeout in seconds after which the execution of the subprocess will be halted and a
+<code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code> raised</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the <code class="docutils literal notranslate"><span class="pre">STDOUT</span></code> of the program</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicError" title="SEPModules.maths.SEPLogic.LogicError"><strong>LogicError</strong></a> – if there was an error while running the program, if the process timed out after the seconds
+specified by the <code class="docutils literal notranslate"><span class="pre">timeout</span></code> argument</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="propositions">
+<h2>Propositions<a class="headerlink" href="#propositions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="proposition">
+<h3>Proposition<a class="headerlink" href="#proposition" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">Proposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">proposition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connective</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a> is the base class for representing a general propositional object. A general proposition
+consists of an arbitrary amount of composite <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a> objects connected by a <a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective" title="SEPModules.maths.SEPLogic._Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Connective</span></code></a>.
+Upon creation of a proposition, the connective’s arity operand check function is called to ensure the correct number
+of composite propositions.</p>
+<p>Aside from the propositions and connective, this class also keeps track of all of the seen connectives in its child
+proposition objects. It also keeps track of all the atomic propositions that have been seen in its child proposition
+objects (see <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a>).</p>
+<p>The class provides the following attributes for checking various characteristics of the structure of the proposition:
+<a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.empty" title="SEPModules.maths.SEPLogic.Proposition.empty"><code class="xref py py-attr docutils literal notranslate"><span class="pre">empty</span></code></a>, <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.atomic" title="SEPModules.maths.SEPLogic.Proposition.atomic"><code class="xref py py-attr docutils literal notranslate"><span class="pre">atomic</span></code></a>, <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.literal" title="SEPModules.maths.SEPLogic.Proposition.literal"><code class="xref py py-attr docutils literal notranslate"><span class="pre">literal</span></code></a>, <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.quantifier" title="SEPModules.maths.SEPLogic.Proposition.quantifier"><code class="xref py py-attr docutils literal notranslate"><span class="pre">quantifier</span></code></a>, <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.quantified" title="SEPModules.maths.SEPLogic.Proposition.quantified"><code class="xref py py-attr docutils literal notranslate"><span class="pre">quantified</span></code></a>.</p>
+<p>The operations defined by <a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicalConnective" title="SEPModules.maths.SEPLogic.LogicalConnective"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogicalConnective</span></code></a> have been implemented in this class, which means that all
+propositions can be arbitrarily combined, with the mapping from operator to method being outlined in each member
+object of <a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicalConnective" title="SEPModules.maths.SEPLogic.LogicalConnective"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogicalConnective</span></code></a>. It is noteworthy to say that <code class="docutils literal notranslate"><span class="pre">__mul__</span></code> (<code class="docutils literal notranslate"><span class="pre">*</span></code>) is mapped to <code class="docutils literal notranslate"><span class="pre">__and__</span></code>
+(<code class="docutils literal notranslate"><span class="pre">&amp;</span></code>), and <code class="docutils literal notranslate"><span class="pre">__add__</span></code> (<code class="docutils literal notranslate"><span class="pre">+</span></code>) is mapped to <code class="docutils literal notranslate"><span class="pre">__or__</span></code> (<code class="docutils literal notranslate"><span class="pre">|</span></code>) by default.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All new instances of <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a> are normalized according to the static method <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.normalize" title="SEPModules.maths.SEPLogic.Proposition.normalize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normalize()</span></code></a>,
+so that redundant constructions like nested <code class="xref py py-attr docutils literal notranslate"><span class="pre">LogicalConnective.NONE</span></code> connectives can be avoided.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The boolean value of all <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a> objects is <code class="docutils literal notranslate"><span class="pre">False</span></code> by default and issues a syntax warning. If
+one desires to check the truth value of a proposition, the <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.eval" title="SEPModules.maths.SEPLogic.Proposition.eval"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a> method should be used with an
+assignment.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proposition</strong> – an arbitrary number of <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a> objects</p></li>
+<li><p><strong>connective</strong> – a <a class="reference internal" href="#SEPModules.maths.SEPLogic._Connective" title="SEPModules.maths.SEPLogic._Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Connective</span></code></a> for defining the combining behavior of all passed propositions, usually
+a member of <a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicalConnective" title="SEPModules.maths.SEPLogic.LogicalConnective"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogicalConnective</span></code></a>, if <code class="docutils literal notranslate"><span class="pre">None</span></code> is given the constructor will try to use the correct
+connective when possible</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if no connective is given and the connective cannot be deduced from the other arguments, if the
+number of operands is incompatible with the given connective</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.normalize">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">propositions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connective</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalizes the input to the initializer of a <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a> instance. The arguments to this function are
+the same arguments passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">__init__()</span></code> but note that this function will not try to check or correct these
+inputs. The following rules are applied for <span class="math notranslate nohighlight">\(a \in \mathcal{P}\)</span>, and <span class="math notranslate nohighlight">\(P \in \mathcal{L}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\neg \top                                       &amp;{}\Rightarrow \bot \\
+\neg \bot                                       &amp;{}\Rightarrow \top \\
+\neg \neg a                                     &amp;{}\Rightarrow a \\
+(a)                                                     &amp;{}\Rightarrow a \\
+P \land (a \land \cdots)        &amp;{}\Rightarrow P \land a \land \cdots \\
+P \lor (a \lor \cdots)          &amp;{}\Rightarrow P \lor a \lor \cdots\end{split}\]</div>
+<p>Note that in this notation, the parentheses <span class="math notranslate nohighlight">\((\cdots)\)</span> refer to a <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a> object which is
+nested within the unary <code class="xref py py-attr docutils literal notranslate"><span class="pre">LogicalConnective.NONE</span></code> connective.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.propositions">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">propositions</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[SEPModules.maths.SEPLogic.Proposition]</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.propositions" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the child proposition instances of this class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.connective">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">connective</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPModules.maths.SEPLogic._Connective</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.connective" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the connective of this class, or <code class="xref py py-attr docutils literal notranslate"><span class="pre">LogicalConnective.NONE</span></code> if no connective was defined</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.seen_atomic_propositions">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">seen_atomic_propositions</span></span><em class="property"><span class="pre">:</span> <span class="pre">Set[SEPModules.maths.SEPLogic.AtomicProposition]</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.seen_atomic_propositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers a set of all the atomic propositions that have been defined in any of the child proposition objects of
+this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a set of atomic propositions found in any of the child propositions of this class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.seen_connectives">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">seen_connectives</span></span><em class="property"><span class="pre">:</span> <span class="pre">Set[SEPModules.maths.SEPLogic._Connective]</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.seen_connectives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers a set of all the connectives that have been defined in any of the child proposition objects of
+this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a set of connectives found in any of the child propositions of this class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.empty">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">empty</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.empty" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this proposition contains child propositions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.atomic">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">atomic</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.atomic" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this proposition is atomic</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.literal">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">literal</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.literal" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this proposition is a literal (i.e. atomic or a negation of an atomic proposition)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.quantifier">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">quantifier</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.quantifier" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this proposition is a quantifier (i.e. a <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.literal" title="SEPModules.maths.SEPLogic.Proposition.literal"><code class="xref py py-attr docutils literal notranslate"><span class="pre">literal</span></code></a> proposition which is
+existentially or universally quantified)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.quantified">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">quantified</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.quantified" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this proposition contains any quantifiers (i.e. a proposition where any of the child
+propositions fulfill <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.quantifier" title="SEPModules.maths.SEPLogic.Proposition.quantifier"><code class="xref py py-attr docutils literal notranslate"><span class="pre">quantifier</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.CNF">
+<span class="sig-name descname"><span class="pre">CNF</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.CNF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not this formulas is in conjunctive normal form (counterpart to <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.DNF" title="SEPModules.maths.SEPLogic.Proposition.DNF"><code class="xref py py-meth docutils literal notranslate"><span class="pre">DNF()</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this formula is in CNF</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.DNF">
+<span class="sig-name descname"><span class="pre">DNF</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.DNF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not this formulas is in disjunctive normal form (counterpart to <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.CNF" title="SEPModules.maths.SEPLogic.Proposition.CNF"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CNF()</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this formula is in DNF</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not this formula is valid using <code class="docutils literal notranslate"><span class="pre">limboole</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this formula is valid</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicError" title="SEPModules.maths.SEPLogic.LogicError"><strong>LogicError</strong></a> – if the proposition is quantified</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.sat">
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.sat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not this formula is satisfiable using <code class="docutils literal notranslate"><span class="pre">limboole</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this formula is satisfiable</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicError" title="SEPModules.maths.SEPLogic.LogicError"><strong>LogicError</strong></a> – if the proposition is quantified</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.model">
+<span class="sig-name descname"><span class="pre">model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks for a satisfying assignment (model) of this formula using <code class="docutils literal notranslate"><span class="pre">limboole</span></code>. If no such model is found and the
+formula is unsatisfiable, the empty dictionary is returned. The dictionary maps each <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a>
+object of this class to a boolean truth value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>either a satisfying assignment as dictionary or the empty dictionary, if no such assignment exists</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicError" title="SEPModules.maths.SEPLogic.LogicError"><strong>LogicError</strong></a> – if there was an error parsing the output model</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Assignment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.eval">
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assignment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates this object using assignment <code class="docutils literal notranslate"><span class="pre">assignment</span></code> and returns its truth value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>assignment</strong> (<em>Assignment</em>) – the mapping (assignment) of truth values to <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a> objects</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the truth value of this object under assignment <code class="docutils literal notranslate"><span class="pre">assignment</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.partial_eval">
+<span class="sig-name descname"><span class="pre">partial_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assignment</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.partial_eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partially evaluate this proposition by replacing atomic propositions by the truth constants <a class="reference internal" href="#SEPModules.maths.SEPLogic.Top" title="SEPModules.maths.SEPLogic.Top"><code class="xref py py-data docutils literal notranslate"><span class="pre">Top</span></code></a>, or
+<a class="reference internal" href="#SEPModules.maths.SEPLogic.Bottom" title="SEPModules.maths.SEPLogic.Bottom"><code class="xref py py-data docutils literal notranslate"><span class="pre">Bottom</span></code></a> according to the given assignment.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition.eval" title="SEPModules.maths.SEPLogic.Proposition.eval"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Proposition.eval()</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>assignment</strong> (<em>Assignment</em>) – the (partial) assignment to apply to this proposition</p></li>
+<li><p><strong>simplify</strong> (<em>bool</em>) – whether or not to apply simplification rules to the proposition after applying the assignment</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the partially evaluated proposition</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.LogicError" title="SEPModules.maths.SEPLogic.LogicError"><strong>LogicError</strong></a> – if the proposition is quantified</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition">SEPModules.maths.SEPLogic.Proposition</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.simplify_neg">
+<span class="sig-name descname"><span class="pre">simplify_neg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.simplify_neg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform simplification steps regarding the negations in this proposition. The following rules are applied for
+<span class="math notranslate nohighlight">\(a, b \in \mathcal{P}\)</span>, and a proposition <span class="math notranslate nohighlight">\(P \in \mathcal{L}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\neg \neg a                                     &amp;{}\Longrightarrow a \\
+\neg (a \rightarrow b)                  &amp;{}\Longrightarrow a \lor \neg b \\
+\neg (a \leftarrow b)                   &amp;{}\Longrightarrow \neg a \lor b \\
+\neg (a \leftrightarrow b)              &amp;{}\Longrightarrow (a \lor b) \land (\neg a \lor \neg b) \\
+\neg \exists a : P                              &amp;{}\Longrightarrow \forall a : \neg P \\
+\neg \forall a : P                              &amp;{}\Longrightarrow \exists a : \neg P \\
+\neg (a \land b \land \cdots)   &amp;{}\Longrightarrow \neg a \lor \neg b \lor \cdots \\
+\neg (a \lor b \lor \cdots)     &amp;{}\Longrightarrow \neg a \land \neg b \land \cdots\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the simplified proposition</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition">SEPModules.maths.SEPLogic.Proposition</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.reduce">
+<span class="sig-name descname"><span class="pre">reduce</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.reduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce this proposition, so that its syntactic representation is more compact. The following rules are applied
+for <span class="math notranslate nohighlight">\(a, b \in \mathcal{P}\)</span>, and propositions <span class="math notranslate nohighlight">\(P, Q, R, S \in \mathcal{L}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[a \leftarrow b :\Longleftrightarrow b \rightarrow a\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\bot \rightarrow a                                                      &amp;{}\Longrightarrow \top \\
+a \rightarrow \top                                                      &amp;{}\Longrightarrow \top \\
+a \rightarrow a                                                         &amp;{}\Longrightarrow \top \\
+a \land b \land \cdots \rightarrow a            &amp;{}\Longrightarrow \top \\
+a \rightarrow a \lor b \lor \dots                       &amp;{}\Longrightarrow \top \\
+a \rightarrow \bot                                                      &amp;{}\Longrightarrow \neg a \\
+\top \rightarrow a                                                      &amp;{}\Longrightarrow a \\
+a \rightarrow \neg a \land b \land \cdots       &amp;{}\Longrightarrow \neg a \\
+\neg a \rightarrow a \land b \land \cdots       &amp;{}\Longrightarrow a \\
+a \lor b \lor \cdots \rightarrow \neg a         &amp;{}\Longrightarrow \neg a \\
+\neg a \lor b \lor \cdots \rightarrow a         &amp;{}\Longrightarrow a\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}a \leftrightarrow \top          &amp;{}\Longrightarrow a \\
+\top \leftrightarrow a          &amp;{}\Longrightarrow a \\
+a \leftrightarrow \bot          &amp;{}\Longrightarrow \neg a \\
+\bot \leftrightarrow a          &amp;{}\Longrightarrow \neg a \\
+a \leftrightarrow a                     &amp;{}\Longrightarrow \top \\
+\neg a \leftrightarrow a        &amp;{}\Longrightarrow \bot \\
+a \leftrightarrow \neg a        &amp;{}\Longrightarrow \bot\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\top \land P                                                                            &amp;{}\Longrightarrow P \\
+\bot \land \cdots                                                                       &amp;{}\Longrightarrow \bot \\
+\top \lor \cdots                                                                        &amp;{}\Longrightarrow \top \\
+\bot \lor P                                                                                     &amp;{}\Longrightarrow P \\
+a \lor \neg a \lor \cdots                                                       &amp;{}\Longrightarrow \top \\
+a \land \neg a \land \cdots                                                     &amp;{}\Longrightarrow \bot \\
+a \land (a \lor \cdots) \land P                                         &amp;{}\Longrightarrow a \land P \\
+a \lor (a \land \cdots) \lor P                                          &amp;{}\Longrightarrow a \lor P \\
+(P \land Q) \lor (P \land R) \lor S                                     &amp;{}\Longrightarrow \big(P \land (Q \lor R)\big) \lor S \\
+(P \lor Q) \land (P \lor R) \land S                                     &amp;{}\Longrightarrow \big(P \lor (Q \land R)\big) \land S \\
+\neg P \lor Q \lor R                                                            &amp;{}\Longrightarrow (P \rightarrow Q) \lor R \\
+P \lor \neg Q \lor R                                                            &amp;{}\Longrightarrow (Q \rightarrow P) \lor R \\
+(P \rightarrow Q) \land (Q \rightarrow P) \land R       &amp;{}\Longrightarrow (P \leftrightarrow Q) \land R\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the reduced proposition</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition">SEPModules.maths.SEPLogic.Proposition</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand this proposition, so that its syntactic representation is less compact. The following rules are applied
+for <span class="math notranslate nohighlight">\(a, b, c \in \mathcal{P}\)</span>, and a proposition <span class="math notranslate nohighlight">\(P \in \mathcal{L}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}a \rightarrow b                                                 &amp;{}\Longrightarrow \neg a \lor b \\
+a \leftarrow b                                                  &amp;{}\Longrightarrow a \lor \neg b \\
+a \leftrightarrow b                                     &amp;{}\Longrightarrow (a \land b) \lor (\neg a \land \neg b) \\
+a \land (b \lor c \lor \cdots) \land P  &amp;{}\Longrightarrow
+\big((a \land b) \lor (a \land c) \lor \cdots\big) \land P \\
+a \lor (b \land c \land \cdots) \lor P  &amp;{}\Longrightarrow
+\big((a \lor b) \land (a \lor c) \land \cdots\big) \lor P\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the expanded proposition</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition">SEPModules.maths.SEPLogic.Proposition</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies this proposition into a new proposition object. This is a deep copy of all containing propositions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a deep copy of this proposition object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition">SEPModules.maths.SEPLogic.Proposition</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Proposition.syntactically_equal">
+<span class="sig-name descname"><span class="pre">syntactically_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.Proposition.syntactically_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two propositions syntactically based on their computed hash.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> – the proposition to compare against</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether or not <code class="docutils literal notranslate"><span class="pre">cls</span></code> is syntactically equivalent to <code class="docutils literal notranslate"><span class="pre">other</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="atomic-proposition">
+<h3>Atomic Proposition<a class="headerlink" href="#atomic-proposition" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.AtomicProposition">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">AtomicProposition</span></span><a class="headerlink" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a> represents the smallest unit of a <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a>, aside from the empty formula.
+Each new instance of <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a> is uniquely assigned an <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition.id" title="SEPModules.maths.SEPLogic.AtomicProposition.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a> defined by the system’s current
+time in nanoseconds and a random __offset. The class registers this id in a set to avoid the slim chance of a duplicate.
+All subclasses should, if they desire a custom implementation of the id system, register it like so:
+<code class="docutils literal notranslate"><span class="pre">AtomicProposition._id_set.add(id)</span></code>.</p>
+<p>Each <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a> object, besides the <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition.id" title="SEPModules.maths.SEPLogic.AtomicProposition.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a>, also has a unique <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition.volatile_name" title="SEPModules.maths.SEPLogic.AtomicProposition.volatile_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">volatile_name</span></code></a>. As
+the name suggests, this name does not guarantee to be unique over multiple runtimes and is subject to change at any
+point. It is used when generating the <code class="xref py py-meth docutils literal notranslate"><span class="pre">to_limboole()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code> format outputs. The naming convention
+is given as regular expression <code class="docutils literal notranslate"><span class="pre">^[a-z](')*$</span></code> for pretty-printed, and <code class="docutils literal notranslate"><span class="pre">^[a-z](-prime)*$</span></code> for limboole output.</p>
+<p>This class, as well as each class subclassing <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a> will contain the class attributes defining
+how the <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition.volatile_name" title="SEPModules.maths.SEPLogic.AtomicProposition.volatile_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">volatile_name</span></code></a> of an object should behave. Each new subclass will start the name back at the lowest
+character at the lowest “prime characters” count. To keep names unique, each name will be prefixed with the subclass’
+name. This behaviour may be changed but with caution.</p>
+<p>To get the next volatile name for a new object, use the class method <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition._next_volatile_name" title="SEPModules.maths.SEPLogic.AtomicProposition._next_volatile_name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">_next_volatile_name()</span></code></a>. To get the next
+id for a new object, use the static method <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition._next_id" title="SEPModules.maths.SEPLogic.AtomicProposition._next_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">_next_id()</span></code></a>.</p>
+<p>The exception are the special <a class="reference internal" href="#SEPModules.maths.SEPLogic.Top" title="SEPModules.maths.SEPLogic.Top"><code class="xref py py-data docutils literal notranslate"><span class="pre">Top</span></code></a> and <a class="reference internal" href="#SEPModules.maths.SEPLogic.Bottom" title="SEPModules.maths.SEPLogic.Bottom"><code class="xref py py-data docutils literal notranslate"><span class="pre">Bottom</span></code></a> singleton objects. <a class="reference internal" href="#SEPModules.maths.SEPLogic.Top" title="SEPModules.maths.SEPLogic.Top"><code class="xref py py-data docutils literal notranslate"><span class="pre">Top</span></code></a> will always be
+assigned id <code class="docutils literal notranslate"><span class="pre">1</span></code> and volatile name <code class="docutils literal notranslate"><span class="pre">top</span></code>, and <a class="reference internal" href="#SEPModules.maths.SEPLogic.Bottom" title="SEPModules.maths.SEPLogic.Bottom"><code class="xref py py-data docutils literal notranslate"><span class="pre">Bottom</span></code></a> will always be assigned id <code class="docutils literal notranslate"><span class="pre">0</span></code> and volatile name
+<code class="docutils literal notranslate"><span class="pre">bottom</span></code>. The pretty-printed outputs of <code class="docutils literal notranslate"><span class="pre">top</span></code> and <code class="docutils literal notranslate"><span class="pre">bottom</span></code> are the down-tick and up-tick symbols respectively,
+and the limboole outputs are <code class="docutils literal notranslate"><span class="pre">(top</span> <span class="pre">|</span> <span class="pre">!top)</span></code> and <code class="docutils literal notranslate"><span class="pre">(bottom</span> <span class="pre">&amp;</span> <span class="pre">!bottom)</span></code> since limboole does not support these truth
+values natively.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.AtomicProposition.normalize">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">propositions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connective</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.AtomicProposition.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalizes the input to the initializer of a <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a> instance. The arguments to this function are
+the same arguments passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">__init__()</span></code> but note that this function will not try to check or correct these
+inputs. The following rules are applied for <span class="math notranslate nohighlight">\(a \in \mathcal{P}\)</span>, and <span class="math notranslate nohighlight">\(P \in \mathcal{L}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\neg \top                                       &amp;{}\Rightarrow \bot \\
+\neg \bot                                       &amp;{}\Rightarrow \top \\
+\neg \neg a                                     &amp;{}\Rightarrow a \\
+(a)                                                     &amp;{}\Rightarrow a \\
+P \land (a \land \cdots)        &amp;{}\Rightarrow P \land a \land \cdots \\
+P \lor (a \lor \cdots)          &amp;{}\Rightarrow P \lor a \lor \cdots\end{split}\]</div>
+<p>Note that in this notation, the parentheses <span class="math notranslate nohighlight">\((\cdots)\)</span> refer to a <a class="reference internal" href="#SEPModules.maths.SEPLogic.Proposition" title="SEPModules.maths.SEPLogic.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a> object which is
+nested within the unary <code class="xref py py-attr docutils literal notranslate"><span class="pre">LogicalConnective.NONE</span></code> connective.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.AtomicProposition._next_id">
+<em class="property"><span class="pre">final</span> <span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">_next_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requested_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.AtomicProposition._next_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the next available id. If <code class="docutils literal notranslate"><span class="pre">requested_id</span></code> is passed, then that id will be returned if it is valid and has not
+been used by another object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>requested_id</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – optional, the requested id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the requested id or the next valid id if no requested id was passed or if the requested id was taken already</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.AtomicProposition._next_volatile_name">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">_next_volatile_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.AtomicProposition._next_volatile_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the next available volatile name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the next volatile name as string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.AtomicProposition.id">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.AtomicProposition.id" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the id of this atomic proposition object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.AtomicProposition.volatile_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">volatile_name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.AtomicProposition.volatile_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the volatile name of this atomic proposition object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.AtomicProposition.eval">
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assignment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.AtomicProposition.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates this object using assignment <code class="docutils literal notranslate"><span class="pre">assignment</span></code> and returns its truth value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>assignment</strong> (<em>Assignment</em>) – the mapping (assignment) of truth values to <a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicProposition</span></code></a> objects</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the truth value of this object under assignment <code class="docutils literal notranslate"><span class="pre">assignment</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.AtomicProposition.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.maths.SEPLogic.AtomicProposition.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies this proposition into a new proposition object. This is a deep copy of all containing propositions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a deep copy of this proposition object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPModules.maths.SEPLogic.AtomicProposition" title="SEPModules.maths.SEPLogic.AtomicProposition">SEPModules.maths.SEPLogic.AtomicProposition</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="truth-constants">
+<h3>Truth constants<a class="headerlink" href="#truth-constants" title="Permalink to this headline">¶</a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Top">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">Top</span></span><em class="property"><span class="pre">:</span> <span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">_Top</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">Top</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Top" title="Permalink to this definition">¶</a></dt>
+<dd><p>The singleton object representing the truth value <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="SEPModules.maths.SEPLogic.Bottom">
+<span class="sig-prename descclassname"><span class="pre">SEPModules.maths.SEPLogic.</span></span><span class="sig-name descname"><span class="pre">Bottom</span></span><em class="property"><span class="pre">:</span> <span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">_Bottom</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">Bottom</span></em><a class="headerlink" href="#SEPModules.maths.SEPLogic.Bottom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The singleton object representing the truth value <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="SEPQBF.html" class="btn btn-neutral float-right" title="SEPQBF" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="maths" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcel Simader.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

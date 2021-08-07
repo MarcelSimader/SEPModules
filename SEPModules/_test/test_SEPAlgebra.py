@@ -1,8 +1,20 @@
+"""
+:Author: Marcel Simader
+:Date: 17.07.2021
+"""
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ IMPORTS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 import unittest
 
-from maths.SEPAlgebra import  NoElement, AlgebraicStructure, Monoid, Semigroup, Group, AbelianGroup, Ring, Field
 from SEPMaths import get_possible_rationals, Rational
+from maths.SEPAlgebra import NoElement, AlgebraicStructure, Semigroup, Group, AbelianGroup, Ring, Field, Monoid
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ TESTS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # noinspection PyTypeChecker
 class AlgebraTestBase:
@@ -45,10 +57,10 @@ class TestAlgebraicStructure(AlgebraTestBase, unittest.TestCase):
 		test_struct = AlgebraicStructure(self.nums, self.add)
 
 		with self.subTest(property="elements"):
-			self.assertSetEqual(test_struct.elements, set(self.nums))
+			self.assertSetEqual(set(self.nums), test_struct.elements)
 
 		with self.subTest(property="binary_operators"):
-			self.assertTupleEqual(test_struct.binary_operators, (self.add,))
+			self.assertTupleEqual((self.add,), test_struct.binary_operators)
 
 		del test_struct
 
@@ -73,113 +85,115 @@ class TestAlgebraicStructure(AlgebraTestBase, unittest.TestCase):
 
 	def test_is_associative(self):
 		with self.subTest(type="add and mul"):
-			self.assertListEqual(self.add_and_mul_nums.is_associative(), [True, True])
+			self.assertListEqual([True, True], list(self.add_and_mul_nums.is_associative()))
 			self.assertTrue(all(self.add_and_mul_nums.is_associative()))
 
 		with self.subTest(type="sub"):
-			self.assertListEqual(self.sub_nums.is_associative(), [False])
+			self.assertListEqual([False], list(self.sub_nums.is_associative()))
 			self.assertFalse(all(self.sub_nums.is_associative()))
 
 		with self.subTest(type="empty structure"):
-			self.assertListEqual(self.empty_struct.is_associative(), [])
+			self.assertListEqual([], list(self.empty_struct.is_associative()))
 			self.assertTrue(all(self.empty_struct.is_associative()))
 
 	def test_neutral_elements(self):
 		with self.subTest(type="add and mul"):
-			self.assertListEqual(self.add_and_mul_nums.neutral_elements(), [0, 1])
+			self.assertListEqual([0, 1], list(self.add_and_mul_nums.neutral_elements()))
 
 		with self.subTest(type="sub"):
-			self.assertListEqual(self.sub_nums.neutral_elements(), [NoElement])
+			self.assertListEqual([NoElement], list(self.sub_nums.neutral_elements()))
 
 		with self.subTest(type="empty structure"):
-			self.assertListEqual(self.empty_struct.neutral_elements(), [])
+			self.assertListEqual([], list(self.empty_struct.neutral_elements()))
 
 	def test_find_inverses_per_operator(self):
 		for i in self.neg_nums:
 			with self.subTest(type="add and mul op 0", num=i):
-				self.assertEqual(self.add_and_mul_neg_nums.find_inverses_per_operator(0, i), -i)
+				self.assertEqual(-i, self.add_and_mul_neg_nums.find_inverses_per_operator(0, i))
 
 			with self.subTest(type="add and mul op 1", num=i):
-				self.assertEqual(self.add_and_mul_neg_nums.find_inverses_per_operator(1, i), i if abs(i) == 1 else NoElement)
+				self.assertEqual(i if abs(i) == 1 else NoElement,
+								 self.add_and_mul_neg_nums.find_inverses_per_operator(1, i))
 
 	def test_has_inverses(self):
 		with self.subTest(type="add and mul neg"):
-			self.assertListEqual(self.add_and_mul_neg_nums.has_inverses(), [True, False])
+			self.assertListEqual([True, False], list(self.add_and_mul_neg_nums.has_inverses()))
 
 		with self.subTest(type="add and mul pos"):
-			self.assertListEqual(self.add_and_mul_nums.has_inverses(), [False, False])
+			self.assertListEqual([False, False], list(self.add_and_mul_nums.has_inverses()))
 
 		with self.subTest(type="sub pos"):
-			self.assertListEqual(self.sub_nums.has_inverses(), [False])
+			self.assertListEqual([False], list(self.sub_nums.has_inverses()))
 
 		with self.subTest(type="mul rational"):
-			self.assertTrue(self.mul_rational_wo_zero.has_inverses()[0])
+			self.assertTrue(list(self.mul_rational_wo_zero.has_inverses())[0])
 
 		with self.subTest(type="empty structure"):
-			self.assertListEqual(self.empty_struct.has_inverses(), [])
+			self.assertListEqual([], list(self.empty_struct.has_inverses()))
 			self.assertTrue(all(self.empty_struct.has_inverses()))
 
 	def test_is_commutative(self):
 		with self.subTest(type="add and mul neg"):
-			self.assertListEqual(self.add_and_mul_neg_nums.is_commutative(), [True, True])
+			self.assertListEqual([True, True], list(self.add_and_mul_neg_nums.is_commutative()))
 
 		with self.subTest(type="add and mul pos"):
-			self.assertListEqual(self.add_and_mul_nums.is_commutative(), [True, True])
+			self.assertListEqual([True, True], list(self.add_and_mul_nums.is_commutative()))
 
 		with self.subTest(type="sub pos"):
-			self.assertListEqual(self.sub_nums.is_commutative(), [False])
+			self.assertListEqual([False], list(self.sub_nums.is_commutative()))
 
 		with self.subTest(type="empty structure"):
-			self.assertListEqual(self.empty_struct.is_commutative(), [])
+			self.assertListEqual([], list(self.empty_struct.is_commutative()))
 			self.assertTrue(all(self.empty_struct.is_commutative()))
 
 	def test_is_closed(self):
 		with self.subTest(type="add pos"):
-			self.assertListEqual(self.add_and_mul_nums.is_closed(), [False, False])
+			self.assertListEqual([False, False], list(self.add_and_mul_nums.is_closed()))
 
 		with self.subTest(type="add z3"):
-			self.assertListEqual(self.add_z3_z3.is_closed(), [True])
+			self.assertListEqual([True], list(self.add_z3_z3.is_closed()))
 
 		with self.subTest(type="empty structure"):
-			self.assertListEqual(self.empty_struct.is_closed(), [])
+			self.assertListEqual([], list(self.empty_struct.is_closed()))
 
 	def test_eq(self):
 		with self.subTest(type="ident"):
-			self.assertTrue(self.add_and_mul_nums == self.add_and_mul_nums)
+			self.assertEqual(self.add_and_mul_nums, self.add_and_mul_nums)
 
 		with self.subTest(type="equal"):
-			self.assertTrue(self.add_and_mul_neg_nums == AlgebraicStructure(self.neg_nums, self.add, self.mul))
+			self.assertEqual(self.add_and_mul_neg_nums, AlgebraicStructure(self.neg_nums, self.add, self.mul))
 
 		with self.subTest(type="lambda equal"):
-			self.assertTrue(self.add_and_mul_nums == AlgebraicStructure(self.nums, lambda a, b: a + b, lambda a, b: a * b))
-			self.assertTrue(self.add_and_mul_nums == AlgebraicStructure(list(range(10)), lambda a, b: a + b, lambda a, b: a * b))
+			self.assertEqual(self.add_and_mul_nums,
+							 AlgebraicStructure(self.nums, lambda a, b: a + b, lambda a, b: a * b))
+			self.assertEqual(self.add_and_mul_nums,
+							 AlgebraicStructure(list(range(10)), lambda a, b: a + b, lambda a, b: a * b))
 
 		with self.subTest(type="not equal"):
-			self.assertFalse(self.mul_rational_wo_zero == self.add_and_mul_nums)
+			self.assertNotEqual(self.mul_rational_wo_zero, self.add_and_mul_nums)
 
 		with self.subTest(type="empty structure"):
-			self.assertTrue(self.empty_struct == AlgebraicStructure(()))
+			self.assertEqual(self.empty_struct, AlgebraicStructure(()))
 
 	def test_lt(self):
 		with self.subTest(type="add pos < add and mul pos"):
-			self.assertFalse(self.add_nums < self.add_and_mul_nums)
+			self.assertGreaterEqual(self.add_nums, self.add_and_mul_nums)
 
 		with self.subTest(type="dict"):
-			self.assertTrue(AlgebraicStructure([0, 1], lambda a, b: {(0,0):0,(0,1):1,(1,0):1,(1,1):0}[(a,b)]) <
-							AlgebraicStructure([0, 1, 2], lambda a, b: {(0,0):0,(0,1):1,(1,0):1,(1,1):0,(0,2):1,(1,2):2,(2,2):1,(2,0):0,(2,1):0}[(a,b)]))
+			self.assertLess(
+					AlgebraicStructure([0, 1], lambda a, b: {(0, 0): 0, (0, 1): 1, (1, 0): 1, (1, 1): 0}[(a, b)]),
+					AlgebraicStructure([0, 1, 2], lambda a, b: {(0, 0): 0, (0, 1): 1, (1, 0): 1, (1, 1): 0, (0, 2): 1,
+																(1, 2): 2, (2, 2): 1, (2, 0): 0, (2, 1): 0}[(a, b)]))
 
 		with self.subTest(type="add z3 < add z7"):
-			self.assertTrue(self.add_z3_z3 < AlgebraicStructure(list(range(7)), lambda a, b: (a + b) % 7))
+			self.assertLess(self.add_z3_z3, AlgebraicStructure(list(range(7)), lambda a, b: (a + b) % 7))
 
 		with self.subTest(type="many ops z3"):
-			self.assertTrue(AlgebraicStructure([0, 1, 2], lambda a, b: (a + b) % 3, lambda a, b: (a + b) % 2) <
+			self.assertLess(AlgebraicStructure([0, 1, 2], lambda a, b: (a + b) % 3, lambda a, b: (a + b) % 2),
 							AlgebraicStructure([0, 1, 2, 3], lambda a, b: (a + b) % 3, lambda a, b: (a + b) % 4))
 
 		with self.subTest(type="empty structure"):
-			self.assertTrue(self.empty_struct < self.add_and_mul_nums)
-
-	def test_repr(self):
-		self.assertEqual(self.empty_struct.__repr__(), r"<AlgebraicStructure(set(), ())>")
+			self.assertLess(self.empty_struct, self.add_and_mul_nums)
 
 	def test_practical_use_case(self):
 		def string_cap(a, b):
@@ -196,13 +210,13 @@ class TestAlgebraicStructure(AlgebraTestBase, unittest.TestCase):
 		test_struct = AlgebraicStructure(["", "a", "b", "c", "ab", "ac", "bc"], string_cap)
 
 		with self.subTest(type="associativity"):
-			self.assertTrue(test_struct.is_associative()[0])
+			self.assertTrue(list(test_struct.is_associative())[0])
 
 		with self.subTest(type="neutral el"):
-			self.assertEqual(test_struct.neutral_elements()[0], "")
+			self.assertEqual(list(test_struct.neutral_elements())[0], "")
 
 		with self.subTest(type="has inverses"):
-			self.assertTrue(test_struct.has_inverses()[0])
+			self.assertTrue(list(test_struct.has_inverses())[0])
 
 		with self.subTest(type="find inverses"):
 			for test_str in test_struct.elements:
@@ -210,20 +224,20 @@ class TestAlgebraicStructure(AlgebraTestBase, unittest.TestCase):
 					self.assertEqual(test_struct.find_inverses_per_operator(0, test_str), test_str)
 
 		with self.subTest(type="closed"):
-			self.assertFalse(test_struct.is_closed()[0])
+			self.assertFalse(list(test_struct.is_closed())[0])
 
 # noinspection PyTypeChecker
-class TestMonoid(AlgebraTestBase, unittest.TestCase):
+class TestSemigroup(AlgebraTestBase, unittest.TestCase):
 
 	def setUp(self):
 		super().setUp()
 
-		self.add_nums = Monoid(self.nums, self.add)
-		self.add_neg_nums = Monoid(self.neg_nums, self.add)
-		self.sub_nums = Monoid(self.nums, self.sub)
-		self.add_z3_z3 = Monoid([0, 1, 2], self.add_z3)
-		self.mul_rational_wo_zero = Monoid(self.rationals_wo_zero, self.mul)
-		self.empty_struct = Monoid((), lambda a, b: 0)
+		self.add_nums = Semigroup(self.nums, self.add)
+		self.add_neg_nums = Semigroup(self.neg_nums, self.add)
+		self.sub_nums = Semigroup(self.nums, self.sub)
+		self.add_z3_z3 = Semigroup([0, 1, 2], self.add_z3)
+		self.mul_rational_wo_zero = Semigroup(self.rationals_wo_zero, self.mul)
+		self.empty_struct = Semigroup((), lambda a, b: 0)
 
 	def tearDown(self):
 		super().tearDown()
@@ -253,20 +267,20 @@ class TestMonoid(AlgebraTestBase, unittest.TestCase):
 
 	def test_neutral_elements(self):
 		with self.subTest(type="add pos"):
-			self.assertEqual(self.add_nums.neutral_elements(), 0)
+			self.assertEqual(0, self.add_nums.neutral_elements())
 
 		with self.subTest(type="empty structure"):
-			self.assertEqual(self.empty_struct.neutral_elements(), NoElement)
+			self.assertEqual(NoElement, self.empty_struct.neutral_elements())
 
 	def test_find_inverses(self):
 		with self.subTest(type="add z3"):
-			self.assertEqual(self.add_z3_z3.find_inverses(0), 0)
-			self.assertEqual(self.add_z3_z3.find_inverses(1), 2)
-			self.assertEqual(self.add_z3_z3.find_inverses(2), 1)
+			self.assertEqual(0, self.add_z3_z3.find_inverses(0))
+			self.assertEqual(2, self.add_z3_z3.find_inverses(1))
+			self.assertEqual(1, self.add_z3_z3.find_inverses(2))
 
 		with self.subTest(type="sub nums"):
-			self.assertEqual(self.sub_nums.find_inverses(0), NoElement)
-			self.assertEqual(self.sub_nums.find_inverses(3), NoElement)
+			self.assertEqual(NoElement, self.sub_nums.find_inverses(0))
+			self.assertEqual(NoElement, self.sub_nums.find_inverses(3))
 
 	def test_has_inverses(self):
 		with self.subTest(type="mul rational w/o zero"):
@@ -287,17 +301,17 @@ class TestMonoid(AlgebraTestBase, unittest.TestCase):
 			self.assertFalse(self.add_nums.is_closed())
 
 # noinspection PyTypeChecker
-class TestSemigroup(AlgebraTestBase, unittest.TestCase):
+class TestMonoid(AlgebraTestBase, unittest.TestCase):
 
 	def test_is_valid(self):
 		with self.subTest(type="sub pos"):
-			self.assertFalse(Semigroup(self.nums, self.sub))
+			self.assertFalse(Monoid(self.nums, self.sub))
 
 		with self.subTest(type="add pos"):
-			self.assertTrue(Semigroup(self.nums, self.add))
+			self.assertTrue(Monoid(self.nums, self.add))
 
 		with self.subTest(type="mul rational w/o zero and 1/2"):
-			self.assertTrue(Semigroup(self.rationals_wo_zero.difference((Rational(1,2),)), self.mul))
+			self.assertTrue(Monoid(self.rationals_wo_zero.difference((Rational(1, 2),)), self.mul))
 
 # noinspection PyTypeChecker
 class TestGroup(AlgebraTestBase, unittest.TestCase):
@@ -310,7 +324,7 @@ class TestGroup(AlgebraTestBase, unittest.TestCase):
 			self.assertFalse(Group(self.nums, self.add))
 
 		with self.subTest(type="mul rational w/o zero and 1/2"):
-			self.assertFalse(Group(self.rationals_wo_zero.difference((Rational(1,2),)), self.mul))
+			self.assertFalse(Group(self.rationals_wo_zero.difference((Rational(1, 2),)), self.mul))
 
 		with self.subTest(type="add neg"):
 			self.assertTrue(Group(self.neg_nums, self.add))
@@ -343,7 +357,7 @@ class TestRing(AlgebraTestBase, unittest.TestCase):
 		del self.add_mul_nums, self.add_mul_neg_nums, self.add_sub_nums, self.add_mul_z3, self.empty_struct
 
 	def test_elements_without_zero(self):
-		self.assertSetEqual(self.add_mul_nums.elements_without_zero, set(self.nums) - {0})
+		self.assertSetEqual(set(self.nums) - {0}, self.add_mul_nums.elements_without_zero)
 
 	def test_is_valid(self):
 		with self.subTest(type="add mul nums"):
@@ -360,56 +374,56 @@ class TestRing(AlgebraTestBase, unittest.TestCase):
 
 	def test_is_associative(self):
 		with self.subTest(type="add mul nums"):
-			self.assertTupleEqual(self.add_mul_nums.is_associative(), (True, True))
+			self.assertTupleEqual((True, True), self.add_mul_nums.is_associative())
 
 		with self.subTest(type="add sub nums"):
-			self.assertTupleEqual(self.add_sub_nums.is_associative(), (True, False))
+			self.assertTupleEqual((True, False), self.add_sub_nums.is_associative())
 
 		with self.subTest(type="empty struct"):
-			self.assertTupleEqual(self.empty_struct.is_associative(), (True, True))
+			self.assertTupleEqual((True, True), self.empty_struct.is_associative())
 
 	def test_neutral_elements(self):
 		with self.subTest(type="add mul nums"):
-			self.assertTupleEqual(self.add_mul_nums.neutral_elements(), (0, 1))
+			self.assertTupleEqual((0, 1), self.add_mul_nums.neutral_elements())
 
 		with self.subTest(type="add sub nums"):
-			self.assertTupleEqual(self.add_sub_nums.neutral_elements(), (0, NoElement))
+			self.assertTupleEqual((0, NoElement), self.add_sub_nums.neutral_elements())
 
 		with self.subTest(type="empty struct"):
-			self.assertTupleEqual(self.empty_struct.neutral_elements(), (NoElement, NoElement))
+			self.assertTupleEqual((NoElement, NoElement), self.empty_struct.neutral_elements())
 
 	def test_find_inverses(self):
 		with self.subTest(type="add mul nums"):
-			self.assertEqual(self.add_mul_nums.find_inverses(0, 5), NoElement)
-			self.assertEqual(self.add_mul_nums.find_inverses(1, 0), NoElement)
+			self.assertEqual(NoElement, self.add_mul_nums.find_inverses(0, 5))
+			self.assertEqual(NoElement, self.add_mul_nums.find_inverses(1, 0))
 
 		with self.subTest(type="add mul z3"):
-			self.assertEqual(self.add_mul_z3.find_inverses(0, 2), 1)
-			self.assertEqual(self.add_mul_z3.find_inverses(1, 2), 2)
+			self.assertEqual(1, self.add_mul_z3.find_inverses(0, 2))
+			self.assertEqual(2, self.add_mul_z3.find_inverses(1, 2))
 
 	def test_has_inverses(self):
 		with self.subTest(type="add mul nums"):
-			self.assertTupleEqual(self.add_mul_nums.has_inverses(), (False, False))
+			self.assertTupleEqual((False, False), self.add_mul_nums.has_inverses())
 
 		with self.subTest(type="add mul neg nums"):
-			self.assertTupleEqual(self.add_mul_neg_nums.has_inverses(), (True, False))
+			self.assertTupleEqual((True, False), self.add_mul_neg_nums.has_inverses())
 
 	def test_is_commutative(self):
 		with self.subTest(type="add mul nums"):
-			self.assertTupleEqual(self.add_mul_nums.is_commutative(), (True, True))
+			self.assertTupleEqual((True, True), self.add_mul_nums.is_commutative())
 
 		with self.subTest(type="add sub nums"):
-			self.assertTupleEqual(self.add_sub_nums.is_commutative(), (True, False))
+			self.assertTupleEqual((True, False), self.add_sub_nums.is_commutative())
 
 	def test_is_closed(self):
 		with self.subTest(type="add sub nums"):
-			self.assertTupleEqual(self.add_sub_nums.is_closed(), (False, False))
+			self.assertTupleEqual((False, False), self.add_sub_nums.is_closed())
 
 		with self.subTest(type="add mul z3"):
-			self.assertTupleEqual(self.add_mul_z3.is_closed(), (True, True))
+			self.assertTupleEqual((True, True), self.add_mul_z3.is_closed())
 
 		with self.subTest(type="empty structure"):
-			self.assertTupleEqual(self.empty_struct.is_closed(), (True, True))
+			self.assertTupleEqual((True, True), self.empty_struct.is_closed())
 
 	def test_is_distributive(self):
 		with self.subTest(type="add mul"):
