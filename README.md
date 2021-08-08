@@ -12,8 +12,8 @@ The package is of the following structure:
 
   - ### SEPLogic
     Provides classes and functions for performing zeroth order logic operations and interfacing with external solvers.
->  - ### SEPQBF
->    Provides classes and functions extending ``SEPLogic`` for performing QBF operations.
+  > - ### SEPQBF
+  >  Provides classes and functions extending ``SEPLogic`` for performing QBF operations.
   - ### SEPAlgebra
     Provides classes and functions for performing computations on algebraic structures.
 
