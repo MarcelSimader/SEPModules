@@ -12,13 +12,16 @@
 from __future__ import annotations
 
 import enum
+import locale
+import os
 import sys
 from time import strftime, time
 from typing import Container, final, Optional, TypeVar, Any, AnyStr, Collection, Callable, Final, Type, Dict, List, \
-	Tuple, ClassVar
+	Tuple, ClassVar, TextIO
+from warnings import warn
 
 from SEPModules.SEPDecorators import copy_func_attrs
-from SEPModules.SEPPrinting import AnsiControl, cl_s, LIGHT_BLUE, BRIGHT, LIGHT_RED, RED, YELLOW, GREEN, GRAY
+from SEPModules.SEPPrinting import AnsiControl, cl_s, LIGHT_BLUE, BRIGHT, LIGHT_RED, RED, YELLOW, GREEN, GRAY, repr_str
 from SEPModules.SEPUtils import StackFrameInfo
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,7 +151,7 @@ WARNING = DefaultLevel.WARNING
 ERROR = DefaultLevel.ERROR
 FATAL_ERROR = DefaultLevel.FATAL_ERROR
 
-_Level = TypeVar("_Level", bound=Level)
+LevelEnum = TypeVar("LevelEnum", bound=Level)
 """ The generic type parameter for which :py:class:`Level` subclass to use in a :py:class:`Logger` instance. """
 _Func = TypeVar("_Func", Callable, staticmethod, classmethod)
 """ The generic type variable constrained by Callable, static, or classmethod for typing usage in :py:mod:`SEPLogger`. """
@@ -193,10 +196,8 @@ class Logger:
 	:param level_class: which :py:class:`Level` subclass to use as enum for the verbosity levels of this instance
 	:param min_level: the minimum level an entry must have to be printed or written to the log
 	:param level_mask: a container of levels to ignore when printing or writing to the log
-	:param print_function: a callable taking in one string (the message itself) and one level (the level of this message),
-		the print_function is expected to write this message to a buffer or output with optional formatting or changes
-		based on the supplied level, and then to flush the buffer to write the change immediately if the level is at error
-		threshold
+	:param out: the default out TextIO stream to print to
+	:param err: the default error TextIO stream to print to (may be the same as ``out``, if desired)
 	:param use_timestamp: whether or not to print a timestamp with each log entry (see :py:meth:`_provide_timestamp`)
 	:param use_date: whether or not to add the current date to each timestamp
 	:param ignore_level_restrictions: if set to True, this will ignore the values of the ``min_level`` and ``level_mask``
@@ -205,17 +206,19 @@ class Logger:
 	"""
 
 	def __init__(self,
-				 level_class: Type[_Level] = DefaultLevel,
-				 min_level: _Level = DefaultLevel.VERBOSE,
-				 level_mask: Optional[Container[_Level]] = None,
-				 print_function: Optional[Callable[[AnyStr, _Level], None]] = None,
+				 level_class: Type[LevelEnum] = DefaultLevel,
+				 min_level: LevelEnum = DefaultLevel.VERBOSE,
+				 level_mask: Optional[Container[LevelEnum]] = None,
+				 out: TextIO = sys.__stdout__,
+				 err: TextIO = sys.__stderr__,
 				 use_timestamp: bool = False,
 				 use_date: bool = False,
 				 ignore_level_restrictions: bool = False,
 				 use_color: bool = True):
 		# unchecked attrs
 		self._level_class = level_class
-		self.print_function = self.default_print_function if print_function is None else print_function
+		self.out = out
+		self.err = err
 		self.use_timestamp = use_timestamp
 		self.use_date = use_date
 		self.ignore_level_restrictions = ignore_level_restrictions
@@ -233,7 +236,7 @@ class Logger:
 		return joiner.join([str(m) for m in msg])
 
 	@final
-	def __validate_level(self, level: _Level) -> None:
+	def __validate_level(self, level: LevelEnum) -> None:
 		""" Checks if the given level is valid on this instance. """
 		if level not in self._level_class:
 			raise TypeError(f"level must be an item of the {self._level_class} enum, but received "
@@ -241,7 +244,7 @@ class Logger:
 							f"the constructor of this Logger?)")
 
 	@final
-	def __level_condition(self, level: _Level) -> bool:
+	def __level_condition(self, level: LevelEnum) -> bool:
 		""" :return: whether or not the given level warrants action under the instance's settings """
 		return self.ignore_level_restrictions or (level >= self.min_level and level not in self._level_mask)
 
@@ -260,37 +263,60 @@ class Logger:
 			return str()
 
 	@final
-	def _local_print(self, msg: str, level: _Level) -> None:
+	def _local_print(self, msg: str, level: LevelEnum) -> None:
 		"""
-		The print helper function that passes on specific data to the defined :py:attr:`print_function` of this instance.
-		It also first checks if the input should be printed in the first place.
+		Prints the message with appropriate level to the appropriate defined output stream (see :py:attr:`out`, and
+		:py:attr:`err`). This methods also performs various system-dependent checks and decides whether to use color or
+		not, and what encoding to use.
+
+		This method considers any levels marked as ``debug`` to be normal output, even if they also occur as ``error``.
+
+		..	warning::
+
+			This function only uses color output if the given stream's ``isatty()`` method returns ``True``,
+			along with some other platform-dependent checks.
+
+		:raise UnicodeError: if no encoding attempt was successful
 		"""
 		if self.__level_condition(level):
-			self.print_function(cl_s(msg, level.style) if self.use_color else msg, level)
+			# determine where to write to
+			if (level in self._level_class.get_debug()) or (level not in self._level_class.get_errors()):
+				stream = self.out
+			else:
+				stream = self.err
 
-	def default_print_function(self, message: AnyStr, level: _Level) -> None:
-		"""
-		The default function used for printing. This will print to ``STDOUT`` for levels below or equal to :py:obj:`.WARNING`,
-		and to ``STDERR`` for anything above, excluding the debug output.
+			# figure out if escape sequences are supported
+			use_color = self.use_color
+			# check for supported platforms (fragments taken from django.core, appended new windows terminal check WT_)
+			use_color &= not sys.platform.startswith("win32") \
+						 or any(x in os.environ for x in ("ANSICON", "WT_PROFILE_ID", "WT_SESSION"))
+			# try isatty
+			use_color &= hasattr(stream, "isatty") and stream.isatty()
 
-		..	note::
+			# color and try different encodings
+			for encoding in (locale.getpreferredencoding(), stream.encoding, "UTF-8", None):
+				if encoding is None:
+					raise UnicodeError(f"Failed to encode message for logger {self!r}")
+				try:
+					msg = (cl_s(msg, level.style) if use_color else msg).encode(encoding)
+					break
+				except UnicodeEncodeError as e:
+					warn(UnicodeWarning(f"Error while encoding message using {encoding!r} for logger {self!r}: {e}"))
 
-			The level provided by the :py:meth:`Level.get_debug` method will never be considered an error by this function,
-			even if it is provided by the :py:meth:`Level.get_errors` method.
-		"""
-		if (level in self._level_class.get_debug()) or (level not in self._level_class.get_errors()):
-			sys.stdout.write(message)
-		else:
-			sys.stderr.write(message)
-		sys.stderr.flush()
+			# write to out
+			if not (stream is None or stream.buffer is None):
+				stream.buffer.write(msg)
+				stream.flush()
+			else:
+				warn(ResourceWarning("stream or buffer attribute of stream are 'None': failed to log to console"))
 
 	@property
-	def min_level(self) -> _Level:
+	def min_level(self) -> LevelEnum:
 		""" :return: the minimum level to be logged by this instance """
 		return self._min_level
 
 	@min_level.setter
-	def min_level(self, level: _Level) -> None:
+	def min_level(self, level: LevelEnum) -> None:
 		"""
 		Sets the minimum level to be logged by this instance.
 
@@ -302,12 +328,12 @@ class Logger:
 		self._min_level = level
 
 	@property
-	def level_mask(self) -> Optional[Collection[_Level]]:
+	def level_mask(self) -> Optional[Collection[LevelEnum]]:
 		""" :return: the level mask blocking specific levels from being logged """
 		return self._level_mask
 
 	@level_mask.setter
-	def level_mask(self, mask: Optional[Collection[_Level]]) -> None:
+	def level_mask(self, mask: Optional[Collection[LevelEnum]]) -> None:
 		"""
 		Sets a new level mask for blocking specific levels from being logged in this instance.
 
@@ -322,14 +348,14 @@ class Logger:
 			[self.__validate_level(l) for l in mask]
 
 	@property
-	def level_class(self) -> Type[_Level]:
+	def level_class(self) -> Type[LevelEnum]:
 		""" :return: the enum of which all levels used by this instance must be a part of """
 		return self._level_class
 
 	# ~~~~~~~~~~~~~~~ methods ~~~~~~~~~~~~~~~
 
 	def log(self, *msg: Any,
-			level: _Level = DefaultLevel.INFO,
+			level: LevelEnum = DefaultLevel.INFO,
 			start: AnyStr = "",
 			joiner: AnyStr = " ",
 			end: AnyStr = "\n") -> None:
@@ -350,7 +376,7 @@ class Logger:
 						  f"{start}{self.__process_any_input(*msg, joiner=joiner)}{end}",
 						  level)
 
-	def newline(self, level: _Level = DefaultLevel.INFO) -> None:
+	def newline(self, level: LevelEnum = DefaultLevel.INFO) -> None:
 		"""
 		newline(level=DefaultLevel.INFO)
 		Registers an empty line with this instance.
@@ -402,7 +428,7 @@ class Logger:
 
 	def log_call(self,
 				 *msg: Any,
-				 level: _Level = DefaultLevel.INFO,
+				 level: LevelEnum = DefaultLevel.INFO,
 				 use_qualified_name: bool = True,
 				 include_arguments: bool = False,
 				 exclude_self: bool = True,
@@ -462,7 +488,7 @@ class Logger:
 
 	def log_class(self,
 				  *msg: Any,
-				  level: _Level = DefaultLevel.INFO,
+				  level: LevelEnum = DefaultLevel.INFO,
 				  allow_public: bool = True,
 				  allow_private: bool = True,
 				  include_arguments: bool = False,
@@ -524,6 +550,10 @@ class Logger:
 			return cls
 
 		return __wrapper__
+
+	def __repr__(self) -> str:
+		return repr_str(self, Logger.min_level, Logger.level_mask, out=self.out.name, error=self.err.name,
+						include_empty_sized=False, value_function=str)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ DEFAULT LOGGER INSTANCE ~~~~~~~~~~~~~~~
