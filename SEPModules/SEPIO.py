@@ -13,7 +13,7 @@ import sys
 from getopt import getopt, GetoptError
 from typing import List, Callable, Dict, Union, Tuple, Final, Iterable, Iterator, Collection, TypeVar
 
-from SEPDecorators import copy_func_attrs
+from SEPModules.SEPDecorators import copy_func_attrs
 from SEPModules.SEPPrinting import repr_str
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
