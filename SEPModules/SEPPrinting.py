@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import math
 from typing import Any, Callable, Union, Final, Literal, Optional, TypeVar, AnyStr, Sequence, \
-	SupportsFloat, Iterable
+	SupportsFloat, Iterable, Sized
 from warnings import warn
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -446,25 +446,49 @@ def repr_str(obj: Any,
 			 *properties: property[_T],
 			 value_function: Callable[[_T], str] = repr,
 			 include_none: bool = False,
+			 include_empty_sized: bool = True,
 			 include_empty_str: bool = False,
-			 joiner: AnyStr = ", ") -> str:
+			 joiner: AnyStr = ", ",
+			 **kwargs: Any) -> str:
 	"""
-	repr_str(obj, *properties, value_function=repr, include_none=False, include_empty_str=False, joiner=', ')
-	Provides a ``__repr__`` string for any class of type ``obj``.
+	repr_str(obj, *properties, value_function=repr, include_none=False, include_empty_str=False, joiner=', ', **kwargs)
+	Provides a ``__repr__`` string for any class using one instance of it.
 
 	:param obj: the object to create this repr string from
 	:param properties: the values which should be displayed in this repr string
 	:param value_function: which function to apply to each element of ``values``
-	:param include_none: whether or not to include ``None`` values or to omit them
-	:param include_empty_str: whether or not to include empty string ``str()`` values or to omit them
+	:param include_none: whether or not to include ``None`` values
+	:param include_empty_sized: whether or not to include empty ``Sized`` objects
+	:param include_empty_str: *deprecated*, whether or not to include empty strings
 	:param joiner: which string to use to join the values together (see :py:meth:`str.join`)
+	:param kwargs: an arbitrary amount of keyword arguments to include in the final output string (of course **excluding**
+		those keyword arguments, which are used in this function!)
 	:return: a repr string for ``cls``
+
+	:raise NameError: if the given properties are not found in the class of ``obj``
+	:raise TypeError: if a type error is raised during retrieval of the value of the properties
 	"""
 	strings = list()
-	for prop, val in map(lambda _p: (_p, _p.fget(obj)), properties):
+	for item in (*properties, *kwargs.items()):
+		# figure out key and val
+		if isinstance(item, property):
+			if item.fget is None:
+				raise NameError(f"Could not find property getter for {item!r} in class {obj.__class__.__name__!r}")
+			try:
+				key, val = item.fget.__name__, item.fget(obj)
+			except TypeError as e:
+				raise TypeError(f"Invalid type {obj.__class__.__name__!r} passed to "
+								f"getter {item.fget.__name__!r}") from e
+		else:
+			key, val = item
+
+		# value checks
 		if not include_none and val is None:
 			continue
-		if isinstance(val, str) and not include_empty_str and val == str():
+
+		if not include_empty_str and isinstance(val, (str, bytes)) and len(val) == 0:
+			continue
+		elif not include_empty_sized and isinstance(val, Sized) and len(val) == 0:
 			continue
 
 		# iterable to list conversion
@@ -482,7 +506,8 @@ def repr_str(obj: Any,
 			val = value_function(val)
 
 		# construct key=val string
-		strings.append(f"{prop.fget.__name__}={val}")
+		strings.append(f"{key}={val}")
+
 	return f"{obj.__class__.__name__}({joiner.join(strings)})"
 
 def error_str(original: AnyStr,

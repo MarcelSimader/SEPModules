@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>SEPPrinting &mdash; SEPModules 2.1.1 documentation</title>
+  <title>SEPPrinting &mdash; SEPModules 2.2.0 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                2.1.1
+                2.2.0
               </div>
             
           
@@ -347,24 +347,33 @@ display</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="SEPModules.SEPPrinting.repr_str">
-<span class="sig-prename descclassname"><span class="pre">SEPModules.SEPPrinting.</span></span><span class="sig-name descname"><span class="pre">repr_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">properties</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">repr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_empty_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joiner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">',</span> <span class="pre">'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPPrinting.repr_str" title="Permalink to this definition">¶</a></dt>
-<dd><p>Provides a <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> string for any class of type <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</p>
+<span class="sig-prename descclassname"><span class="pre">SEPModules.SEPPrinting.</span></span><span class="sig-name descname"><span class="pre">repr_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">properties</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">repr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_empty_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joiner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">',</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPModules.SEPPrinting.repr_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> string for any class using one instance of it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obj</strong> (<em>Any</em>) – the object to create this repr string from</p></li>
 <li><p><strong>properties</strong> (<em>property</em><em>[</em><em>_T</em><em>]</em>) – the values which should be displayed in this repr string</p></li>
 <li><p><strong>value_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>_T</em><em>]</em><em>, </em><em>str</em><em>]</em>) – which function to apply to each element of <code class="docutils literal notranslate"><span class="pre">values</span></code></p></li>
-<li><p><strong>include_none</strong> (<em>bool</em>) – whether or not to include <code class="docutils literal notranslate"><span class="pre">None</span></code> values or to omit them</p></li>
-<li><p><strong>include_empty_str</strong> (<em>bool</em>) – whether or not to include empty string <code class="docutils literal notranslate"><span class="pre">str()</span></code> values or to omit them</p></li>
+<li><p><strong>include_none</strong> (<em>bool</em>) – whether or not to include <code class="docutils literal notranslate"><span class="pre">None</span></code> values</p></li>
+<li><p><strong>include_empty_sized</strong> (<em>bool</em>) – whether or not to include empty <code class="docutils literal notranslate"><span class="pre">Sized</span></code> objects</p></li>
+<li><p><strong>include_empty_str</strong> (<em>bool</em>) – <em>deprecated</em>, whether or not to include empty strings</p></li>
 <li><p><strong>joiner</strong> (<em>AnyStr</em>) – which string to use to join the values together (see <code class="xref py py-meth docutils literal notranslate"><span class="pre">str.join()</span></code>)</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – an arbitrary amount of keyword arguments to include in the final output string (of course <strong>excluding</strong>
+those keyword arguments, which are used in this function!)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a repr string for <code class="docutils literal notranslate"><span class="pre">cls</span></code></p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>NameError</strong> – if the given properties are not found in the class of <code class="docutils literal notranslate"><span class="pre">obj</span></code></p></li>
+<li><p><strong>TypeError</strong> – if a type error is raised during retrieval of the value of the properties</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
