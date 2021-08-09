@@ -11,6 +11,7 @@
 
 from __future__ import annotations
 
+import inspect
 import math
 from typing import Any, Callable, Union, Final, Literal, Optional, TypeVar, AnyStr, Sequence, \
 	SupportsFloat, Iterable, Sized
@@ -24,17 +25,16 @@ _T: Final = TypeVar("_T")
 """ A generic type variable for use in :py:mod:`SEPPrinting`. """
 
 # color print property
-_PRINT_COLORS = True
-
-def _set_print_color(val: bool):
-	global _PRINT_COLORS
-	if not isinstance(val, bool):
-		raise TypeError(f"Expected type of 'print_colors' to be 'bool' but received {val.__class__.__name__}")
-	_PRINT_COLORS = val
-
-print_colors = property(lambda: _PRINT_COLORS, _set_print_color, None,
-						doc=""" Property to globally enable or disable color printing for module :py:mod:`SEPPrinting`. 
-Defaults to ``True``.""")
+def __deprecation_notice(*_, **__):
+	warn(DeprecationWarning("Global color printing attribute 'SEPPrinting.print_colors' is deprecated as of v2.1.1"))
+print_colors = property(__deprecation_notice, __deprecation_notice, __deprecation_notice,
+						doc=inspect.cleandoc(
+								"""
+								..	deprecated:: 2.1.1
+								
+									Global color printing control is now disabled.			
+								
+								"""))
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ ANSI CONTROL SEQUENCES ~~~~~~~~~~~~~~~
@@ -330,19 +330,16 @@ def cl_s(s: Any, style: AnsiControl = NORMAL, *, boolean: bool = False) -> str:
 
 	:returns: ANSI escape sequences of defined style(s) concatenated with ``str(s)``, where s may be of any type
 
-	.. 	note::
+	..	versionchanged:: 2.1.1
 
-		Color printing is globally enabled or disabled by :py:data:`print_colors`. If this value is set to ``False`` this
-		function will simply return ``str(s)`` so it can still be printed.
+		Removed support for global :py:attr:`print_colors` attribute.
+
 	"""
-	if print_colors:
-		# set boolean style
-		if boolean:
-			style = style + GREEN if bool(s) else style + RED
+	# set boolean style
+	if boolean:
+		style = style + GREEN if bool(s) else style + RED
 
-		return style + str(s) + RESET_ALL
-	else:
-		return str(s)
+	return style + str(s) + RESET_ALL
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ TIME STRING ~~~~~~~~~~~~~~~

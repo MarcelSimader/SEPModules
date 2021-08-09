@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>SEPPrinting &mdash; SEPModules 2.2.0 documentation</title>
+  <title>SEPPrinting &mdash; SEPModules 2.2.1 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                2.2.0
+                2.2.1
               </div>
             
           
@@ -233,8 +233,10 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="SEPModules.SEPPrinting.print_colors">
 <span class="sig-prename descclassname"><span class="pre">SEPPrinting.</span></span><span class="sig-name descname"><span class="pre">print_colors</span></span><em class="property"> <span class="pre">=True</span></em><a class="headerlink" href="#SEPModules.SEPPrinting.print_colors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Property to globally enable or disable color printing for module <code class="xref py py-mod docutils literal notranslate"><span class="pre">SEPPrinting</span></code>. 
-Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 2.1.1.</span></p>
+</div>
+<p>Global color printing control is now disabled.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -267,10 +269,8 @@ based on its boolean value</p></li>
 <dd class="field-even"><p>ANSI escape sequences of defined style(s) concatenated with <code class="docutils literal notranslate"><span class="pre">str(s)</span></code>, where s may be of any type</p>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Color printing is globally enabled or disabled by <a class="reference internal" href="#SEPModules.SEPPrinting.print_colors" title="SEPModules.SEPPrinting.print_colors"><code class="xref py py-data docutils literal notranslate"><span class="pre">print_colors</span></code></a>. If this value is set to <code class="docutils literal notranslate"><span class="pre">False</span></code> this
-function will simply return <code class="docutils literal notranslate"><span class="pre">str(s)</span></code> so it can still be printed.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.1.1: </span>Removed support for global <a class="reference internal" href="#SEPModules.SEPPrinting.print_colors" title="SEPModules.SEPPrinting.print_colors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">print_colors</span></code></a> attribute.</p>
 </div>
 </dd></dl>
 

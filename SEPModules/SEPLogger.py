@@ -294,7 +294,7 @@ class Logger:
 			use_color &= hasattr(stream, "isatty") and stream.isatty()
 
 			# color and try different encodings
-			for encoding in (locale.getpreferredencoding(), stream.encoding, "UTF-8", None):
+			for encoding in (stream.encoding, locale.getpreferredencoding(), "UTF-8", None):
 				if encoding is None:
 					raise UnicodeError(f"Failed to encode message for logger {self!r}")
 				try:
