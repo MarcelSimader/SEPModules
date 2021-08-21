@@ -17,14 +17,28 @@ import os
 import random
 import time
 from inspect import Traceback
-from itertools import permutations
+from itertools import combinations
 from subprocess import run, CalledProcessError, PIPE, TimeoutExpired
 from typing import Optional, Final, Tuple, Callable, final, FrozenSet, Dict, Set, AnyStr, ClassVar, \
-	Protocol, runtime_checkable, Sequence, Mapping, Type, TypeVar, Iterable, _ProtocolMeta, List, Union
+	Sequence, Mapping, TypeVar, Iterable, List, Union, Any, Generic
 from warnings import warn
 
 from SEPModules.SEPPrinting import repr_str, time_str
-from SEPModules.SEPUtils import abstract_not_implemented, Singleton, SingletonMeta, SEPSyntaxError, SingleStackFrameInfo
+from SEPModules.SEPUtils import abstract_not_implemented, Singleton, SingletonMeta, SEPSyntaxError, \
+	SingleStackFrameInfo, smart_recursion_limit
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ GLOBALS ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+_P: Final = TypeVar("_P", bound="BaseProposition")
+""" Generic type variable which must inherit from :py:class:`BaseProposition` for use in :py:mod:`SEPLogic`. """
+
+_R: Final = TypeVar("_R")
+""" Generic type variable for use in :py:mod:`SEPLogic`. """
+
+_smart_recursion_limit: Callable[[Callable[..., _R]], _R] = smart_recursion_limit(max_tries=3)
+""" The default :py:func:`.smart_recursion_limit` decorator for use in :py:mod:`SEPLogic`. """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
@@ -85,139 +99,9 @@ class LogicSyntaxError(SEPSyntaxError, LogicError):
 		"""
 		return LogicSyntaxError(msg, proposition, tb.filename, tb.lineno, offset, tb.code_context)
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~ CONNECTIVE BASES ~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-class _Connective(enum.Enum):
-	"""
-	:py:class:`_Connective` is the base class for connective enumerations. Each enumeration member must contain the method
-	that this connective is associated with. It also stores an arity (see :py:class:`ConnectiveArity`), and a "strength".
-
-	The relational operators ``<``, ``>``, ``<=``, ``>=`` of this instance compare the :py:attr:`strength` attribute, and
-	the equivalency operators ``==`` and ``!=`` compare strict object identity.
-
-	:param method: the method corresponding to this connective
-	:param arity: the arity of this connective (see :py:class:`ConnectiveArity`)
-	:param strength: an integer value defining this connective's relative strength to the other connectives (for instance,
-		negation is stronger than material implication)
-	"""
-
-	def __init__(self,
-				 method: Callable,
-				 arity: ConnectiveArity,
-				 strength: int):
-		self._method = method
-		self._arity = arity
-		self._strength = strength
-
-	@property
-	def method(self) -> Callable:
-		""" :return: the method implementing the behavior of this connective """
-		return self._method
-
-	@property
-	def arity(self) -> ConnectiveArity:
-		""" :return: the arity of this connective """
-		return self._arity
-
-	@property
-	def strength(self) -> int:
-		""" :return: the relative strength of this connective """
-		return self._strength
-
-	def __hash__(self) -> int:
-		return super(_Connective, self).__hash__()
-
-	def __eq__(self, other) -> bool:
-		return self is other
-
-	def __ne__(self, other) -> bool:
-		return self is not other
-
-	def __lt__(self, other) -> bool:
-		return isinstance(other, _Connective) and self._strength < other._strength
-
-	def __le__(self, other) -> bool:
-		return isinstance(other, _Connective) and self._strength <= other._strength
-
-	def __gt__(self, other) -> bool:
-		return isinstance(other, _Connective) and self._strength > other._strength
-
-	def __ge__(self, other) -> bool:
-		return isinstance(other, _Connective) and self._strength >= other._strength
-
-	def __repr__(self) -> str:
-		return f"<Connective {self._name_}>"
-
-@final
-class ConnectiveFormat:
-	"""
-	:py:class:`ConnectiveFormat` is a class which holds a mapping of :py:class:`_Connective` objects to their respective
-	:py:class:`ConnectiveFormat.Entry` objects.
-
-	:param enumeration: which :py:class:`_Connective` enumeration to define in this format
-	:param entries: a mapping of :py:class:`_Connective` objects to their respective
-		:py:class:`ConnectiveFormat.Entry` objects.
-	"""
-
-	class Entry:
-		"""
-		:py:class:`ConnectiveFormat.Entry` holds one entry of the mapping of :py:class:`ConnectiveFormat`.
-
-		:param prefix: the string to prepend to the operands
-		:param joiner: the string to use to join the operands (see ``str.join``)
-		:param suffix: the string o append to the operands
-		"""
-
-		def __init__(self, prefix: str, joiner: str, suffix: str):
-			self._prefix, self._joiner, self._suffix = prefix, joiner, suffix
-
-		@property
-		def prefix(self) -> str:
-			""" The string to prepend to the operands. """
-			return self._prefix
-
-		@property
-		def joiner(self) -> str:
-			""" The string to use to join the operands (see ``str.join``). """
-			return self._joiner
-
-		@property
-		def suffix(self) -> str:
-			""" The string to append to the operands. """
-			return self._suffix
-
-	_ConnectiveEnum: Final[TypeVar] = TypeVar("_ConnectiveEnum", bound=_Connective)
-
-	def __init__(self, enumeration: Type[_ConnectiveEnum], entries: Mapping[_ConnectiveEnum, ConnectiveFormat.Entry]):
-		# check that all connectives have an entry
-		for conn in enumeration:
-			if conn not in entries:
-				raise KeyError(f"Missing connective {conn!r} from entries (class uses "
-							   f"{enumeration.__name__!r} enumeration)")
-		self._enumeration = enumeration
-		self._entries = entries
-
-	@property
-	def enumeration(self) -> Type[_ConnectiveEnum]:
-		""" The :py:class:`_Connective` enumeration this format defines. """
-		return self._enumeration
-
-	def format(self, *operands: str, connective: _ConnectiveEnum) -> str:
-		"""
-		Formats the operands with the given connective based on the format specified by the mapping in this class.
-
-		:param operands: an arbitrary number of operands as strings
-		:param connective: the connective from the specified :py:attr:`enumeration` enum class
-		:return: the formatted string
-		"""
-		try:
-			entry = self._entries[connective]
-		except KeyError as e:
-			raise KeyError(f"Missing connective {connective!r} from entries (class uses "
-						   f"{self._enumeration.__name__!r} enumeration)") from e
-		return f"{entry.prefix}{entry.joiner.join(operands)}{entry.suffix}"
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ CONNECTIVES ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 @final
 class ConnectiveArity(enum.Enum):
@@ -264,53 +148,13 @@ class ConnectiveArity(enum.Enum):
 	def __str__(self) -> str:
 		return self._description
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~ CONNECTIVE ENUMS ~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-@runtime_checkable
-class SupportsLogicalConnective(Protocol):
-	"""
-	A simple protocol for indicating that the standard logical connective methods are supported by a class.
-	"""
-
-	@abc.abstractmethod
-	def __invert__(self):
-		raise abstract_not_implemented(SupportsLogicalConnective, "__invert__")
-
-	@abc.abstractmethod
-	def __truediv__(self, other):
-		raise abstract_not_implemented(SupportsLogicalConnective, "__truediv__")
-
-	@abc.abstractmethod
-	def __floordiv__(self, other):
-		raise abstract_not_implemented(SupportsLogicalConnective, "__floordiv__")
-
-	@abc.abstractmethod
-	def __rshift__(self, other):
-		raise abstract_not_implemented(SupportsLogicalConnective, "__rshift__")
-
-	@abc.abstractmethod
-	def __lshift__(self, other):
-		raise abstract_not_implemented(SupportsLogicalConnective, "__lshift__")
-
-	@abc.abstractmethod
-	def __pow__(self, power):
-		raise abstract_not_implemented(SupportsLogicalConnective, "__pow__")
-
-	@abc.abstractmethod
-	def __and__(self, other):
-		raise abstract_not_implemented(SupportsLogicalConnective, "__and__")
-
-	@abc.abstractmethod
-	def __or__(self, other):
-		raise abstract_not_implemented(SupportsLogicalConnective, "__or__")
-
 @final
-class LogicalConnective(_Connective):
+class LogicalConnective(enum.Enum):
 	"""
-	:py:class:`LogicalConnective` is an enum deriving from :py:class:`_Connective`. it contains the basic logical
-	connectives:
+	The relational operators ``<``, ``>``, ``<=``, ``>=`` of this instance compare the :py:attr:`strength` attribute, and
+	the equivalency operators ``==`` and ``!=`` compare strict object identity.
+
+	It contains the following basic logical connectives:
 
 	* :py:attr:`EMPTY`: no operator, empty (nilary)
 	* :py:attr:`NONE`: no operator, identity (unary)
@@ -322,49 +166,258 @@ class LogicalConnective(_Connective):
 	* :py:attr:`R_IMPL`: material "left-implies-right" implication (binary)
 	* :py:attr:`L_IMPL`: material "right-implies-left" implication (binary)
 	* :py:attr:`IFF`: material equivalence, biconditional "if-and-only-if" (binary)
+
+	:param description: a short string describing this connective
+	:param arity: the arity of this connective (see :py:class:`ConnectiveArity`)
+	:param strength: an integer value defining this connective's relative strength to the other connectives (for instance,
+		negation is stronger than material implication)
 	"""
-	EMPTY: Final = lambda self: self, ConnectiveArity.NILARY, 100
 
-	NONE: Final = lambda self: self, ConnectiveArity.UNARY, 100
-	NEG: Final = SupportsLogicalConnective.__invert__, ConnectiveArity.UNARY, 80
+	EXIST: Final = "existential quantification", ConnectiveArity.BINARY, 10
+	UNIV: Final = "universal quantification", ConnectiveArity.BINARY, 10
+	IFF: Final = "biconditional", ConnectiveArity.BINARY, 20
+	R_IMPL: Final = "right implication", ConnectiveArity.BINARY, 30
+	L_IMPL: Final = "left implication", ConnectiveArity.BINARY, 30
 
-	EXIST: Final = SupportsLogicalConnective.__truediv__, ConnectiveArity.BINARY, 80
-	UNIV: Final = SupportsLogicalConnective.__floordiv__, ConnectiveArity.BINARY, 80
-	R_IMPL: Final = SupportsLogicalConnective.__rshift__, ConnectiveArity.BINARY, 30
-	L_IMPL: Final = SupportsLogicalConnective.__lshift__, ConnectiveArity.BINARY, 30
-	IFF: Final = SupportsLogicalConnective.__pow__, ConnectiveArity.BINARY, 20
+	OR: Final = "disjunction", ConnectiveArity.NARY, 40
+	AND: Final = "conjunction", ConnectiveArity.NARY, 50
 
-	AND: Final = SupportsLogicalConnective.__and__, ConnectiveArity.NARY, 50
-	OR: Final = SupportsLogicalConnective.__or__, ConnectiveArity.NARY, 40
+	NEG: Final = "negation", ConnectiveArity.UNARY, 80
+	NONE: Final = "none", ConnectiveArity.UNARY, 100
+	EMPTY: Final = "empty", ConnectiveArity.NILARY, 100
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~ PROTOCOLS ~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	def __init__(self,
+				 description: str,
+				 arity: ConnectiveArity,
+				 strength: int):
+		self._description = description
+		self._arity = arity
+		self._strength = strength
 
-@runtime_checkable
-class SupportsConnectiveFormat(Protocol):
-	""" Protocol to check whether or not a class supports formatting by :py:class:`ConnectiveFormat`. """
+	@property
+	def description(self) -> str:
+		""" :return: a short description of the connective """
+		return self._description
+
+	@property
+	def arity(self) -> ConnectiveArity:
+		""" :return: the arity of this connective """
+		return self._arity
+
+	@property
+	def strength(self) -> int:
+		""" :return: the relative strength of this connective """
+		return self._strength
+
+	def __hash__(self) -> int:
+		return hash((self._description, self._arity, self._strength))
+
+	def __eq__(self, other) -> bool:
+		return self is other
+
+	def __ne__(self, other) -> bool:
+		return self is not other
+
+	def __lt__(self, other) -> bool:
+		return isinstance(other, LogicalConnective) and self._strength < other._strength
+
+	def __le__(self, other) -> bool:
+		return isinstance(other, LogicalConnective) and self._strength <= other._strength
+
+	def __gt__(self, other) -> bool:
+		return isinstance(other, LogicalConnective) and self._strength > other._strength
+
+	def __ge__(self, other) -> bool:
+		return isinstance(other, LogicalConnective) and self._strength >= other._strength
+
+	def __repr__(self) -> str:
+		return f"<LogicalConnective {self._name_}>"
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ FORMATTING ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class ConnectiveFormat:
+	"""
+	:py:class:`ConnectiveFormat` is a class which holds a mapping of :py:class:`_Connective` objects to their respective
+	:py:class:`ConnectiveFormat.Entry` objects.
+
+	:param entries: a mapping of :py:class:`_Connective` objects to their respective
+		:py:class:`ConnectiveFormat.Entry` objects.
+		DOCS:
+	"""
+
+	class Entry:
+		"""
+		:py:class:`ConnectiveFormat.Entry` holds one entry of the mapping of :py:class:`ConnectiveFormat`.
+
+		:param prefix: the string to prepend to the operands
+		:param joiner: the string to use to join the operands (see ``str.join``)
+		:param suffix: the string o append to the operands
+		:param use_parens: whether or not to put the expression in parentheses
+		"""
+
+		def __init__(self, prefix: str, joiner: str, suffix: str, use_parens: bool):
+			self._prefix = prefix
+			self._joiner = joiner
+			self._suffix = suffix
+			self._use_parens = use_parens
+
+		@property
+		def prefix(self) -> str:
+			""" The string to prepend to the operands. """
+			return self._prefix
+
+		@property
+		def joiner(self) -> str:
+			""" The string to use to join the operands (see ``str.join``). """
+			return self._joiner
+
+		@property
+		def suffix(self) -> str:
+			""" The string to append to the operands. """
+			return self._suffix
+
+		@property
+		def use_parens(self) -> bool:
+			""" Whether or not to put the expression in parentheses """
+			return self._use_parens
+
+	def __init__(self,
+				 entries: Mapping[LogicalConnective, ConnectiveFormat.Entry],
+				 quantifier_nesting_joiner: Optional[str],
+				 parentheses: Mapping[int, Tuple[str, str]],
+				 parenthesize_outermost: bool,
+				 atomic_prime_symbol: str,
+				 atomic_singleton_symbols: Mapping[AtomicProposition, str] = ()):
+		# check that all connectives have an entry
+		for conn in LogicalConnective:
+			if conn not in entries:
+				raise KeyError(f"Missing connective {conn!r} from entries")
+		# check that parentheses mapping is correct
+		if len(parentheses) < 1:
+			raise ValueError("parentheses mapping must contain at least one element")
+		if 0 not in parentheses:
+			raise ValueError("parentheses mapping must at least contain one element with key 1")
+		if any(p < 0 for p in parentheses):
+			raise ValueError("parentheses mapping must not contain a key that is smaller than 0")
+
+		self._entries = entries
+		self._quantifier_nesting_joiner = quantifier_nesting_joiner
+		self._parentheses = parentheses
+		self._parenthesize_outermost = parenthesize_outermost
+		self._parentheses_depth = max(parentheses.keys())
+		self._atomic_prime_symbol = atomic_prime_symbol
+		self._atomic_singleton_symbols = atomic_singleton_symbols
+
+	def atomic_singleton_symbol(self, singleton: AtomicProposition) -> str:
+		try:
+			return self._atomic_singleton_symbols[singleton]
+		except KeyError:
+			raise KeyError(f"Invalid or missing key for atomic singleton symbol lookup")
+
+	def atomic_format(self, prefix: str, char: str, num_primes: int) -> str:
+		return f"{'' if len(prefix) == 0 else f'{prefix}_'}{char}{self._atomic_prime_symbol * num_primes}"
+
+	def parentheses(self, operand: str, nesting_depth: int = 0) -> str:
+		if nesting_depth < 0:
+			raise ValueError(f"Negative nesting depth of {nesting_depth!r} not allowed, "
+							 f"must greater than, or equal to 0")
+		dists = map(lambda item: (nesting_depth - item[0], item[1]),
+					(item for item in self._parentheses.items() if item[0] <= nesting_depth))
+		sym = min(dists, key=lambda item: item[0], default=(None, ("?", "?")))[1]
+		return f"{sym[0]}{operand}{sym[1]}"
+
+	@_smart_recursion_limit
+	def _format(self, root: BaseProposition, parent: Optional[BaseProposition] = None) -> Tuple[int, str]:
+		# preliminaries
+		child_nesting_depth = 0
+		conn_entry = self._entries[root.connective]
+
+		# decide handling based on type
+		if isinstance(root, AtomicProposition):
+			if root in self._atomic_singleton_symbols:
+				out_str = self.atomic_singleton_symbol(root)
+			else:
+				out_str = self.atomic_format(*root.volatile_name_tuple)
+		else:
+			if root.connective == LogicalConnective.EMPTY:
+				rec_str = ""
+			else:
+				# recursive calls
+				rec_calls = tuple(self._format(p, parent=root) for p in root.propositions)
+				child_nesting_depth = max(r[0] for r in rec_calls)
+				rec_str = (r[1] for r in rec_calls)
+
+			# normal base proposition case
+			prefix = conn_entry.prefix
+			joiner = conn_entry.joiner
+			suffix = conn_entry.suffix
+			# nested quantifier base proposition case
+			if (self._quantifier_nesting_joiner is not None) \
+					and (root.connective in (LogicalConnective.EXIST, LogicalConnective.UNIV)):
+				if root.propositions[1].connective == root.connective:
+					joiner = self._quantifier_nesting_joiner
+				if (parent is not None) and (parent.connective == root.connective):
+					prefix = ""
+
+			# assembling part strings
+			out_str = prefix + joiner.join(rec_str) + suffix
+
+		# parentheses and nesting
+		if conn_entry.use_parens and (parent is not None or self._parenthesize_outermost):
+			# and (parent is None or parent.connective >= root.connective):
+			child_nesting_depth += 1
+			out_str = self.parentheses(out_str, child_nesting_depth)
+
+		return child_nesting_depth, out_str
+
+	def format(self, root: BaseProposition) -> str:
+		"""
+		Formats the :py:class:`BaseProposition` ``root`` using the format specified by this :py:class:`ConnectiveFormat`
+		object.
+
+		:param root: the root base proposition to format
+		:return: the formatted string
+		"""
+		return self._format(root, parent=None)[1]
+
+class SupportsConnectiveFormat(abc.ABC):
+	""" Abstract base class for objects which support formatting by a :py:class:`ConnectiveFormat` object. """
 
 	@abc.abstractmethod
-	def connective_format(self, *, conn_format: ConnectiveFormat, **kwargs) -> str:
-		raise abstract_not_implemented(SupportsConnectiveFormat, "conn_format")
+	def _connective_format(self, /, conn_format: ConnectiveFormat) -> str:
+		"""
+		Converts the object to a string based on the format specified by the passed ``conn_format``.
+
+		:param conn_format: the connective format to convert this object to a string
+		:return: the object converted to a string
+		"""
+		raise abstract_not_implemented(SupportsConnectiveFormat, "_connective_format")
 
 class SupportsToPrettyPrint(SupportsConnectiveFormat, abc.ABC):
 	""" Abstract base class for subclasses that can convert themselves to a pretty printed string. """
 
-	_pretty_print_format: Final[ConnectiveFormat] = \
-		ConnectiveFormat(LogicalConnective, {
-				LogicalConnective.EMPTY : ConnectiveFormat.Entry("", "", ""),
-				LogicalConnective.NONE  : ConnectiveFormat.Entry("", "", ""),
-				LogicalConnective.NEG   : ConnectiveFormat.Entry("\u00AC", "", ""),
-				LogicalConnective.EXIST : ConnectiveFormat.Entry("\u2203", ". ", ""),
-				LogicalConnective.UNIV  : ConnectiveFormat.Entry("\u2200", ". ", ""),
-				LogicalConnective.R_IMPL: ConnectiveFormat.Entry("", " \u2192 ", ""),
-				LogicalConnective.L_IMPL: ConnectiveFormat.Entry("", " \u2190 ", ""),
-				LogicalConnective.IFF   : ConnectiveFormat.Entry("", " \u2194 ", ""),
-				LogicalConnective.AND   : ConnectiveFormat.Entry("", " \u2227 ", ""),
-				LogicalConnective.OR    : ConnectiveFormat.Entry("", " \u2228 ", "")
-				})
+	@property
+	def _pretty_print_format(self) -> ConnectiveFormat:
+		return ConnectiveFormat(
+				entries={
+						LogicalConnective.EMPTY : ConnectiveFormat.Entry("EMPTY", "", "", True),
+						LogicalConnective.NONE  : ConnectiveFormat.Entry("", "", "", False),
+						LogicalConnective.NEG   : ConnectiveFormat.Entry("\u00AC", "", "", False),
+						LogicalConnective.EXIST : ConnectiveFormat.Entry("\u2203", ". ", "", False),
+						LogicalConnective.UNIV  : ConnectiveFormat.Entry("\u2200", ". ", "", False),
+						LogicalConnective.R_IMPL: ConnectiveFormat.Entry("", " \u2192 ", "", True),
+						LogicalConnective.L_IMPL: ConnectiveFormat.Entry("", " \u2190 ", "", True),
+						LogicalConnective.IFF   : ConnectiveFormat.Entry("", " \u2194 ", "", True),
+						LogicalConnective.AND   : ConnectiveFormat.Entry("", " \u2227 ", "", True),
+						LogicalConnective.OR    : ConnectiveFormat.Entry("", " \u2228 ", "", True)
+						},
+				quantifier_nesting_joiner=",",
+				parentheses={0: ("(", ")"), 3: ("[", "]")},
+				parenthesize_outermost=False,
+				atomic_prime_symbol="\u2032",
+				atomic_singleton_symbols={Top: "\u22A4", Bottom: "\u22A5"})
 
 	def to_pretty_print(self) -> str:
 		"""
@@ -372,24 +425,30 @@ class SupportsToPrettyPrint(SupportsConnectiveFormat, abc.ABC):
 
 		:return: a pretty-printed string representation of this object
 		"""
-		return self.connective_format(conn_format=self._pretty_print_format)
+		return self._connective_format(conn_format=self._pretty_print_format)
 
 class SupportsToLimboole(SupportsConnectiveFormat, abc.ABC):
 	""" Abstract base class for subclasses that can convert themselves to the limboole syntax as string. """
 
-	_limboole_format: Final[ConnectiveFormat] = \
-		ConnectiveFormat(LogicalConnective, {
-				LogicalConnective.EMPTY : ConnectiveFormat.Entry("", "", ""),
-				LogicalConnective.NONE  : ConnectiveFormat.Entry("", "", ""),
-				LogicalConnective.NEG   : ConnectiveFormat.Entry("!", "", ""),
-				LogicalConnective.EXIST : ConnectiveFormat.Entry("?", " ", ""),
-				LogicalConnective.UNIV  : ConnectiveFormat.Entry("#", " ", ""),
-				LogicalConnective.R_IMPL: ConnectiveFormat.Entry("", " -> ", ""),
-				LogicalConnective.L_IMPL: ConnectiveFormat.Entry("", " <- ", ""),
-				LogicalConnective.IFF   : ConnectiveFormat.Entry("", " <-> ", ""),
-				LogicalConnective.AND   : ConnectiveFormat.Entry("", " & ", ""),
-				LogicalConnective.OR    : ConnectiveFormat.Entry("", " | ", "")
-				})
+	@property
+	def _limboole_format(self) -> ConnectiveFormat:
+		return ConnectiveFormat(
+				entries={LogicalConnective.EMPTY : ConnectiveFormat.Entry("?EMPTY?", "", "", True),
+						 LogicalConnective.NONE  : ConnectiveFormat.Entry("", "", "", False),
+						 LogicalConnective.NEG   : ConnectiveFormat.Entry("!", "", "", False),
+						 LogicalConnective.EXIST : ConnectiveFormat.Entry("?", " ", "", False),
+						 LogicalConnective.UNIV  : ConnectiveFormat.Entry("#", " ", "", False),
+						 LogicalConnective.R_IMPL: ConnectiveFormat.Entry("", " -> ", "", True),
+						 LogicalConnective.L_IMPL: ConnectiveFormat.Entry("", " <- ", "", True),
+						 LogicalConnective.IFF   : ConnectiveFormat.Entry("", " <-> ", "", True),
+						 LogicalConnective.AND   : ConnectiveFormat.Entry("", " & ", "", True),
+						 LogicalConnective.OR    : ConnectiveFormat.Entry("", " | ", "", True)
+						 },
+				quantifier_nesting_joiner=None,
+				parentheses={0: ("(", ")")},
+				parenthesize_outermost=False,
+				atomic_prime_symbol="-prime",
+				atomic_singleton_symbols={Top: "(top | !top)", Bottom: "(bottom & !bottom)"})
 
 	def to_limboole(self) -> str:
 		"""
@@ -397,24 +456,33 @@ class SupportsToLimboole(SupportsConnectiveFormat, abc.ABC):
 
 		:return: a limboole-compatible string representation of this object
 		"""
-		return self.connective_format(conn_format=self._limboole_format)
+		return self._connective_format(conn_format=self._limboole_format)
 
 class SupportsToLaTeX(SupportsConnectiveFormat, abc.ABC):
 	""" Abstract base class for subclasses that can convert themselves to LaTeX as string. """
 
-	_latex_format: Final[ConnectiveFormat] = \
-		ConnectiveFormat(LogicalConnective, {
-				LogicalConnective.EMPTY : ConnectiveFormat.Entry("", "", ""),
-				LogicalConnective.NONE  : ConnectiveFormat.Entry("", "", ""),
-				LogicalConnective.NEG   : ConnectiveFormat.Entry(r"\neg{", "", "}"),
-				LogicalConnective.EXIST : ConnectiveFormat.Entry(r"\exists ", "\colon ", ""),
-				LogicalConnective.UNIV  : ConnectiveFormat.Entry(r"\forall ", "\colon ", ""),
-				LogicalConnective.R_IMPL: ConnectiveFormat.Entry("", r" \rightarrow ", ""),
-				LogicalConnective.L_IMPL: ConnectiveFormat.Entry("", r" \leftarrow ", ""),
-				LogicalConnective.IFF   : ConnectiveFormat.Entry("", r" \leftrightarrow ", ""),
-				LogicalConnective.AND   : ConnectiveFormat.Entry("", r" \land ", ""),
-				LogicalConnective.OR    : ConnectiveFormat.Entry("", r" \lor ", "")
-				})
+	@property
+	def _latex_format(self) -> ConnectiveFormat:
+		return ConnectiveFormat(
+				entries={
+						LogicalConnective.EMPTY : ConnectiveFormat.Entry(r"\emptyset", "", "", True),
+						LogicalConnective.NONE  : ConnectiveFormat.Entry("", "", "", False),
+						LogicalConnective.NEG   : ConnectiveFormat.Entry(r"\neg{", "", "}", False),
+						LogicalConnective.EXIST : ConnectiveFormat.Entry(r"\exists ", "\colon ", "", False),
+						LogicalConnective.UNIV  : ConnectiveFormat.Entry(r"\forall ", "\colon ", "", False),
+						LogicalConnective.R_IMPL: ConnectiveFormat.Entry("", r" \rightarrow ", "", True),
+						LogicalConnective.L_IMPL: ConnectiveFormat.Entry("", r" \leftarrow ", "", True),
+						LogicalConnective.IFF   : ConnectiveFormat.Entry("", r" \leftrightarrow ", "", True),
+						LogicalConnective.AND   : ConnectiveFormat.Entry("", r" \land ", "", True),
+						LogicalConnective.OR    : ConnectiveFormat.Entry("", r" \lor ", "", True)
+						},
+				quantifier_nesting_joiner=",",
+				parentheses={0: (r"(", r")"),
+							 2: (r"\Big(", r"\Big)"), 3: (r"\bigg(", r"\bigg)"), 4: (r"\Bigg(", r"\Bigg)"),
+							 5: (r"\Big[", r"\Big]"), 6: (r"\bigg[", r"\bigg]"), 7: (r"\Bigg[", r"\Bigg]")},
+				parenthesize_outermost=False,
+				atomic_prime_symbol=r"\prime",
+				atomic_singleton_symbols={Top: r"\top", Bottom: r"\bot"})
 
 	def to_latex(self) -> str:
 		"""
@@ -422,11 +490,24 @@ class SupportsToLaTeX(SupportsConnectiveFormat, abc.ABC):
 
 		:return: a LaTeX-compatible string representation of this object
 		"""
-		return f"${self.connective_format(conn_format=self._latex_format)}$"
+		return f"${self._connective_format(conn_format=self._latex_format)}$"
 
-@runtime_checkable
-class SupportsEval(Protocol):
-	""" Protocol to check whether or not an object can be evaluated using an assignment. """
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ EVAL BASES ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class SupportsEval(abc.ABC):
+	""" Abstract base class for an object which can be evaluated using an assignment. """
+
+	@staticmethod
+	def _check_assignment(assignment: Assignment) -> None:
+		"""
+		Checks whether an assignment is legal or not.
+
+		:raise ValueError: if the assignment contains :py:data:`Top` or :py:data:`Bottom`
+		"""
+		if Top in assignment or Bottom in assignment:
+			raise ValueError(f"Cannot assign to {Top!r} or {Bottom!r} in assignment: {_assignment_to_str(assignment)}")
 
 	@abc.abstractmethod
 	def eval(self, assignment: Assignment) -> bool:
@@ -470,9 +551,95 @@ class SupportsLimbooleEval(SupportsToLimboole, abc.ABC):
 # ~~~~~~~~~~~~~~~ PROPOSITION ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class Proposition(SupportsLogicalConnective,
-				  SupportsToPrettyPrint, SupportsToLaTeX,
-				  SupportsEval, SupportsLimbooleEval):
+class BaseProposition(SupportsConnectiveFormat, Generic[_P], abc.ABC):
+
+	def __init__(self, *proposition: _P, connective: LogicalConnective):
+		# check if num of operands is compatible with connective
+		if not connective.arity.operand_check(len(proposition)):
+			raise ValueError(f"Incompatible number of operands for connective {connective.description!r}, "
+							 f"received {len(proposition)!r} but expected {connective.arity.description!r}")
+
+		# apply normalization step
+		proposition, connective = self.normalize(proposition, connective)
+
+		# if props is now empty, force connective to empty
+		if len(proposition) < 1:
+			connective = LogicalConnective.EMPTY
+
+		self._propositions: Tuple[_P] = tuple(proposition)
+		self._connective: LogicalConnective = connective
+
+	@staticmethod
+	@abc.abstractmethod
+	@_smart_recursion_limit
+	def normalize(propositions: Sequence[_P],
+				  connective: LogicalConnective) -> Tuple[Sequence[_P], LogicalConnective]:
+		r"""
+		Normalizes the input to the initializer of a :py:class:`BaseProposition` instance. The arguments to this function
+		are the same arguments passed to :py:meth:`__init__` but note that this function will not try to check or correct
+		any of these inputs.
+		"""
+		raise abstract_not_implemented(BaseProposition, "normalize")
+
+	@property
+	def propositions(self) -> Tuple[_P]:
+		""" :return: the child proposition instances of this class """
+		return self._propositions
+
+	@property
+	def connective(self) -> LogicalConnective:
+		""" :return: the connective of this class """
+		return self._connective
+
+	@property
+	def empty(self) -> bool:
+		""" :return: whether or not this proposition contains child propositions """
+		return len(self._propositions) <= 0
+
+	@final
+	@property
+	@_smart_recursion_limit
+	def atomic(self) -> bool:
+		""" :return: whether or not this proposition is atomic """
+		return isinstance(self, AtomicProposition) or (self._connective == LogicalConnective.NONE
+													   and self._propositions[0].atomic)
+
+	@property
+	@_smart_recursion_limit
+	def literal(self) -> bool:
+		""" :return: whether or not this proposition is a literal (i.e. atomic or a negation of an atomic proposition) """
+		# either one or arbitrarily negated atomic proposition
+		return self.atomic or (self._connective in (LogicalConnective.NONE, LogicalConnective.NEG)
+							   and self._propositions[0].literal)
+
+	@property
+	@_smart_recursion_limit
+	def quantifier(self) -> bool:
+		"""
+		:return: whether or not this proposition is a quantifier (i.e. a :py:attr:`literal` proposition which is
+			existentially or universally quantified)
+		"""
+		# quantifier
+		quantifier = (self._connective in (LogicalConnective.EXIST, LogicalConnective.UNIV)) \
+					 and self._propositions[0].atomic
+		# or arbitrarily negated quantifier
+		quantifier |= self._connective == LogicalConnective.NEG and self._propositions[0].quantifier
+		return quantifier
+
+	def _require_non_empty(self, action_name: str) -> _P:
+		"""
+		:return: the proposition if it is not empty (see :py:meth:`empty`)
+		:raise LogicError: if the proposition is empty
+		"""
+		if self.empty:
+			raise LogicError(f"Cannot {action_name} empty proposition", str(self))
+		return self
+
+	def _connective_format(self, /, conn_format: ConnectiveFormat) -> str:
+		return conn_format.format(self)
+
+class Proposition(SupportsLimbooleEval, SupportsEval, SupportsToPrettyPrint, SupportsToLaTeX,
+				  BaseProposition["Proposition"]):
 	"""
 	:py:class:`Proposition` is the base class for representing a general propositional object. A general proposition
 	consists of an arbitrary amount of composite :py:class:`Proposition` objects connected by a :py:class:`_Connective`.
@@ -510,44 +677,36 @@ class Proposition(SupportsLogicalConnective,
 		number of operands is incompatible with the given connective
 	"""
 
-	def __init__(self, *proposition: Proposition, connective: Optional[_Connective] = None):
+	def __init__(self, *proposition: Proposition, connective: Optional[LogicalConnective] = None):
 		# try to guess right connective if not given
 		if connective is None or connective.arity == ConnectiveArity.NARY:
 			if len(proposition) == 0:
 				connective = LogicalConnective.EMPTY
 			elif len(proposition) == 1:
 				connective = LogicalConnective.NONE
-			elif connective is None:
-				raise ValueError("_Connective missing from constructor of Proposition")
+		# failed to find one
+		if connective is None:
+			raise ValueError("_Connective missing from constructor of Proposition")
 
-		# check if num of operands is compatible with connective
-		if not connective.arity.operand_check(len(proposition)):
-			raise ValueError(f"Incompatible number of operands for connective {connective.name}, "
-							 f"received {len(proposition)} but expected {connective.arity.description}")
+		# super call to base prop
+		super(Proposition, self).__init__(*proposition, connective=connective)
 
-		# apply normalization step
-		proposition, connective = self.normalize(proposition, connective)
-
-		# remove duplicates from nary operation
-		if connective.arity == ConnectiveArity.NARY:
-			proposition = tuple(dict.fromkeys(proposition))
-
-		self._connective: _Connective = connective
-		self._propositions: Tuple[Proposition] = tuple(proposition)
+		self._hash = None
 
 		# keep list of contained atomic props
-		self._seen_atomic_propositions = {p for p in proposition if p.atomic}
+		self._seen_atomic_propositions = {p for p in self._propositions if p.atomic}
 		self._seen_atomic_propositions.update(*(p._seen_atomic_propositions for p in proposition if p is not self))
 		self._seen_atomic_propositions: FrozenSet[AtomicProposition] = frozenset(self._seen_atomic_propositions)
 
 		# keep list of contained connectives
 		self._seen_connectives = {connective}
 		self._seen_connectives.update(*(p._seen_connectives for p in proposition if p is not self))
-		self._seen_connectives: FrozenSet[_Connective] = frozenset(self._seen_connectives)
+		self._seen_connectives: FrozenSet[LogicalConnective] = frozenset(self._seen_connectives)
 
 	@staticmethod
+	@_smart_recursion_limit
 	def normalize(propositions: Sequence[Proposition],
-				  connective: _Connective) -> Tuple[Sequence[Proposition], _Connective]:
+				  connective: LogicalConnective) -> Tuple[Sequence[Proposition], LogicalConnective]:
 		r"""
 		Normalizes the input to the initializer of a :py:class:`Proposition` instance. The arguments to this function are
 		the same arguments passed to :py:meth:`__init__` but note that this function will not try to check or correct these
@@ -586,15 +745,17 @@ class Proposition(SupportsLogicalConnective,
 				return p.normalize(p._propositions, p._connective)
 		# nary
 		elif connective in (LogicalConnective.AND, LogicalConnective.OR):
-			# combine nary props
+			# remove duplicates, but keep order
+			propositions = tuple(dict.fromkeys(propositions))
+			# combine props
 			for p in propositions:
 				if connective == p._connective:
 					return p.normalize((*(q for q in propositions if q is not p), *p._propositions), connective)
 
-		# no negation, simply apply to all children now
 		# default exit
+		# apply to all children now
 		new_props = list()
-		for p in propositions:
+		for p in (q for q in propositions if q._connective != LogicalConnective.EMPTY):
 			if p.atomic:
 				new_props.append(p._propositions[0])
 			else:
@@ -602,37 +763,7 @@ class Proposition(SupportsLogicalConnective,
 				new_props.append(Proposition(*tmp[0], connective=tmp[1]))
 		return new_props, connective
 
-	@staticmethod
-	def _check_assignment(assignment: Assignment) -> None:
-		"""
-		Checks whether an assignment is legal or not.
-
-		:raise ValueError: if the assignment contains :py:data:`Top` or :py:data:`Bottom`
-		"""
-		if Top in assignment or Bottom in assignment:
-			raise ValueError(f"Cannot assign to Top or Bottom in assignment: {_assignment_to_str(assignment)}")
-
-	@final
-	def _require_non_empty(self, p: Proposition, action_name: str) -> Proposition:
-		"""
-		:return: the proposition if it is not empty (see :py:meth:`empty`)
-		:raise LogicError: if the proposition is empty
-		"""
-		if self.empty:
-			raise LogicError(f"Cannot {action_name} empty proposition", str(self))
-		return p
-
 	# attributes and properties
-	@property
-	def propositions(self) -> Tuple[Proposition]:
-		""" :return: the child proposition instances of this class """
-		return self._propositions
-
-	@property
-	def connective(self) -> _Connective:
-		""" :return: the connective of this class, or :py:attr:`LogicalConnective.NONE` if no connective was defined """
-		return LogicalConnective.NONE if self._connective is None else self._connective
-
 	@property
 	def seen_atomic_propositions(self) -> Set[AtomicProposition]:
 		"""
@@ -644,7 +775,7 @@ class Proposition(SupportsLogicalConnective,
 		return set(self._seen_atomic_propositions)
 
 	@property
-	def seen_connectives(self) -> Set[_Connective]:
+	def seen_connectives(self) -> Set[LogicalConnective]:
 		"""
 		Gathers a set of all the connectives that have been defined in any of the child proposition objects of
 		this class.
@@ -652,38 +783,6 @@ class Proposition(SupportsLogicalConnective,
 		:return: a set of connectives found in any of the child propositions of this class
 		"""
 		return set(self._seen_connectives)
-
-	@property
-	def empty(self) -> bool:
-		""" :return: whether or not this proposition contains child propositions """
-		return len(self) == 0
-
-	@final
-	@property
-	def atomic(self) -> bool:
-		""" :return: whether or not this proposition is atomic """
-		return isinstance(self, AtomicProposition) or (self._connective == LogicalConnective.NONE
-													   and self._propositions[0].atomic)
-
-	@property
-	def literal(self) -> bool:
-		""" :return: whether or not this proposition is a literal (i.e. atomic or a negation of an atomic proposition) """
-		# either one or arbitrarily negated atomic proposition
-		return self.atomic or (self._connective in (LogicalConnective.NONE, LogicalConnective.NEG)
-							   and self._propositions[0].literal)
-
-	@property
-	def quantifier(self) -> bool:
-		"""
-		:return: whether or not this proposition is a quantifier (i.e. a :py:attr:`literal` proposition which is
-			existentially or universally quantified)
-		"""
-		# quantifier
-		quantifier = (self._connective == LogicalConnective.EXIST or self._connective == LogicalConnective.UNIV) and \
-					 self._propositions[0].atomic
-		# or arbitrarily negated quantifier
-		quantifier |= self._connective == LogicalConnective.NEG and self._propositions[0].quantifier
-		return quantifier
 
 	@property
 	def quantified(self) -> bool:
@@ -704,7 +803,8 @@ class Proposition(SupportsLogicalConnective,
 		valid = self._connective == LogicalConnective.AND
 		# all direct children are literals, or OR of literals
 		for p in self._propositions:
-			if not valid: break
+			if not valid:
+				break
 			valid &= p.literal or (p._connective == LogicalConnective.OR and all(q.literal for q in p._propositions))
 		return valid
 
@@ -718,9 +818,19 @@ class Proposition(SupportsLogicalConnective,
 		valid = self._connective == LogicalConnective.OR
 		# all direct children are literals, or AND of literals
 		for p in self._propositions:
-			if not valid: break
+			if not valid:
+				break
 			valid &= p.literal or (p._connective == LogicalConnective.AND and all(q.literal for q in p._propositions))
 		return valid
+
+	def _require_non_quantified(self, action: str) -> Proposition:
+		"""
+		:return: the proposition if it is not quantified (see :py:attr:`quantified`)
+		:raise LogicError: if the proposition is quantified
+		"""
+		if self.quantified:
+			raise LogicError(f"No support for {action} quantified formulas, see SEPQBF instead", str(self))
+		return self
 
 	def valid(self) -> bool:
 		"""
@@ -729,8 +839,7 @@ class Proposition(SupportsLogicalConnective,
 		:return: whether or not this formula is valid
 		:raise LogicError: if the proposition is quantified
 		"""
-		if self.quantified:
-			raise LogicError("No support for evaluating quantified formulas, see SEPPQBF instead", str(self))
+		self._require_non_quantified("evaluating")
 		return "% VALID formula" in self.limboole_eval()
 
 	def sat(self) -> bool:
@@ -740,8 +849,7 @@ class Proposition(SupportsLogicalConnective,
 		:return: whether or not this formula is satisfiable
 		:raise LogicError: if the proposition is quantified
 		"""
-		if self.quantified:
-			raise LogicError("No support for evaluating quantified formulas, see SEPPQBF instead", str(self))
+		self._require_non_quantified("evaluating")
 		return "% SATISFIABLE formula" in self.limboole_eval("-s")
 
 	def model(self) -> Assignment:
@@ -756,8 +864,6 @@ class Proposition(SupportsLogicalConnective,
 		out: Dict[AtomicProposition, bool] = dict()
 
 		atomic_props = [(p, p.to_limboole()) for p in self.seen_atomic_propositions]
-		name: str
-		val: str
 		# each line of form [<identifier>] = (1|0)
 		for name, val in [l.split("=") for l in self.limboole_eval("-s").splitlines()[1:]]:
 			name, val = name.strip(), val.strip()
@@ -773,10 +879,10 @@ class Proposition(SupportsLogicalConnective,
 										 f"boolean value", str(self)) from e
 		return out
 
+	@_smart_recursion_limit
 	def eval(self, assignment: Assignment) -> bool:
 		self._check_assignment(assignment)
-		if self.quantified:
-			raise LogicError("No support for evaluating quantified formulas, see SEPPQBF instead", str(self))
+		self._require_non_quantified("evaluating")
 
 		# nilary
 		if self._connective.arity == ConnectiveArity.NILARY:
@@ -791,7 +897,7 @@ class Proposition(SupportsLogicalConnective,
 				return p.eval(assignment)
 		# binary
 		elif self._connective.arity == ConnectiveArity.BINARY:
-			p, q = self._propositions[0:2]
+			p, q = self._propositions[0], self._propositions[1]
 
 			if self._connective == LogicalConnective.R_IMPL:
 				return not p.eval(assignment) or q.eval(assignment)
@@ -806,12 +912,13 @@ class Proposition(SupportsLogicalConnective,
 			elif self._connective == LogicalConnective.AND:
 				return all(p.eval(assignment) for p in self._propositions)
 
-		raise ValueError(f"No implemented evaluation case for _Connective {self._connective}")
+		raise ValueError(f"No implemented evaluation case for LogicalConnective {self._connective!r}")
 
+	@_smart_recursion_limit
 	def _rec_partial_eval(self, assignment: Assignment) -> Proposition:
 		return Proposition(*(p._rec_partial_eval(assignment) for p in self._propositions), connective=self._connective)
 
-	def partial_eval(self, assignment: Assignment, *, simplify: bool = False) -> Proposition:
+	def partial_eval(self, assignment: Assignment, *, simplify: bool = True) -> Proposition:
 		"""
 		Partially evaluate this proposition by replacing atomic propositions by the truth constants :py:data:`Top`, or
 		:py:data:`Bottom` according to the given assignment.
@@ -819,19 +926,22 @@ class Proposition(SupportsLogicalConnective,
 		..	seealso:: :py:meth:`Proposition.eval`
 
 		:param assignment: the (partial) assignment to apply to this proposition
-		:param simplify: whether or not to apply simplification rules to the proposition after applying the assignment
+		:param simplify: whether or not to apply simplification steps to the proposition after applying the assignment
 		:return: the partially evaluated proposition
 		:raise LogicError: if the proposition is quantified
 		"""
 		self._check_assignment(assignment)
-		if self.quantified:
-			raise LogicError("No support for evaluating quantified formulas, see SEPPQBF instead", str(self))
+		self._require_non_quantified("partially evaluating")
 
 		prop = self._rec_partial_eval(assignment)
 		if simplify:
 			prop = prop.expand().reduce()
 		return prop
 
+	def __call__(self, assignment: Assignment = ()) -> Proposition:
+		return self.partial_eval(assignment, simplify=True)
+
+	@_smart_recursion_limit
 	def simplify_neg(self) -> Proposition:
 		r"""
 		Perform simplification steps regarding the negations in this proposition. The following rules are applied for
@@ -868,79 +978,85 @@ class Proposition(SupportsLogicalConnective,
 					return _s(q)
 			# binary connectives
 			if p._connective.arity == ConnectiveArity.BINARY:
-				u, v = p._propositions[0:2]
+				q, r = p._propositions[0], p._propositions[1]
+
 				if p._connective == LogicalConnective.R_IMPL:
-					return _s(u) & _s(~v)
+					return _s(q) & _s(~r)
 				elif p._connective == LogicalConnective.L_IMPL:
-					return _s(~u) & _s(v)
+					return _s(~q) & _s(r)
 				elif p._connective == LogicalConnective.IFF:
-					return (_s(u) | _s(v)) & (_s(~u) | _s(~v))
+					return (_s(q) | _s(r)) & (_s(~q) | _s(~r))
 				elif p._connective == LogicalConnective.UNIV:
-					return u / _s(~v)
+					return q / _s(~r)
 				elif p._connective == LogicalConnective.EXIST:
-					return u // _s(~v)
+					return q // _s(~r)
 			# nary connectives
 			elif p._connective.arity == ConnectiveArity.NARY:
 				if p._connective == LogicalConnective.AND:
-					return Proposition(*(_s(~u) for u in p._propositions), connective=LogicalConnective.OR)
+					return Proposition(*(_s(~q) for q in p._propositions), connective=LogicalConnective.OR)
 				elif p._connective == LogicalConnective.OR:
-					return Proposition(*(_s(~u) for u in p._propositions), connective=LogicalConnective.AND)
+					return Proposition(*(_s(~q) for q in p._propositions), connective=LogicalConnective.AND)
 
 		# no negation, simply apply to all children now
 		# default exit
 		return Proposition(*(_s(u) for u in self._propositions), connective=self._connective)
 
-	def _rec_reduce(self, depth: int) -> Proposition:
+	@_smart_recursion_limit
+	def _rec_reduce(self) -> Proposition:
 		if self.literal:
 			return self
+
+		# shorthand for recursive call
+		_r = Proposition._rec_reduce
 
 		# binary
 		if self._connective.arity == ConnectiveArity.BINARY:
 			p, q = self._propositions[0], self._propositions[1]
 
 			if self._connective in (LogicalConnective.R_IMPL, LogicalConnective.L_IMPL):
-				# flip in this case
+				# flip in left-hand case
 				if self._connective == LogicalConnective.L_IMPL:
 					p, q = q, p
+
 				if (p == Bottom) or (q == Top) or (p == q) \
 						or ((p._connective == LogicalConnective.AND) and (q in p)) \
 						or ((q._connective == LogicalConnective.OR) and (p in q)):
 					return Top
-				elif (q == Bottom) \
-						or ((q._connective == LogicalConnective.AND) and (~p in q)):
-					return ~p
-				elif (p == Top) \
-						or ((p._connective == LogicalConnective.OR) and (~q in p)):
-					return q
+				elif (q == Bottom) or ((q._connective == LogicalConnective.AND) and (~p in q)):
+					return _r(~p)
+				elif (p == Top) or ((p._connective == LogicalConnective.OR) and (~q in p)):
+					return _r(q)
 			elif self._connective == LogicalConnective.IFF:
 				if p == Top:
-					return q
+					return _r(q)
 				elif q == Top:
-					return p
+					return _r(p)
 				elif p == Bottom:
-					return ~q
+					return _r(~q)
 				elif q == Bottom:
-					return ~p
+					return _r(~p)
 				elif p == q:
 					return Top
-				elif p == (~q):
+				elif p == ~q:
 					return Bottom
 		# AND/OR
 		elif self._connective in (LogicalConnective.AND, LogicalConnective.OR):
-			prop_set: Set[Proposition] = set(self._propositions)
+			prop_set: Set[Proposition] = {_r(p) for p in self._propositions}
 
 			# check for contradictions and tautologies
 			if self._connective == LogicalConnective.AND and Top in prop_set:
-				return Proposition(*prop_set.difference({Top}), connective=self._connective)._rec_reduce(0)
+				return _r(Proposition(*prop_set.difference({Top}), connective=self._connective))
 			elif self._connective == LogicalConnective.AND and Bottom in prop_set:
 				return Bottom
 			elif self._connective == LogicalConnective.OR and Top in prop_set:
 				return Top
 			elif self._connective == LogicalConnective.OR and Bottom in prop_set:
-				return Proposition(*prop_set.difference({Bottom}), connective=self._connective)._rec_reduce(0)
+				return _r(Proposition(*prop_set.difference({Bottom}), connective=self._connective))
 			else:
 				# iterate over pairs of propositions
-				for p, q in permutations(prop_set, r=2):
+				p: Proposition
+				q: Proposition
+				for p, q in combinations(prop_set, r=2):
 					# a with ~a
 					if p == (~q):
 						return Bottom if self._connective == LogicalConnective.AND else Top
@@ -953,53 +1069,53 @@ class Proposition(SupportsLogicalConnective,
 								and (prop._connective != self._connective) \
 								and (lit in prop):
 							others = prop_set.difference({prop})
-							return Proposition(*others, connective=self._connective)._rec_reduce(0)
+							return _r(Proposition(*others, connective=self._connective))
 
 					# distributivity
 					elif (not p.literal and not q.literal) and (p._connective == q._connective) \
 							and (p._connective in (LogicalConnective.AND, LogicalConnective.OR)) \
 							and (p._connective != self._connective):
-						_p, _q = set(p._propositions), set(q._propositions)
-						factor_a = _p.intersection(_q)
-						factor_b = (Proposition(*_p.difference(factor_a), connective=p._connective),
-									Proposition(*_q.difference(factor_a), connective=q._connective))
+						p_set, q_set = set(p._propositions), set(q._propositions)
+						factor_a = p_set.intersection(q_set)
+						factor_b = (Proposition(*p_set.difference(factor_a), connective=p._connective),
+									Proposition(*q_set.difference(factor_a), connective=q._connective))
 
-						if 1 <= len(factor_a) < len(_p) + len(_q):
+						if 1 <= len(factor_a) < (len(p_set) + len(q_set)):
 							others = prop_set.difference({p, q})
 							res = Proposition(*factor_a, Proposition(*factor_b, connective=self._connective),
 											  connective=p._connective)
-							return Proposition(res, *others, connective=self._connective)._rec_reduce(0)
+							return _r(Proposition(res, *others, connective=self._connective))
 
 					# detect impl
 					if self._connective == LogicalConnective.OR \
 							and ((p._connective == LogicalConnective.NEG) ^ (q._connective == LogicalConnective.NEG)):
 						others = prop_set.difference({p, q})
 						if p._connective == LogicalConnective.NEG:
-							return Proposition(p._propositions[0] >> q, *others,
-											   connective=self._connective)._rec_reduce(0)
+							return _r(Proposition(p._propositions[0] >> q, *others, connective=self._connective))
 						elif q._connective == LogicalConnective.NEG:
-							return Proposition(q._propositions[0] >> p, *others,
-											   connective=self._connective)._rec_reduce(0)
+							return _r(Proposition(q._propositions[0] >> p, *others, connective=self._connective))
 
-					# detect iff
+					# detect redundant implications and iff
 					elif self._connective == LogicalConnective.AND \
 							and p._connective in (LogicalConnective.R_IMPL, LogicalConnective.L_IMPL) \
 							and q._connective in (LogicalConnective.R_IMPL, LogicalConnective.L_IMPL):
-						a, b = p._propositions[0:2]
-						c, d = q._propositions[0:2]
+						r, s = p._propositions[:2]
+						t, u = q._propositions[:2]
 						if p._connective == LogicalConnective.L_IMPL:
-							b, a = a, b
+							s, r = r, s
 						if q._connective == LogicalConnective.L_IMPL:
-							d, c = c, d
+							u, t = t, u
 
-						if a == d and b == c:
+						if r == u and s == t:
 							others = prop_set.difference({p, q})
-							return Proposition(Proposition(a, b, connective=LogicalConnective.IFF), *others,
-											   connective=self._connective)._rec_reduce(0)
+							return _r(Proposition(Proposition(r, s, connective=LogicalConnective.IFF), *others,
+												  connective=self._connective))
+						elif r == t and s == u:
+							others = prop_set.difference({p})
+							return _r(Proposition(*others, connective=self._connective))
 
 		# reduce recursively, default exit
-		new = Proposition(*(p._rec_reduce(0) for p in self._propositions), connective=self._connective)
-		return new._rec_reduce(depth + 1) if depth < 1 else new
+		return Proposition(*(_r(p) for p in self._propositions), connective=self._connective)
 
 	def reduce(self) -> Proposition:
 		r"""
@@ -1046,12 +1162,14 @@ class Proposition(SupportsLogicalConnective,
 			(P \lor Q) \land (P \lor R) \land S					&{}\Longrightarrow \big(P \lor (Q \land R)\big) \land S \\
 			\neg P \lor Q \lor R								&{}\Longrightarrow (P \rightarrow Q) \lor R \\
 			P \lor \neg Q \lor R								&{}\Longrightarrow (Q \rightarrow P) \lor R \\
+			(P \rightarrow Q) \land (Q \leftarrow P) \land R	&{}\Longrightarrow (P \rightarrow Q) \land R \\
 			(P \rightarrow Q) \land (Q \rightarrow P) \land R 	&{}\Longrightarrow (P \leftrightarrow Q) \land R
 
 		:return: the reduced proposition
 		"""
-		return self._rec_reduce(0)
+		return self._rec_reduce()
 
+	@_smart_recursion_limit
 	def expand(self) -> Proposition:
 		r"""
 		Expand this proposition, so that its syntactic representation is less compact. The following rules are applied
@@ -1072,21 +1190,27 @@ class Proposition(SupportsLogicalConnective,
 		if self.literal:
 			return self
 
+		# shorthand for recursive call
+		_e = Proposition.expand
+
 		# binary
 		if self._connective.arity == ConnectiveArity.BINARY:
-			p, q = self._propositions[0].expand(), self._propositions[1].expand()
+			p, q = _e(self._propositions[0]), _e(self._propositions[1])
 
 			if self._connective == LogicalConnective.R_IMPL:
-				return (~p | q).expand()
+				return _e(~p | q)
 			elif self._connective == LogicalConnective.L_IMPL:
-				return (p | ~q).expand()
+				return _e(p | ~q)
 			elif self._connective == LogicalConnective.IFF:
-				return ((p & q) | (~p & ~q)).expand()
+				return _e((p & q) | (~p & ~q))
 		# nary
-		elif self._connective.arity in (LogicalConnective.AND, LogicalConnective.OR):
-			prop_set: Set[Proposition] = {p.expand() for p in self._propositions}
+		elif self._connective in (LogicalConnective.AND, LogicalConnective.OR):
+			prop_set: Set[Proposition] = {_e(p) for p in self._propositions}
+
 			# distributivity
-			for p, q in permutations(prop_set, r=2):
+			p: Proposition
+			q: Proposition
+			for p, q in combinations(prop_set, r=2):
 				# exactly one is literal
 				if p.literal ^ q.literal:
 					# set up prop and lit and do more checks
@@ -1100,11 +1224,12 @@ class Proposition(SupportsLogicalConnective,
 											 for r in prop._propositions),
 										   connective=prop._connective)
 					# recursive expand
-					return Proposition(expanded, *others, connective=self._connective).expand()
+					return _e(Proposition(expanded, *others, connective=self._connective))
 
 		# expand children, default exit
-		return Proposition(*(p.expand() for p in self._propositions), connective=self._connective)
+		return Proposition(*(_e(p) for p in self._propositions), connective=self._connective)
 
+	@_smart_recursion_limit
 	def is_sub_proposition(self, other: Proposition) -> bool:
 		return self == other \
 			   or (self._connective.arity == ConnectiveArity.NARY
@@ -1114,30 +1239,23 @@ class Proposition(SupportsLogicalConnective,
 					  for p in other._propositions)
 
 	# operators
-	def __binary_operator(self, other, connective: _Connective, connective_name: str) -> Proposition:
+	def __binary_operator(self, other, connective: LogicalConnective) -> Proposition:
 		"""
 		Connect two propositions by a connective and either return the proposition or a :py:class:`Formula`. N-ary
 		operators are automatically combined, and unilary operators are merged into one proposition if possible.
 		"""
-		# convert int to bool if possible
-		if isinstance(other, int):
-			if not (other == 0 or other == 1):
-				raise ValueError(f"Cannot {connective_name} int of value {other}, must be 1 or 0, or True or False")
-			other = bool(other)
-
 		# check types now
-		if not isinstance(other, (Proposition, bool)):
-			raise TypeError(f"Cannot {connective_name} object of type {other.__class__.__name__}, expected "
+		if not isinstance(other, (Proposition, bool, int)):
+			raise TypeError(f"Cannot {connective.description!r} object of type {other.__class__.__name__}, expected "
 							f"Proposition, bool, or int")
-
-		# convert bool to Top or Bottom
-		if isinstance(other, bool):
-			other = Top if other else Bottom
+		# convert int, or bool to truth constants
+		elif not isinstance(other, Proposition):
+			other = AtomicProposition.constant_from(other)
 
 		# check if either is empty
 		if self.empty:
 			return other
-		if other.empty:
+		elif other.empty:
 			return self
 
 		# default
@@ -1152,18 +1270,18 @@ class Proposition(SupportsLogicalConnective,
 
 		return Proposition(*self_props, *other_props, connective=connective)
 
-	def __binary_quantifier(self, other, connective: _Connective, connective_name: str) -> Proposition:
+	def __binary_quantifier(self, other, connective: LogicalConnective, offset: int = 0) -> Proposition:
 		if not isinstance(other, Proposition):
-			raise TypeError(f"Cannot {connective_name} object of type {other.__class__.__name__}, expected "
+			raise TypeError(f"Cannot {connective.description!r} object of type {other.__class__.__name__}, expected "
 							f"Proposition")
-		if not self.atomic:
-			raise LogicSyntaxError.from_traceback(f"Quantified proposition must be atomic",
-												  str(self), SingleStackFrameInfo()[2], offset=1)
+		if not self.atomic or self == Top or self == Bottom:
+			raise LogicSyntaxError.from_traceback(f"Quantified proposition must be atomic, and neither Top, nor Bottom",
+												  str(self), SingleStackFrameInfo()[2 + offset], offset=1)
 		return Proposition(self, other, connective=connective)
 
-	def __r_binary_quantifier(self, other, connective: _Connective, connective_name: str) -> Proposition:
+	def __r_binary_quantifier(self, other, connective: LogicalConnective) -> Proposition:
 		if not isinstance(other, (Proposition, Iterable)):
-			raise TypeError(f"Cannot {connective_name} object of type {other.__class__.__name__}, expected "
+			raise TypeError(f"Cannot {connective.description!r} object of type {other.__class__.__name__}, expected "
 							f"Proposition or Iterable")
 		# always make iterable
 		if isinstance(other, Proposition):
@@ -1173,43 +1291,43 @@ class Proposition(SupportsLogicalConnective,
 		p = self
 		for atom in reversed(other):
 			if not isinstance(atom, Proposition):
-				raise TypeError(f"Cannot {connective_name} object of type {atom.__class__.__name__}, expected "
+				raise TypeError(f"Cannot {connective.description!r} object of type {atom.__class__.__name__}, expected "
 								f"Proposition")
-			p = atom.__binary_quantifier(p, connective, connective_name)
+			p = atom.__binary_quantifier(p, connective, offset=1)
 		return p
 
 	def __and__(self, other) -> Proposition:
-		return self.__binary_operator(other, LogicalConnective.AND, "AND")
+		return self.__binary_operator(other, LogicalConnective.AND)
 
 	def __mul__(self, other) -> Proposition:
 		return self.__and__(other)
 
 	def __or__(self, other) -> Proposition:
-		return self.__binary_operator(other, LogicalConnective.OR, "OR")
+		return self.__binary_operator(other, LogicalConnective.OR)
 
 	def __add__(self, other) -> Proposition:
 		return self.__or__(other)
 
 	def __rshift__(self, other) -> Proposition:
-		return self.__binary_operator(other, LogicalConnective.R_IMPL, "RIGHT IMPLY")
+		return self.__binary_operator(other, LogicalConnective.R_IMPL)
 
 	def __lshift__(self, other) -> Proposition:
-		return self.__binary_operator(other, LogicalConnective.L_IMPL, "LEFT IMPLY")
+		return self.__binary_operator(other, LogicalConnective.L_IMPL)
 
 	def __pow__(self, other) -> Proposition:
-		return self.__binary_operator(other, LogicalConnective.IFF, "BICONDITIONAL")
+		return self.__binary_operator(other, LogicalConnective.IFF)
 
 	def __truediv__(self, other) -> Proposition:
-		return self.__binary_quantifier(other, LogicalConnective.EXIST, "EXISTENTIALLY QUANTIFY")
+		return self.__binary_quantifier(other, LogicalConnective.EXIST)
 
 	def __floordiv__(self, other) -> Proposition:
-		return self.__binary_quantifier(other, LogicalConnective.UNIV, "UNIVERSALLY QUANTIFY")
+		return self.__binary_quantifier(other, LogicalConnective.UNIV)
 
 	def __rtruediv__(self, other) -> Proposition:
-		return self.__r_binary_quantifier(other, LogicalConnective.EXIST, "EXISTENTIALLY QUANTIFY")
+		return self.__r_binary_quantifier(other, LogicalConnective.EXIST)
 
 	def __rfloordiv__(self, other) -> Proposition:
-		return self.__r_binary_quantifier(other, LogicalConnective.UNIV, "UNIVERSALLY QUANTIFY")
+		return self.__r_binary_quantifier(other, LogicalConnective.UNIV)
 
 	def __invert__(self) -> Proposition:
 		return Proposition(self, connective=LogicalConnective.NEG)
@@ -1223,11 +1341,12 @@ class Proposition(SupportsLogicalConnective,
 		"""
 		atomic_props = {p: p.copy() for p in self._seen_atomic_propositions}
 
-		def __copy__(prop: Proposition) -> Proposition:
-			return Proposition(*(atomic_props[p] if p in atomic_props else __copy__(p) for p in prop._propositions),
+		@_smart_recursion_limit
+		def __copy(prop: Proposition) -> Proposition:
+			return Proposition(*(atomic_props[p] if p in atomic_props else __copy(p) for p in prop._propositions),
 							   connective=prop._connective)
 
-		return __copy__(self)
+		return __copy(self)
 
 	@final
 	def __bool__(self) -> False:
@@ -1242,11 +1361,14 @@ class Proposition(SupportsLogicalConnective,
 		return any(item == p for p in self._propositions)
 
 	# comparison methods
+	@_smart_recursion_limit
 	def __hash__(self) -> int:
-		if self._connective == LogicalConnective.NONE:
-			return hash(self._propositions[0])
-		else:
-			return hash((*(hash(p) for p in self._propositions), self._connective))
+		if self._hash is None:
+			if self._connective == LogicalConnective.NONE:
+				self._hash = hash(self._propositions[0])
+			else:
+				self._hash = hash(frozenset((*(hash(p) for p in self._propositions), self._connective)))
+		return self._hash
 
 	def syntactically_equal(self, other) -> bool:
 		"""
@@ -1262,19 +1384,15 @@ class Proposition(SupportsLogicalConnective,
 		return self.syntactically_equal(other)
 
 	# str methods
-	def connective_format(self, *,
-						  conn_format: ConnectiveFormat,
-						  parent: Optional[Proposition] = None) -> str:
-		ignore_pars = parent is None \
-					  or self._connective.arity == ConnectiveArity.UNARY \
-					  or (parent._connective in (LogicalConnective.UNIV, LogicalConnective.EXIST)
-						  and self is parent._propositions[1])
-
-		props = (p.connective_format(conn_format=conn_format, parent=self)
-				 for p in self._propositions)
-		out = conn_format.format(*props, connective=self._connective)
-
-		return out if ignore_pars else f"({out})"
+	def __format__(self, format_spec: str) -> str:
+		if format_spec == "pretty":
+			return self.to_pretty_print()
+		elif format_spec == "limboole":
+			return self.to_limboole()
+		elif format_spec == "latex":
+			return self.to_latex()
+		else:
+			return super(Proposition, self).__format__(format_spec)
 
 	@final
 	def __str__(self) -> str:
@@ -1287,7 +1405,7 @@ class Proposition(SupportsLogicalConnective,
 # ~~~~~~~~~~~~~~~ ATOMIC PROPOSITIONS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class AtomicProposition(Proposition):
+class AtomicProposition(Proposition, BaseProposition["AtomicProposition"]):
 	"""
 	:py:class:`AtomicProposition` represents the smallest unit of a :py:class:`Proposition`, aside from the empty formula.
 	Each new instance of :py:class:`AtomicProposition` is uniquely assigned an :py:attr:`id` defined by the system's current
@@ -1318,13 +1436,12 @@ class AtomicProposition(Proposition):
 	_id_set: ClassVar[Set[int]] = set()
 
 	_curr_name: ClassVar[Optional[str]] = None
-	_prime: ClassVar[str] = "\u2032"
 	_curr_name_primes: ClassVar[int] = 0
 	_curr_name_prefix: ClassVar[str] = ""
 
 	def __init__(self):
 		self._id = self._next_id()
-		self._volatile_name = self._next_volatile_name()
+		self._volatile_name_tuple = self._next_volatile_name_tuple()
 		super(AtomicProposition, self).__init__(self, connective=LogicalConnective.NONE)
 
 	def __init_subclass__(cls, *args, **kwargs):
@@ -1335,8 +1452,33 @@ class AtomicProposition(Proposition):
 
 	@staticmethod
 	def normalize(propositions: Sequence[Proposition],
-				  connective: _Connective) -> Tuple[Sequence[Proposition], _Connective]:
+				  connective: LogicalConnective) -> Tuple[Sequence[Proposition], LogicalConnective]:
 		return propositions, connective
+
+	@staticmethod
+	def constant_from(value: Any) -> Union[Top, Bottom]:
+		"""
+		Converts ``value`` to the truth constants :py:data:`Top`, or :py:data:`Bottom`, by Python's `Truth Value Testing
+		<https://docs.python.org/3/library/stdtypes.html#truth>`_
+
+		:param value: an object to convert to a truth constant
+		:return: the truth constant corresponding to the truth value of ``value``
+		"""
+		return Top if bool(value) else Bottom
+
+	@staticmethod
+	def init_atomic_props(num: int) -> Tuple[AtomicProposition, ...]:
+		"""
+		Initialize and return ``num`` new :py:class:`AtomicProposition` instances. Works the same way as the constructor,
+		but is useful for returning multiple objects at once.
+
+		:param num: how many atomic propositions to initialize and return
+		:return: a tuple of ``num`` new atomic proposition instances
+		:raises ValueError: if ``num`` is smaller than 1
+		"""
+		if num < 1:
+			raise ValueError(f"Expected 'num' to be greater than 0, but received {num!r}")
+		return tuple(AtomicProposition() for _ in range(num))
 
 	@staticmethod
 	@final
@@ -1355,11 +1497,12 @@ class AtomicProposition(Proposition):
 		return new_id
 
 	@classmethod
-	def _next_volatile_name(cls) -> str:
+	@final
+	def _next_volatile_name_tuple(cls) -> Tuple[str, str, int]:
 		"""
 		Get the next available volatile name.
 
-		:return: the next volatile name as string
+		:return: the next volatile name as a tuple of form ``(prefix, name_chr, primes)``
 		"""
 		if cls._curr_name is None:
 			cls._curr_name = "a"
@@ -1369,7 +1512,7 @@ class AtomicProposition(Proposition):
 			else:
 				cls._curr_name = "a"
 				cls._curr_name_primes += 1
-		return cls._curr_name_prefix + cls._curr_name + (cls._prime * cls._curr_name_primes)
+		return cls._curr_name_prefix, cls._curr_name, cls._curr_name_primes
 
 	@property
 	def id(self) -> int:
@@ -1378,8 +1521,13 @@ class AtomicProposition(Proposition):
 
 	@property
 	def volatile_name(self) -> str:
-		""" :return: the volatile name of this atomic proposition object """
-		return self._volatile_name
+		""" DOCS """
+		return self.to_pretty_print()
+
+	@property
+	def volatile_name_tuple(self) -> Tuple[str, str, int]:
+		""" DOCS """
+		return self._volatile_name_tuple
 
 	def eval(self, assignment: Assignment) -> bool:
 		self._check_assignment(assignment)
@@ -1388,6 +1536,10 @@ class AtomicProposition(Proposition):
 							 str(self))
 		return assignment[self]
 
+	def partial_eval(self, assignment: Assignment, *, simplify: bool = True) -> Proposition:
+		""" See :py:meth:`Proposition.partial_eval`. """
+		return super(AtomicProposition, self).partial_eval(assignment, simplify=simplify)
+
 	def _rec_partial_eval(self, assignment: Assignment) -> AtomicProposition:
 		if self in assignment:
 			return Top if assignment[self] else Bottom
@@ -1395,29 +1547,20 @@ class AtomicProposition(Proposition):
 			return self
 
 	def is_sub_proposition(self, other: Proposition) -> bool:
+		""" See :py:meth:`Proposition.is_sub_proposition`. """
 		return self is other
 
 	def copy(self) -> AtomicProposition:
+		""" See :py:meth:`Proposition.copy`. """
 		return AtomicProposition()
 
 	def __hash__(self) -> int:
 		return hash((self._id, self._connective))
 
-	def connective_format(self, *,
-						  conn_format: ConnectiveFormat,
-						  parent: Optional[Proposition] = None) -> str:
-		if conn_format == self._limboole_format:
-			name = self._volatile_name.replace(self._prime, "-prime")
-		elif conn_format == self._latex_format:
-			name = self._volatile_name.replace(self._prime, r"\prime")
-		else:
-			name = self._volatile_name
-		return conn_format.format(name, connective=self._connective)
-
 	def __repr__(self) -> str:
 		return repr_str(self, AtomicProposition.volatile_name, AtomicProposition.id)
 
-class __SingletonPropositionMeta(SingletonMeta, _ProtocolMeta, abc.ABCMeta):
+class __SingletonPropositionMeta(SingletonMeta, abc.ABCMeta):
 	"""
 	:py:class:`__SingleTonPropositionMeta` is a meta class for the truth constant propositions :py:class:`_Top`, and
 	:py:class:`_Bottom`.
@@ -1429,7 +1572,7 @@ class _Top(AtomicProposition, Singleton, metaclass=__SingletonPropositionMeta):
 
 	def __init__(self):
 		self._id = self._next_id(1)
-		self._volatile_name = "top"
+		self._volatile_name_tuple = ("", "top", 0)
 		super(AtomicProposition, self).__init__(self, connective=LogicalConnective.NONE)
 
 	def eval(self, assignment: Assignment) -> True:
@@ -1439,19 +1582,6 @@ class _Top(AtomicProposition, Singleton, metaclass=__SingletonPropositionMeta):
 	def _rec_partial_eval(self, assignment: Assignment) -> AtomicProposition:
 		return Top
 
-	def connective_format(self, *,
-						  conn_format: ConnectiveFormat,
-						  parent: Optional[Proposition] = None) -> str:
-		if conn_format == self._limboole_format:
-			name = "(top | !top)"
-		elif conn_format == self._pretty_print_format:
-			name = "\u22A4"
-		elif conn_format == self._latex_format:
-			name = r"\top"
-		else:
-			name = self._volatile_name
-		return conn_format.format(name, connective=self._connective)
-
 	def __repr__(self) -> str:
 		return "Top"
 
@@ -1460,7 +1590,7 @@ class _Bottom(AtomicProposition, Singleton, metaclass=__SingletonPropositionMeta
 
 	def __init__(self):
 		self._id = self._next_id(0)
-		self._volatile_name = "bottom"
+		self._volatile_name_tuple = ("", "bottom", 0)
 		super(AtomicProposition, self).__init__(self, connective=LogicalConnective.NONE)
 
 	def eval(self, assignment: Assignment) -> False:
@@ -1469,19 +1599,6 @@ class _Bottom(AtomicProposition, Singleton, metaclass=__SingletonPropositionMeta
 
 	def _rec_partial_eval(self, assignment: Assignment) -> AtomicProposition:
 		return Bottom
-
-	def connective_format(self, *,
-						  conn_format: ConnectiveFormat,
-						  parent: Optional[Proposition] = None) -> str:
-		if conn_format == self._limboole_format:
-			name = "(bottom & !bottom)"
-		elif conn_format == self._pretty_print_format:
-			name = "\u22A5"
-		elif conn_format == self._latex_format:
-			name = r"\bot"
-		else:
-			name = self._volatile_name
-		return conn_format.format(name, connective=self._connective)
 
 	def __repr__(self) -> str:
 		return "Bottom"
@@ -1495,9 +1612,6 @@ Bottom: Final[_Bottom] = _Bottom()
 # type aliases
 Assignment: Final = Mapping[AtomicProposition, bool]
 """ A type alias for a mapping of :py:class:`AtomicProposition` objects to a ``bool`` truth value. """
-
-_PropositionType: Final = TypeVar("_PropositionType", Proposition, SupportsToPrettyPrint, SupportsToLimboole)
-""" A generic type variable for a proposition which can be turned into a string for e.g. error printing. """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~

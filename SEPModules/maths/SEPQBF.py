@@ -16,7 +16,7 @@ from typing import Tuple, Set, Optional, FrozenSet, Sequence
 from SEPModules.SEPPrinting import repr_str
 from SEPModules.SEPUtils import SingleStackFrameInfo
 from SEPModules.maths.SEPLogic import AtomicProposition, SupportsLimbooleEval, Proposition, LogicalConnective, \
-	_Connective, SupportsToLimboole, Top, SupportsToPrettyPrint, ConnectiveFormat, SupportsToLaTeX, LogicSyntaxError, \
+	SupportsToLimboole, Top, SupportsToPrettyPrint, ConnectiveFormat, SupportsToLaTeX, LogicSyntaxError, \
 	LogicError
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,14 +34,14 @@ class PQBF(SupportsToPrettyPrint, SupportsLimbooleEval):
 
 		def __init__(self,
 					 pqbf: PQBF,
-					 connective: Optional[_Connective] = None,
+					 connective: Optional[LogicalConnective] = None,
 					 assignment_value: Optional[bool] = None,
 					 left: Optional[PQBF.Node] = None,
 					 right: Optional[PQBF.Node] = None):
 			self.left: Optional[PQBF.Node] = left
 			self.right: Optional[PQBF.Node] = right
 			self.pqbf: Optional[PQBF] = pqbf
-			self.connective: Optional[_Connective] = connective
+			self.connective: Optional[LogicalConnective] = connective
 			self.assignment_value: bool = assignment_value
 
 		@property
@@ -71,8 +71,8 @@ class PQBF(SupportsToPrettyPrint, SupportsLimbooleEval):
 				res = self.left.eval_node() and self.right.eval_node()
 				return res
 
-		def connective_format(self, *, conn_format: ConnectiveFormat, **kwargs) -> str:
-			return self.pqbf.connective_format(conn_format=conn_format, **kwargs)
+		def _connective_format(self, *, conn_format: ConnectiveFormat, **kwargs) -> str:
+			return self.pqbf._connective_format(conn_format=conn_format, **kwargs)
 
 		def __repr__(self) -> str:
 			return repr_str(self, PQBF.Node.root, PQBF.Node.leaf, PQBF.Node.num_children)
@@ -81,14 +81,14 @@ class PQBF(SupportsToPrettyPrint, SupportsLimbooleEval):
 			return self.to_pretty_print()
 
 	# PQBF class
-	def __init__(self, prefix: Sequence[Tuple[_Connective, AtomicProposition]], matrix: Proposition):
+	def __init__(self, prefix: Sequence[Tuple[LogicalConnective, AtomicProposition]], matrix: Proposition):
 		# check that there are no quantifiers in matrix
 		if matrix.quantified:
 			raise LogicSyntaxError.from_traceback(f"'matrix' is not in prenex form",
 												  str(matrix), SingleStackFrameInfo()[1])
 
 		# trick to remove duplicates in order
-		self._prefix: Tuple[Tuple[_Connective, AtomicProposition], ...] = tuple(dict.fromkeys(prefix))
+		self._prefix: Tuple[Tuple[LogicalConnective, AtomicProposition], ...] = tuple(dict.fromkeys(prefix))
 		self._matrix: Proposition = matrix
 
 		# construct formula
@@ -101,10 +101,10 @@ class PQBF(SupportsToPrettyPrint, SupportsLimbooleEval):
 		self._quantified_vars: FrozenSet[AtomicProposition] = frozenset(t[1] for t in prefix)
 		self._free_vars: FrozenSet[AtomicProposition] = frozenset(matrix.seen_atomic_propositions
 																  .difference(self._quantified_vars))
-		self._outermost_quantifier: Optional[_Connective] = None if len(self._prefix) < 1 else self._prefix[0][0]
+		self._outermost_quantifier: Optional[LogicalConnective] = None if len(self._prefix) < 1 else self._prefix[0][0]
 
 	@staticmethod
-	def from_formula(formula: Proposition) -> PQBF:
+	def _split_prenex(formula: Proposition) -> Tuple[Sequence[Tuple[LogicalConnective, AtomicProposition]], Proposition]:
 		# split formula into prefix and matrix
 		prefix = list()
 		curr = formula
@@ -124,7 +124,11 @@ class PQBF(SupportsToPrettyPrint, SupportsLimbooleEval):
 												  f"in {_curr!r}", _formula, SingleStackFrameInfo()[1],
 												  offset=_formula.find(_curr))
 
-		return PQBF(prefix, curr)
+		return prefix, curr
+
+	@staticmethod
+	def from_formula(formula: Proposition) -> PQBF:
+		return PQBF(*PQBF._split_prenex(formula))
 
 	# attributes
 	@property
@@ -132,7 +136,7 @@ class PQBF(SupportsToPrettyPrint, SupportsLimbooleEval):
 		return self._formula
 
 	@property
-	def prefix(self) -> Tuple[Tuple[_Connective, AtomicProposition], ...]:
+	def prefix(self) -> Tuple[Tuple[LogicalConnective, AtomicProposition], ...]:
 		return self._prefix
 
 	@property
@@ -148,7 +152,7 @@ class PQBF(SupportsToPrettyPrint, SupportsLimbooleEval):
 		return set(self._free_vars)
 
 	@property
-	def outermost_quantifier(self) -> Optional[_Connective]:
+	def outermost_quantifier(self) -> Optional[LogicalConnective]:
 		return self._outermost_quantifier
 
 	def limboole_eval(self, *option: str, timeout: Optional[float] = 1.0) -> str:
@@ -179,8 +183,8 @@ class PQBF(SupportsToPrettyPrint, SupportsLimbooleEval):
 		return __build_tree__(root)
 
 	# misc methods
-	def connective_format(self, *, conn_format: ConnectiveFormat, **kwargs) -> str:
-		return self._formula.connective_format(conn_format=conn_format, **kwargs)
+	def _connective_format(self, *, conn_format: ConnectiveFormat, **kwargs) -> str:
+		return self._formula._connective_format(conn_format=conn_format, **kwargs)
 
 	def __str__(self) -> str:
 		return self.to_pretty_print()
@@ -188,9 +192,13 @@ class PQBF(SupportsToPrettyPrint, SupportsLimbooleEval):
 	def __repr__(self) -> str:
 		return repr_str(self, PQBF.prefix, PQBF.matrix)
 
-# class PCNF(PQBF):
-#
-# 	def __init__(cls, prefix: Sequence[Tuple[AtomicProposition, _Connective]], matrix: Proposition):
-# 		if not matrix.CNF():
-# 			raise ValueError(f"Proposition {str(matrix)} is not in CNF")
-# 		super(PCNF, cls).__init__(prefix, matrix)
+class PCNF(PQBF):
+
+	def __init__(cls, prefix: Sequence[Tuple[LogicalConnective, AtomicProposition]], matrix: Proposition):
+		if not matrix.CNF():
+			raise ValueError(f"Proposition {str(matrix)} is not in CNF")
+		super(PCNF, cls).__init__(prefix, matrix)
+
+	@staticmethod
+	def from_formula(formula: Proposition) -> PCNF:
+		return PCNF(*PCNF._split_prenex(formula))

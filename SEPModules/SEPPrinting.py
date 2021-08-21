@@ -507,6 +507,15 @@ def repr_str(obj: Any,
 
 	return f"{obj.__class__.__name__}({joiner.join(strings)})"
 
+def repr_string(*args, **kwargs) -> str:
+	"""
+	..	deprecated:: 2.2.2
+
+		Use function :py:func:`repr_str` instead.
+	"""
+	warn(DeprecationWarning("'repr_string' is deprecated in favor of the more consistent 'repr_str'"))
+	return repr_str(*args, **kwargs)
+
 def error_str(original: AnyStr,
 			  error_from: int,
 			  error_to: int,

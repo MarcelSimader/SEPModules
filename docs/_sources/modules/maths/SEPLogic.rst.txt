@@ -35,6 +35,7 @@ Connective Format Protocols
 -------------------------------------
 
 ..	autoclass:: SEPModules.maths.SEPLogic.SupportsConnectiveFormat
+	:private-members: _connective_format
 
 ..	autoclass:: SEPModules.maths.SEPLogic.SupportsToPrettyPrint
 	:members:
@@ -68,6 +69,7 @@ Atomic Proposition
 
 ..	autoclass:: SEPModules.maths.SEPLogic.AtomicProposition
 	:members:
+	:exclude-members: normalize
 	:private-members: _next_id, _next_volatile_name
 
 Truth constants
@@ -75,4 +77,3 @@ Truth constants
 
 ..	autodata:: SEPModules.maths.SEPLogic.Top
 ..	autodata:: SEPModules.maths.SEPLogic.Bottom
-

@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import abc
 import os
+import sys
 from inspect import stack, getframeinfo, Traceback
 from os import path
 from typing import Type, ClassVar, TypeVar, Final, Callable, Optional, Union, final, Tuple, AnyStr, \
@@ -171,9 +172,9 @@ class Singleton(abc.ABC, metaclass=SingletonMeta):
 		super(Singleton, cls).__init_subclass__(**kwargs)
 		cls.__init_subclass__ = classmethod(lock(cls.__init_subclass__,
 												 lambda _cls: SEPSyntaxError.from_traceback(
-													 f"Cannot subclass singleton class {cls.__name__!r}, "
-													 f"offending class is {_cls.__name__!r}",
-													 SingleStackFrameInfo()[4])
+														 f"Cannot subclass singleton class {cls.__name__!r}, "
+														 f"offending class is {_cls.__name__!r}",
+														 SingleStackFrameInfo()[4])
 												 ))
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -247,6 +248,70 @@ class SingleStackFrameInfo(StackFrameInfo):
 			raise TypeError(f"'SingleStackFrameInfo' only accepts an int index, "
 							f"but received {item.__class__.__name__!r}")
 		return self.get_tracebacks(slice(item + self._offset, item + self._offset + 1))[0]
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ SMART RECURSION LIMITING ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class RecursionDepthLimit:
+	""" DOCS recursion depth """
+
+	def __init__(self, recursion_depth: int):
+		self._recursion_depth = recursion_depth
+
+		self._linux = sys.platform.startswith("linux")
+
+	def __enter__(self) -> None:
+		self._old_recursion_depth = sys.getrecursionlimit()
+		sys.setrecursionlimit(self._recursion_depth)
+
+		if self._linux:
+			import resource
+			self._old_r_stack_limits = resource.getrlimit(resource.RLIMIT_STACK)
+			resource.setrlimit(resource.RLIMIT_STACK, (self._recursion_depth * 0x100, resource.RLIM_INFINITY))
+
+	def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
+		sys.setrecursionlimit(self._old_recursion_depth)
+
+		if self._linux:
+			import resource
+			resource.setrlimit(resource.RLIMIT_STACK, self._old_r_stack_limits)
+		return exc_val is None
+
+def smart_recursion_limit(initial_recursion_depth: int = sys.getrecursionlimit(),
+						  increase_limit_amount_func: Callable[[int], int] = lambda x: x * 2,
+						  max_tries: int = 4) \
+		-> Callable[[Callable[..., _T]], Callable[..., _T]]:
+	# sanitize input
+	if initial_recursion_depth <= 0 or max_tries <= 0:
+		raise ValueError("arguments supplied to 'smart_recursion_limit' must be positive")
+
+	# decorator construction
+	def smart_recursion_limit_decorator(func: Callable[..., _T]) -> Callable[..., _T]:
+		def __wrapper__(*args, **kwargs):
+			num_tries, r, curr_recursion_limit = 0, None, initial_recursion_depth
+			while num_tries < max_tries:
+				# actual function calls
+				try:
+					with RecursionDepthLimit(curr_recursion_limit):
+						r = func(*args, **kwargs)
+						break
+				except RecursionError:
+					curr_recursion_limit = increase_limit_amount_func(curr_recursion_limit)
+					if curr_recursion_limit <= 0:
+						raise ValueError(f"Value returned by 'curr_recursion_limit' must not be negative or 0, but "
+										 f"received {curr_recursion_limit!r}")
+					num_tries += 1
+
+			if num_tries == max_tries:
+				raise RuntimeError(f"Increased recursion limit for {func.__name__!r} to {curr_recursion_limit!r}, but "
+								   f"recursive call still failed")
+
+			return r
+
+		return copy_func_attrs(__wrapper__, func, "smart_rec_limit")
+
+	return smart_recursion_limit_decorator
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~

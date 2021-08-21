@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; SEPModules 2.2.1 documentation</title>
+  <title>Index &mdash; SEPModules 2.2.2 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                2.2.1
+                2.2.2
               </div>
             
           
@@ -267,13 +267,15 @@
 </li>
       <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments.__iter__">__iter__() (SEPModules.SEPIO.ConsoleArguments method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.AlgebraicStructure.__le__">__le__() (SEPModules.maths.SEPAlgebra.AlgebraicStructure method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.AlgebraicStructure.__lt__">__lt__() (SEPModules.maths.SEPAlgebra.AlgebraicStructure method)</a>
 </li>
       <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic._Connective">_Connective (class in SEPModules.maths.SEPLogic)</a>
+</li>
+      <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.SupportsConnectiveFormat._connective_format">_connective_format() (SEPModules.maths.SEPLogic.SupportsConnectiveFormat method)</a>
 </li>
       <li><a href="modules/SEPIO.html#SEPModules.SEPIO.ConsoleArguments._load_arguments">_load_arguments() (SEPModules.SEPIO.ConsoleArguments method)</a>
 </li>
@@ -495,8 +497,6 @@
         <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.Semigroup.is_closed">(SEPModules.maths.SEPAlgebra.Semigroup method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.AlgebraicStructure.is_commutative">is_commutative() (SEPModules.maths.SEPAlgebra.AlgebraicStructure method)</a>
 
       <ul>
@@ -505,7 +505,11 @@
         <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.Semigroup.is_commutative">(SEPModules.maths.SEPAlgebra.Semigroup method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.Ring.is_distributive">is_distributive() (SEPModules.maths.SEPAlgebra.Ring method)</a>
+</li>
+      <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.AtomicProposition.is_sub_proposition">is_sub_proposition() (SEPModules.maths.SEPLogic.AtomicProposition method)</a>
 </li>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.AbelianGroup.is_valid">is_valid() (SEPModules.maths.SEPAlgebra.AbelianGroup method)</a>
 
@@ -614,20 +618,16 @@
         <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.Semigroup.neutral_elements">(SEPModules.maths.SEPAlgebra.Semigroup method)</a>
 </li>
       </ul></li>
-      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.newline">newline() (SEPModules.SEPLogger.Logger method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/SEPLogger.html#SEPModules.SEPLogger.Logger.newline">newline() (SEPModules.SEPLogger.Logger method)</a>
+</li>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.NoElement">NoElement (in module SEPModules.maths.SEPAlgebra)</a>
 </li>
       <li><a href="modules/maths/SEPAlgebra.html#SEPModules.maths.SEPAlgebra.NoElementType">NoElementType (in module SEPModules.maths.SEPAlgebra)</a>
 </li>
-      <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.AtomicProposition.normalize">normalize() (SEPModules.maths.SEPLogic.AtomicProposition static method)</a>
-
-      <ul>
-        <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.Proposition.normalize">(SEPModules.maths.SEPLogic.Proposition static method)</a>
+      <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.Proposition.normalize">normalize() (SEPModules.maths.SEPLogic.Proposition static method)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -648,14 +648,18 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.Proposition.partial_eval">partial_eval() (SEPModules.maths.SEPLogic.Proposition method)</a>
+      <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.AtomicProposition.partial_eval">partial_eval() (SEPModules.maths.SEPLogic.AtomicProposition method)</a>
+
+      <ul>
+        <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.Proposition.partial_eval">(SEPModules.maths.SEPLogic.Proposition method)</a>
 </li>
+      </ul></li>
       <li><a href="modules/maths/SEPQBF.html#SEPModules.maths.SEPQBF.PQBF">PQBF (class in SEPModules.maths.SEPQBF)</a>
-</li>
-      <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry.prefix">prefix (SEPModules.maths.SEPLogic.ConnectiveFormat.Entry property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.ConnectiveFormat.Entry.prefix">prefix (SEPModules.maths.SEPLogic.ConnectiveFormat.Entry property)</a>
+</li>
       <li><a href="modules/SEPPrinting.html#SEPModules.SEPPrinting.print_colors">print_colors (SEPModules.SEPPrinting attribute)</a>
 </li>
       <li><a href="modules/maths/SEPLogic.html#SEPModules.maths.SEPLogic.Proposition">Proposition (class in SEPModules.maths.SEPLogic)</a>
